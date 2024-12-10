@@ -11,3 +11,4 @@ A CV website to showcase my professional profile, skills, experience, and educat
 - **Experience Section:** Work history with job titles and descriptions.
 - **Education Section:** Degree information.
 - **Contact Links:** Clickable links for email, phone, LinkedIn, and GitHub.
+- **CV Download:** Button to download CV in pdf format
