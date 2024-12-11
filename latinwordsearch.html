@@ -108,11 +108,11 @@
         <!-- Tiles will be dynamically generated here -->
         </div>
         <div class="input-container" id="input-container">
-            <input type="text" maxlength="1" id="char1" oninput="moveToNext(this, 'char2')" onkeydown="moveToPrevious(this, '')">
-            <input type="text" maxlength="1" id="char2" oninput="moveToNext(this, 'char3')" onkeydown="moveToPrevious(this, 'char1')">
-            <input type="text" maxlength="1" id="char3" oninput="moveToNext(this, 'char4')" onkeydown="moveToPrevious(this, 'char2')">
-            <input type="text" maxlength="1" id="char4" oninput="moveToNext(this, 'char5')" onkeydown="moveToPrevious(this, 'char3')">
-            <input type="text" maxlength="1" id="char5" onkeydown="moveToPrevious(this, 'char4')">
+            <input type="text" maxlength="1" id="char1" oninput="moveToNext(this, 'char2')" onkeydown="moveToPrevious(this, ''); moveWithArrows(this, '', 'char2', event)">
+            <input type="text" maxlength="1" id="char2" oninput="moveToNext(this, 'char3')" onkeydown="moveToPrevious(this, 'char1'); moveWithArrows(this, 'char1', 'char3', event)">
+            <input type="text" maxlength="1" id="char3" oninput="moveToNext(this, 'char4')" onkeydown="moveToPrevious(this, 'char2'); moveWithArrows(this, 'char2', 'char4', event)">
+            <input type="text" maxlength="1" id="char4" oninput="moveToNext(this, 'char5')" onkeydown="moveToPrevious(this, 'char3'); moveWithArrows(this, 'char3', 'char5', event)">
+            <input type="text" maxlength="1" id="char5" onkeydown="moveToPrevious(this, 'char4'); moveWithArrows(this, 'char4', '', event)">
         </div>
         <button onclick="submitGuess()">Submit</button>
         <button onclick="newGame()">New Game</button>
@@ -140,6 +140,7 @@
         createBoard();
 
         function moveToNext(current, nextId) {
+            current.value = current.value.slice(-1);
             if (current.value.length === 1) {
                 const nextInput = document.getElementById(nextId);
             if (nextInput) nextInput.focus();
@@ -150,6 +151,16 @@
             if (current.value.length === 0 && event.key === "Backspace") {
                 const prevInput = document.getElementById(prevId);
             if (prevInput) prevInput.focus();
+            }
+        }
+
+        function moveWithArrows(current, prevId, nextId, event) {
+            if (event.key === "ArrowLeft") {
+                const prevInput = document.getElementById(prevId);
+            if (prevInput) prevInput.focus();
+            } else if (event.key === "ArrowRight") {
+                const nextInput = document.getElementById(nextId);
+                if (nextInput) nextInput.focus();
             }
         }
 
