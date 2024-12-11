@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Latin Word Search</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f4;
+    }
+
+    .game-container {
+      text-align: center;
+    }
+
+    .board {
+      display: grid;
+      grid-template-rows: repeat(6, 1fr);
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin: 20px auto;
+      max-width: 250px;
+    }
+
+    .tile {
+      width: 50px;
+      height: 50px;
+      border: 2px solid #ccc;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      font-weight: bold;
+      text-align: center;
+      line-height: 50px;
+      background-color: white;
+      color: black;
+      border-radius: 5px;
+    }
+
+    .tile.correct {
+      background-color: #6aaa64;
+      color: white;
+    }
+
+    .tile.present {
+      background-color: #c9b458;
+      color: white;
+    }
+
+    .tile.absent {
+      background-color: #787c7e;
+      color: white;
+    }
+
+    .input-container {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .input-container input {
+      width: 50px;
+      height: 50px;
+      font-size: 1.5rem;
+      text-align: center;
+      text-transform: uppercase;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .input-container input:focus {
+      outline: none;
+      border-color: #007BFF;
+    }
+
+    .message {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <h1>Latin Word Search</h1>
+    <div class="board" id="board">
+      <!-- Tiles will be dynamically generated here -->
+    </div>
+    <div class="input-container" id="input-container">
+      <input type="text" maxlength="1" id="char1" oninput="moveToNext(this, 'char2')">
+      <input type="text" maxlength="1" id="char2" oninput="moveToNext(this, 'char3')">
+      <input type="text" maxlength="1" id="char3" oninput="moveToNext(this, 'char4')">
+      <input type="text" maxlength="1" id="char4" oninput="moveToNext(this, 'char5')">
+      <input type="text" maxlength="1" id="char5">
+    </div>
+    <button onclick="submitGuess()">Submit</button>
+    <p class="message" id="message"></p>
+  </div>
+
+  <script>
+    const wordList = ['absum', 'acies', 'adamo', 'adhuc', 'adnuo', 'adsum', 'aetas', 'altus', 'amita', 'animi', 'annus', 'anser', 'aptus', 'arbor', 'arceo', 'arcus', 'arguo', 'asper', 'atqui', 'audax', 'audio', 'auris', 'aurum', 'autem', 'autus', 'aveho', 'avoco', 'barba', 'calco', 'canis', 'canto', 'capio', 'capto', 'carpo', 'carus', 'casso', 'caste', 'casus', 'cauda', 'causa', 'cavus', 'celer', 'cerno', 'certo', 'cibus', 'clamo', 'claro', 'color', 'comis', 'conor', 'copia', 'cornu', 'credo', 'creta', 'cuius', 'culpa', 'culpo', 'cunae', 'cupio', 'curia', 'curso', 'curto', 'curvo', 'damno', 'debeo', 'decet', 'decor', 'deleo', 'demum', 'denuo', 'dicto', 'diluo', 'diruo', 'disco', 'dives', 'doleo', 'dolor', 'dolus', 'domus', 'donec', 'donum', 'dudum', 'durus', 'educo', 'eligo', 'epulo', 'equus', 'erepo', 'erogo', 'error', 'evoco', 'exigo', 'eximo', 'exoro', 'exsto', 'facio', 'fatum', 'ferus', 'feteo', 'ficus', 'fides', 'filia', 'fimus', 'finis', 'firmo', 'fodio', 'formo', 'forte', 'forum', 'frons', 'fruor', 'fugio', 'fundo', 'furor', 'fusus', 'galea', 'genus', 'gesto', 'gravo', 'gusto', 'hodie', 'honor', 'huius', 'humus', 'iaceo', 'iacio', 'ianua', 'ictus', 'ignis', 'ilico', 'illuc', 'illud', 'imago', 'infit', 'inflo', 'innuo', 'inops', 'insto', 'intro', 'intus', 'iocus', 'itero', 'iudex', 'iuxta', 'labor', 'lacer', 'lacto', 'lacus', 'lambo', 'lamia', 'laudo', 'lebes', 'legio', 'lemma', 'lenio', 'lenis', 'lente', 'lento', 'lepus', 'letum', 'levis', 'liber', 'licet', 'locus', 'longe', 'ludus', 'lugeo', 'lupus', 'macer', 'macto', 'mador', 'maero', 'magis', 'magus', 'malum', 'mando', 'maneo', 'memor', 'mensa', 'mereo', 'Metim', 'metuo', 'metus', 'mille', 'minor', 'miror', 'mirus', 'miser', 'missa', 'mitis', 'modio', 'modus', 'moneo', 'mucro', 'mugio', 'multi', 'multo', 'mundo', 'munio', 'mutuo', 'narro', 'natio', 'nauta', 'necne', 'nefas', 'nidor', 'niger', 'nihil', 'niteo', 'nitor', 'nobis', 'nonus', 'nosco', 'novem', 'novus', 'nuper', 'nutus', 'obruo', 'ocius', 'odium', 'omnis', 'onero', 'opera', 'orbis', 'otium', 'palea', 'palma', 'pando', 'parco', 'pario', 'pasco', 'pateo', 'pauci', 'pecco', 'pecto', 'pecus', 'peior', 'pendo', 'perdo', 'pereo', 'pergo', 'picea', 'pipio', 'pirum', 'pirus', 'placo', 'plaga', 'plane', 'plico', 'ploro', 'pluma', 'plura', 'pomum', 'porro', 'porta', 'posco', 'primo', 'prius', 'privo', 'probo', 'prope', 'prout', 'Pruma', 'pudeo', 'pudor', 'pugna', 'pugno', 'pulex', 'pulmo', 'pulpa', 'pulso', 'punio', 'purgo', 'purus', 'puteo', 'puter', 'putus', 'quare', 'quasi', 'rarus', 'ratio', 'recro', 'reddo', 'redeo', 'renuo', 'rigor', 'ritus', 'rubor', 'rumor', 'saeta', 'salus', 'sanus', 'satio', 'satis', 'secus', 'semel', 'serio', 'sermo', 'servo', 'sidus', 'silva', 'simul', 'sitio', 'sitis', 'socer', 'soleo', 'solum', 'solus', 'solvo', 'sopor', 'spero', 'sulum', 'summa', 'talis', 'talus', 'tamen', 'tenax', 'tendo', 'teneo', 'tenus', 'teres', 'terra', 'theca', 'thema', 'timeo', 'timor', 'totus', 'tremo', 'turba', 'turbo', 'turpe', 'tutis', 'ullus', 'umbra', 'uredo', 'usque', 'utrum', 'valde', 'velox', 'velum', 'venia', 'vergo', 'verto', 'verus', 'vetus', 'viduo', 'vigor', 'vilis', 'villa', 'vinum', 'virga', 'virgo', 'vobis', 'volup', 'vomer', 'vorax', 'votum', 'vulgo'];
+    const correctWord = wordList[Math.floor(Math.random() * wordList.length)];
+    const maxGuesses = 6;
+    let currentRow = 0;
+
+    // Create the game board
+    const board = document.getElementById("board");
+    for (let i = 0; i < maxGuesses * 5; i++) {
+      const tile = document.createElement("div");
+      tile.classList.add("tile");
+      tile.setAttribute("id", `tile-${i}`);
+      board.appendChild(tile);
+    }
+
+    function moveToNext(current, nextId) {
+      if (current.value.length === 1) {
+        const nextInput = document.getElementById(nextId);
+        if (nextInput) nextInput.focus();
+      }
+    }
+
+    function submitGuess() {
+      const message = document.getElementById("message");
+      const inputs = document.querySelectorAll(".input-container input");
+      const guess = Array.from(inputs).map(input => input.value.toLowerCase()).join("");
+
+      if (guess.length !== 5) {
+        message.textContent = "Please enter all 5 letters!";
+        return;
+      }
+
+      if (!wordList.includes(guess)) {
+        message.textContent = "Invalid word!";
+        return;
+      }
+
+      const rowStart = currentRow * 5;
+
+      // Compare letters and color tiles
+      for (let i = 0; i < 5; i++) {
+        const tile = document.getElementById(`tile-${rowStart + i}`);
+        tile.textContent = guess[i];
+
+        if (guess[i] === correctWord[i]) {
+          tile.classList.add("correct");
+        } else if (correctWord.includes(guess[i])) {
+          tile.classList.add("present");
+        } else {
+          tile.classList.add("absent");
+        }
+      }
+
+      currentRow++;
+      inputs.forEach(input => (input.value = ""));
+      inputs[0].focus();
+
+      // Check win/lose conditions
+      if (guess === correctWord) {
+        message.textContent = "Congratulations! You guessed the word!";
+        document.querySelector("button").disabled = true;
+      } else if (currentRow === maxGuesses) {
+        message.textContent = `Game Over! The correct word was "${correctWord}".`;
+        document.querySelector("button").disabled = true;
+      } else {
+        message.textContent = "";
+      }
+    }
+
+    document.getElementById("char1").focus();
+  </script>
+</body>
+</html>
