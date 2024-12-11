@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio showcasing projects with links to GitHub repositories">
+  <title>Portfolio</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      background-color: #007bff;
+      color: white;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .grid-item {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .grid-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .grid-item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .grid-item h3 {
+      margin: 15px 0 10px;
+      font-size: 1.2rem;
+    }
+
+    .grid-item p {
+      margin: 0 0 15px;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .grid-item a {
+      display: inline-block;
+      margin-bottom: 15px;
+      padding: 10px 20px;
+      color: white;
+      background-color: #007bff;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background-color 0.3s;
+    }
+
+    .grid-item a:hover {
+      background-color: #007bff;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>My Portfolio</h1>
+  <p>My projects with links to their GitHub repositories</p>
+</header>
+
+<div class="container">
+  <div class="grid">
+
+    <!-- Grid Item 1 -->
+    <div class="grid-item">
+      <img src="images/cv_website_preview.png" alt="CV Website image">
+      <h3>CV Website</h3>
+      <p>Website that shows my CV with a downloadable pdf</p>
+      <a href="https://github.com/Martin-Mc-Donnell/martin-mc-donnell.github.io" target="_blank">View on GitHub</a>
+      <a href="https://martin-mc-donnell.github.io" target="_blank">View Website</a>
+    </div>
+
+    <!-- Grid Item 2 -->
+    <div class="grid-item">
+      <img src="images/project2.jpg" alt="Project 2">
+      <h3>Project 2</h3>
+      <p>A brief description of Project 2.</p>
+      <a href="https://github.com/yourusername/project2" target="_blank">View on GitHub</a>
+    </div>
+
+    <!-- Grid Item 3 -->
+    <div class="grid-item">
+      <img src="images/project3.jpg" alt="Project 3">
+      <h3>Project 3</h3>
+      <p>A brief description of Project 3.</p>
+      <a href="https://github.com/yourusername/project3" target="_blank">View on GitHub</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
