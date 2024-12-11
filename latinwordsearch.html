@@ -115,6 +115,7 @@
       <input type="text" maxlength="1" id="char5">
     </div>
     <button onclick="submitGuess()">Submit</button>
+    <button onclick="newGame()">New Game</button>
     <p class="message" id="message"></p>
   </div>
 
@@ -125,13 +126,18 @@
     let currentRow = 0;
 
     // Create the game board
-    const board = document.getElementById("board");
-    for (let i = 0; i < maxGuesses * 5; i++) {
-      const tile = document.createElement("div");
-      tile.classList.add("tile");
-      tile.setAttribute("id", `tile-${i}`);
-      board.appendChild(tile);
+    function createBoard() {
+      const board = document.getElementById("board");
+      board.innerHTML = "";
+      for (let i = 0; i < maxGuesses * 5; i++) {
+        const tile = document.createElement("div");
+        tile.classList.add("tile");
+        tile.setAttribute("id", `tile-${i}`);
+        board.appendChild(tile);
+      }
     }
+
+    createBoard();
 
     function moveToNext(current, nextId) {
       if (current.value.length === 1) {
@@ -147,11 +153,6 @@
 
       if (guess.length !== 5) {
         message.textContent = "Please enter all 5 letters!";
-        return;
-      }
-
-      if (!wordList.includes(guess)) {
-        message.textContent = "Invalid word!";
         return;
       }
 
@@ -185,6 +186,17 @@
       } else {
         message.textContent = "";
       }
+    }
+
+    function newGame() {
+      correctWord = wordList[Math.floor(Math.random() * wordList.length)];
+      currentRow = 0;
+      document.querySelector(".message").textContent = "";
+      document.querySelector("button[onclick='submitGuess()']").disabled = false;
+      createBoard();
+      const inputs = document.querySelectorAll(".input-container input");
+      inputs.forEach(input => (input.value = ""));
+      inputs[0].focus();
     }
 
     document.getElementById("char1").focus();
