@@ -140,11 +140,13 @@
         createBoard();
 
         function moveToNext(current, nextId) {
-            current.value = current.value.slice(-1);
-            if (current.value.length === 1) {
-                const nextInput = document.getElementById(nextId);
-            if (nextInput) nextInput.focus();
-            }
+            setTimeout(() => {
+                current.value = current.value.slice(-1);
+                if (current.value.length === 1) {
+                    const nextInput = document.getElementById(nextId);
+                if (nextInput) nextInput.focus();
+                }
+            }, 0);
         }
 
         function moveToPrevious(current, prevId) {
