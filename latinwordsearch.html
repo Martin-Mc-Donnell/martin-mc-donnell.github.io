@@ -140,9 +140,7 @@
         createBoard();
 
         function moveToNext(current, nextId) {
-            if (current.value.length > 1) {
-                current.value = current.value.slice(-1); // Keep only the last character
-            }
+            current.value = current.value.slice(-1); // Keep only the last character
 
             if (current.value.length === 1) {
                 const nextInput = document.getElementById(nextId);
