@@ -144,9 +144,9 @@
                 var inputInASCII;
 
                 if(window.event) { // IE
-                    inputInASCII = e.keyCode;
+                    inputInASCII = event.keyCode;
                 } else if(e.which){ // Netscape/Firefox/Opera
-                    inputInASCII = e.which;
+                    inputInASCII = event.which;
                 }
                 current.value = String.fromCharCode(inputInASCII);
             }
@@ -168,9 +168,9 @@
                 var inputInASCII;
 
                 if(window.event) { // IE
-                    inputInASCII = e.keyCode;
+                    inputInASCII = event.keyCode;
                 } else if(e.which){ // Netscape/Firefox/Opera
-                    inputInASCII = e.which;
+                    inputInASCII = event.which;
                 }
                 current.value = String.fromCharCode(inputInASCII);
             }
