@@ -108,11 +108,11 @@
         <!-- Tiles will be dynamically generated here -->
         </div>
         <div class="input-container" id="input-container">
-            <input type="text" maxlength="2" id="char1" oninput="moveToNext(this, 'char2')" onkeydown="moveToPrevious(this, ''); moveWithArrows(this, '', 'char2', event)" onfocus="setCursorToEnd(this)">
-            <input type="text" maxlength="2" id="char2" oninput="moveToNext(this, 'char3')" onkeydown="moveToPrevious(this, 'char1'); moveWithArrows(this, 'char1', 'char3', event)" onfocus="setCursorToEnd(this)">
-            <input type="text" maxlength="2" id="char3" oninput="moveToNext(this, 'char4')" onkeydown="moveToPrevious(this, 'char2'); moveWithArrows(this, 'char2', 'char4', event)" onfocus="setCursorToEnd(this)">
-            <input type="text" maxlength="2" id="char4" oninput="moveToNext(this, 'char5')" onkeydown="moveToPrevious(this, 'char3'); moveWithArrows(this, 'char3', 'char5', event)" onfocus="setCursorToEnd(this)">
-            <input type="text" maxlength="2" id="char5" onkeydown="moveToPrevious(this, 'char4'); moveWithArrows(this, 'char4', '', event)" onfocus="setCursorToEnd(this)">
+            <input type="text" maxlength="1" id="char1" oninput="moveToNext(this, 'char2', event)" onkeydown="moveToPrevious(this, '', event); moveWithArrows(this, '', 'char2', event)" onfocus="setCursorToEnd(this)">
+            <input type="text" maxlength="1" id="char2" oninput="moveToNext(this, 'char3', event)" onkeydown="moveToPrevious(this, 'char1', event); moveWithArrows(this, 'char1', 'char3', event)" onfocus="setCursorToEnd(this)">
+            <input type="text" maxlength="1" id="char3" oninput="moveToNext(this, 'char4', event)" onkeydown="moveToPrevious(this, 'char2', event); moveWithArrows(this, 'char2', 'char4', event)" onfocus="setCursorToEnd(this)">
+            <input type="text" maxlength="1" id="char4" oninput="moveToNext(this, 'char5', event)" onkeydown="moveToPrevious(this, 'char3', event); moveWithArrows(this, 'char3', 'char5', event)" onfocus="setCursorToEnd(this)">
+            <input type="text" maxlength="1" id="char5" onkeydown="moveToPrevious(this, 'char4', event); moveWithArrows(this, 'char4', '', event)" onfocus="setCursorToEnd(this)">
         </div>
         <button onclick="submitGuess()">Submit</button>
         <button onclick="newGame()">New Game</button>
@@ -139,7 +139,17 @@
 
         createBoard();
 
-        function moveToNext(current, nextId) {
+        function moveToNext(current, nextId, event) {
+            if (isLetter(event.key)) {
+                var inputInASCII;
+
+                if(window.event) { // IE
+                    inputInASCII = e.keyCode;
+                } else if(e.which){ // Netscape/Firefox/Opera
+                    inputInASCII = e.which;
+                }
+                current.value = String.fromCharCode(inputInASCII);
+            }
             if (current.value.length === 1) {
                 const nextInput = document.getElementById(nextId);
                 if (nextInput) {
