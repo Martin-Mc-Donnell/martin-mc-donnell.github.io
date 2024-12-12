@@ -153,8 +153,9 @@
             if (current.value.length === 0 && event.key === "Backspace") {
                 const prevInput = document.getElementById(prevId);
                 if (prevInput) {
+                    const textLen = prevInput.value.length;
                     prevInput.focus();
-                    prevInput.setSelectionRange(prevInput.value.length, prevInput.value.length); // Move caret to the end
+                    prevInput.setSelectionRange(textLen, textLen);
                 }
             }
         }
