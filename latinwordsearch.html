@@ -141,7 +141,6 @@
 
         function moveToNext(current, nextId) {
             current.value = current.value.slice(-1); 
-
             if (current.value.length === 1) {
                 const nextInput = document.getElementById(nextId);
                 if (nextInput) {
@@ -153,17 +152,26 @@
         function moveToPrevious(current, prevId) {
             if (current.value.length === 0 && event.key === "Backspace") {
                 const prevInput = document.getElementById(prevId);
-            if (prevInput) prevInput.focus();
+                if (prevInput) {
+                    prevInput.focus();
+                    prevInput.setSelectionRange(prevInput.value.length, prevInput.value.length); // Move caret to the end
+                }
             }
         }
 
         function moveWithArrows(current, prevId, nextId, event) {
             if (event.key === "ArrowLeft") {
                 const prevInput = document.getElementById(prevId);
-            if (prevInput) prevInput.focus();
+                if (prevInput) {
+                    prevInput.focus();
+                    prevInput.setSelectionRange(prevInput.value.length, prevInput.value.length);
+                }
             } else if (event.key === "ArrowRight") {
                 const nextInput = document.getElementById(nextId);
-                if (nextInput) nextInput.focus();
+                if (nextInput) {
+                    nextInput.focus();
+                    nextInput.setSelectionRange(nextInput.value.length, nextInput.value.length);
+                }
             }
         }
 
