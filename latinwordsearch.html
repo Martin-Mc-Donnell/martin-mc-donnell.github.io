@@ -140,7 +140,6 @@
         createBoard();
 
         function moveToNext(current, nextId) {
-            current.value = current.value.slice(-1); 
             if (current.value.length === 1) {
                 const nextInput = document.getElementById(nextId);
                 if (nextInput) {
@@ -149,38 +148,41 @@
             }
         }
 
-        function moveToPrevious(current, prevId) {
+        function moveToPrevious(current, prevId, event) {
             if (current.value.length === 0 && event.key === "Backspace") {
                 const prevInput = document.getElementById(prevId);
-                if (prevInput) prevInput.focus();
+                if (prevInput) {
+                    prevInput.focus();
+                }
             } else if (isLetter(event.key)) {
-                var keynum;
+                var inputInASCII;
 
                 if(window.event) { // IE
-                    keynum = e.keyCode;
+                    inputInASCII = e.keyCode;
                 } else if(e.which){ // Netscape/Firefox/Opera
-                    keynum = e.which;
+                    inputInASCII = e.which;
                 }
-                current.value = String.fromCharCode(keynum);
+                current.value = String.fromCharCode(inputInASCII);
             }
         }
 
         function moveWithArrows(current, prevId, nextId, event) {
             if (event.key === "ArrowLeft") {
                 const prevInput = document.getElementById(prevId);
-            if (prevInput) prevInput.focus();
+                if (prevInput) {
+                    prevInput.focus();
+                }
             } else if (event.key === "ArrowRight") {
                 const nextInput = document.getElementById(nextId);
-                if (nextInput) nextInput.focus();
+                if (nextInput) {
+                    nextInput.focus();
+                }
             }
         }
 
-        function setCursorToEnd(inputElement) {
-            const length = inputElement.value.length;
-            inputElement.setSelectionRange(length, length);
-            inputElement.focus();
+        function isLetter(key) {
+            return /^[a-zA-Z]$/.test(key);
         }
-
 
         function submitGuess() {
         const message = document.getElementById("message");
