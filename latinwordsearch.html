@@ -140,13 +140,16 @@
         createBoard();
 
         function moveToNext(current, nextId) {
-            setTimeout(() => {
-                current.value = current.value.slice(-1);
-                if (current.value.length === 1) {
-                    const nextInput = document.getElementById(nextId);
-                if (nextInput) nextInput.focus();
+            if (current.value.length > 1) {
+                current.value = current.value.slice(-1); // Keep only the last character
+            }
+
+            if (current.value.length === 1) {
+                const nextInput = document.getElementById(nextId);
+                if (nextInput) {
+                    nextInput.focus();
                 }
-            }, 0);
+            }
         }
 
         function moveToPrevious(current, prevId) {
