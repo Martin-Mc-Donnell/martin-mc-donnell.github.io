@@ -152,11 +152,7 @@
         function moveToPrevious(current, prevId) {
             if (current.value.length === 0 && event.key === "Backspace") {
                 const prevInput = document.getElementById(prevId);
-                if (prevInput) {
-                    const textLen = prevInput.value.length;
-                    prevInput.focus();
-                    prevInput.setSelectionRange(textLen, textLen);
-                }
+                if (prevInput) prevInput.focus();
             } else if (isLetter(event.key)) {
                 var keynum;
 
@@ -172,16 +168,10 @@
         function moveWithArrows(current, prevId, nextId, event) {
             if (event.key === "ArrowLeft") {
                 const prevInput = document.getElementById(prevId);
-                if (prevInput) {
-                    prevInput.focus();
-                    prevInput.setSelectionRange(prevInput.value.length, prevInput.value.length);
-                }
+            if (prevInput) prevInput.focus();
             } else if (event.key === "ArrowRight") {
                 const nextInput = document.getElementById(nextId);
-                if (nextInput) {
-                    nextInput.focus();
-                    nextInput.setSelectionRange(nextInput.value.length, nextInput.value.length);
-                }
+                if (nextInput) nextInput.focus();
             }
         }
 
