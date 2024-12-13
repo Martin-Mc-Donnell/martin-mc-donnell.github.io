@@ -108,11 +108,11 @@
         <!-- Tiles will be dynamically generated here -->
         </div>
         <div class="input-container" id="input-container">
-            <input type="text" maxlength="1" id="char1" oninput="moveToNext(this, 'char2', event)" onkeydown="moveToPrevious(this, '', event); moveWithArrows(this, '', 'char2', event)" onfocus="setCursorToEnd(this)">
-            <input type="text" maxlength="1" id="char2" oninput="moveToNext(this, 'char3', event)" onkeydown="moveToPrevious(this, 'char1', event); moveWithArrows(this, 'char1', 'char3', event)" onfocus="setCursorToEnd(this)">
-            <input type="text" maxlength="1" id="char3" oninput="moveToNext(this, 'char4', event)" onkeydown="moveToPrevious(this, 'char2', event); moveWithArrows(this, 'char2', 'char4', event)" onfocus="setCursorToEnd(this)">
-            <input type="text" maxlength="1" id="char4" oninput="moveToNext(this, 'char5', event)" onkeydown="moveToPrevious(this, 'char3', event); moveWithArrows(this, 'char3', 'char5', event)" onfocus="setCursorToEnd(this)">
-            <input type="text" maxlength="1" id="char5" onkeydown="moveToPrevious(this, 'char4', event); moveWithArrows(this, 'char4', '', event)" onfocus="setCursorToEnd(this)">
+            <input type="text" maxlength="1" id="char1" oninput="actOnInput(this, 'char2', 'char1', event)">
+            <input type="text" maxlength="1" id="char2" oninput="actOnInput(this, 'char3', 'char1', event)">
+            <input type="text" maxlength="1" id="char3" oninput="actOnInput(this, 'char4', 'char2', event)">
+            <input type="text" maxlength="1" id="char4" oninput="actOnInput(this, 'char5', 'char3', event)">
+            <input type="text" maxlength="1" id="char5" oninput="actOnInput(this, 'char5', 'char4', event)">
         </div>
         <button onclick="submitGuess()">Submit</button>
         <button onclick="newGame()">New Game</button>
@@ -139,44 +139,14 @@
 
         createBoard();
 
-        function moveToNext(current, nextId, event) {
-            if (/^[a-zA-Z]$/.test(event.key)) {
-                alert("letter entered");
-
-                current.value = event.key.toLowerCase();
-                if (current.value.length === 1) {
-                    const nextInput = document.getElementById(nextId);
-                    if (nextInput) {
-                        nextInput.focus();
-                    }
-                }
-            } else {
-                alert("wrong input");
-                current.value = "";
-                event.preventDefault();
-            }
-        }
-
-        function moveToPrevious(current, prevId, event) {
+        // Move textboxes using backspace and arrows or enter valid input and move to next textbox
+        function actOnInput(current, nextId, prevId, event) {
             if (current.value.length === 0 && event.key === "Backspace") {
                 const prevInput = document.getElementById(prevId);
                 if (prevInput) {
                     prevInput.focus();
                 }
-            } else if (isLetter(event.key)) {
-                var inputInASCII;
-
-                if(window.event) { // IE
-                    inputInASCII = event.keyCode;
-                } else if(e.which){ // Netscape/Firefox/Opera
-                    inputInASCII = event.which;
-                }
-                current.value = String.fromCharCode(inputInASCII);
-            }
-        }
-
-        function moveWithArrows(current, prevId, nextId, event) {
-            if (event.key === "ArrowLeft") {
+            } else if (event.key === "ArrowLeft") {
                 const prevInput = document.getElementById(prevId);
                 if (prevInput) {
                     prevInput.focus();
@@ -185,6 +155,25 @@
                 const nextInput = document.getElementById(nextId);
                 if (nextInput) {
                     nextInput.focus();
+                }
+            } else {
+                if (current.dataset.oldValue === undefined) {
+                    current.dataset.oldValue = "";
+                }
+                const oldValue = current.dataset.oldValue; 
+                const newValue = current.value;           
+
+                if (/^[a-zA-Z]*$/.test(newValue)) {
+                    current.dataset.oldValue = newValue.toLowerCase();
+                } else {
+                    current.value = oldValue;
+                }
+
+                if (current.value.length === 1) {
+                    const nextInput = document.getElementById(nextId);
+                    if (nextInput) {
+                        nextInput.focus();
+                    }
                 }
             }
         }
