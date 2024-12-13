@@ -141,6 +141,7 @@
 
         function moveToNext(current, nextId, event) {
             if (/^[a-zA-Z]$/.test(event.key)) {
+                alert("letter entered");
                 current.value = event.key.toLowerCase();
 
                 if (current.value.length === 1) {
@@ -150,6 +151,7 @@
                     }
                 }
             } else {
+                alert("wrong input");
                 current.value = "";
             }
         }
