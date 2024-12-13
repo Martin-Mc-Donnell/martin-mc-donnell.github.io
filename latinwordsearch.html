@@ -140,7 +140,7 @@
         createBoard();
 
         function moveToNext(current, nextId, event) {
-            if (/^[a-zA-Z]$/.test(event.key)) {
+            if (/^[a-zA-Z]*$/.test(event.key)) {
                 alert("letter entered");
                 current.value = event.key.toLowerCase();
 
