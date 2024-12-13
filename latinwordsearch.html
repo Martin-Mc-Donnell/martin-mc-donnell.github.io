@@ -140,22 +140,17 @@
         createBoard();
 
         function moveToNext(current, nextId, event) {
-            if (isLetter(event.key)) {
-                var inputInASCII;
+            if (/^[a-zA-Z]$/.test(event.key)) {
+                current.value = event.key.toLowerCase();
 
-                if(window.event) { // IE
-                    inputInASCII = event.keyCode;
-                } else if(e.which){ // Netscape/Firefox/Opera
-                    inputInASCII = event.which;
-                }
-                current.value = String.fromCharCode(inputInASCII);
-            }
-            if (current.value.length === 1) {
-                const nextInput = document.getElementById(nextId);
-                if (nextInput) {
-                    nextInput.focus();
+                if (current.value.length === 1) {
+                    const nextInput = document.getElementById(nextId);
+                    if (nextInput) {
+                        nextInput.focus();
+                    }
                 }
             }
+            current.value = ""
         }
 
         function moveToPrevious(current, prevId, event) {
@@ -188,10 +183,6 @@
                     nextInput.focus();
                 }
             }
-        }
-
-        function isLetter(key) {
-            return /^[a-zA-Z]$/.test(key);
         }
 
         function submitGuess() {
