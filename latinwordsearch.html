@@ -141,42 +141,35 @@
 
         // Move textboxes using backspace and arrows or enter valid input and move to next textbox
         function actOnInput(current, nextId, prevId, event) {
-            if (current.value.length === 0 && event.key === "Backspace") {
-                const prevInput = document.getElementById(prevId);
-                if (prevInput) {
-                    prevInput.focus();
-                }
-            } else if (event.key === "ArrowLeft") {
-                const prevInput = document.getElementById(prevId);
-                if (prevInput) {
-                    prevInput.focus();
-                }
-            } else if (event.key === "ArrowRight") {
-                const nextInput = document.getElementById(nextId);
-                if (nextInput) {
-                    nextInput.focus();
-                }
-            } else {
-                if (current.dataset.oldValue === undefined) {
-                    current.dataset.oldValue = "";
-                }
-                const oldValue = current.dataset.oldValue; 
-                const newValue = current.value;           
-
-                if (/^[a-zA-Z]*$/.test(newValue)) {
-                    current.dataset.oldValue = newValue.toLowerCase();
-                } else {
-                    current.value = oldValue;
-                }
-
-                if (current.value.length === 1) {
-                    const nextInput = document.getElementById(nextId);
-                    if (nextInput) {
-                        nextInput.focus();
-                    }
-                }
+        if (event.key === "Backspace" && current.value === "") {
+            // Move focus to the previous input on Backspace if current is empty
+            const prevInput = document.getElementById(prevId);
+            if (prevInput) {
+                prevInput.focus();
             }
+        } else if (event.key === "ArrowLeft") {
+            const prevInput = document.getElementById(prevId);
+            if (prevInput) {
+                prevInput.focus();
+            }
+        } else if (event.key === "ArrowRight") {
+            const nextInput = document.getElementById(nextId);
+            if (nextInput) {
+                nextInput.focus();
+            }
+        } else if (/^[a-zA-Z]$/.test(event.key)) {
+            // Allow letters only and move to the next input
+            current.value = event.key.toLowerCase();
+            const nextInput = document.getElementById(nextId);
+            if (nextInput) {
+                nextInput.focus();
+            }
+            event.preventDefault(); // Prevent double input
+        } else {
+            // Prevent invalid input
+            event.preventDefault();
         }
+    }
 
         function submitGuess() {
         const message = document.getElementById("message");
