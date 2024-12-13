@@ -141,11 +141,16 @@
 
         // Move textboxes using backspace and arrows or enter valid input and move to next textbox
         function actOnInput(current, nextId, prevId, event) {
-        if (event.key === "Backspace" && current.value === "") {
-            // Move focus to the previous input on Backspace if current is empty
-            const prevInput = document.getElementById(prevId);
-            if (prevInput) {
-                prevInput.focus();
+        if (event.key === "Backspace"){
+            if (current.value === "") {
+                // Move focus to the previous input on Backspace if current is empty
+                const prevInput = document.getElementById(prevId);
+                if (prevInput) {
+                    prevInput.focus();
+                }
+                else{
+                    current.value = ""
+                }
             }
         } else if (event.key === "ArrowLeft") {
             const prevInput = document.getElementById(prevId);
