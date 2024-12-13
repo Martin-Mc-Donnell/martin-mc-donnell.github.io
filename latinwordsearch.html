@@ -140,15 +140,16 @@
         createBoard();
 
         function moveToNext(current, nextId, event) {
-            if (/^[a-zA-Z]*$/.test(event.key)) {
+            if (current.value && /^[a-zA-Z]*$/.test(event.key)) {
                 alert("letter entered");
-                current.value = event.key.toLowerCase();
 
                 if (current.value.length === 1) {
                     const nextInput = document.getElementById(nextId);
                     if (nextInput) {
                         nextInput.focus();
                     }
+                } else {
+                    current.value = event.key.toLowerCase();
                 }
             } else {
                 alert("wrong input");
