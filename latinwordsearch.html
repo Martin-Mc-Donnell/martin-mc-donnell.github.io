@@ -108,11 +108,11 @@
         <!-- Tiles will be dynamically generated here -->
         </div>
         <div class="input-container" id="input-container">
-            <input type="text" maxlength="1" id="char1" oninput="actOnInput(this, 'char2', 'char1', event)">
-            <input type="text" maxlength="1" id="char2" oninput="actOnInput(this, 'char3', 'char1', event)">
-            <input type="text" maxlength="1" id="char3" oninput="actOnInput(this, 'char4', 'char2', event)">
-            <input type="text" maxlength="1" id="char4" oninput="actOnInput(this, 'char5', 'char3', event)">
-            <input type="text" maxlength="1" id="char5" oninput="actOnInput(this, 'char5', 'char4', event)">
+            <input type="text" maxlength="1" id="char1" onkeydown="actOnInput(this, 'char2', 'char1', event)">
+            <input type="text" maxlength="1" id="char2" onkeydown="actOnInput(this, 'char3', 'char1', event)">
+            <input type="text" maxlength="1" id="char3" onkeydown="actOnInput(this, 'char4', 'char2', event)">
+            <input type="text" maxlength="1" id="char4" onkeydown="actOnInput(this, 'char5', 'char3', event)">
+            <input type="text" maxlength="1" id="char5" onkeydown="actOnInput(this, 'char5', 'char4', event)">
         </div>
         <button onclick="submitGuess()">Submit</button>
         <button onclick="newGame()">New Game</button>
