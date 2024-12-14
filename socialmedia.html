@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake Social Media</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        #feed {
+            margin-top: 60px;
+            width: 100%;
+            max-width: 600px;
+            padding: 10px;
+        }
+
+        .post {
+            background-color: white;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .post-header {
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ddd;
+            margin-right: 10px;
+        }
+
+        .username {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .post-content {
+            padding: 10px;
+            font-size: 1em;
+            color: #333;
+        }
+
+        .post-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-size: 1.2em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Fake Social Media</h1>
+    </header>
+
+    <div id="feed"></div>
+    <div class="loading" id="loading">Loading more posts...</div>
+
+    <script>
+        // Fake data generators
+        const usernames = ["user123", "coolCat", "dogLover", "travelFan", "foodie99", "techGuru"];
+        const posts = [
+            "Totally loving this weather",
+            "Just finished a book!",
+            "My new drawing",
+            "Anyone else busy this weekend??",
+            "Looking nice",
+            "Tried something new",
+            "Feeling so happy",
+        ];
+        const images = [
+            "images/nature.png",
+            "images/cityscape.png",
+            "images/food.png",
+            "images/art.png",
+            "images/pets.png",
+            "images/travel.png",
+        ];
+
+        // Generate a fake post
+        function createPost() {
+            const post = document.createElement("div");
+            post.className = "post";
+
+            const username = usernames[Math.floor(Math.random() * usernames.length)];
+            const content = posts[Math.floor(Math.random() * posts.length)];
+            const image = images[Math.floor(Math.random() * images.length)];
+
+            post.innerHTML = `
+                <div class="post-header">
+                    <div class="avatar"></div>
+                    <div class="username">${username}</div>
+                </div>
+                <div class="post-content">${content}</div>
+                <img class="post-image" src="${image}" alt="Post image">
+            `;
+
+            return post;
+        }
+
+        // Add multiple posts to the feed
+        function loadMorePosts() {
+            const feed = document.getElementById("feed");
+            for (let i = 0; i < 5; i++) {
+                const post = createPost();
+                feed.appendChild(post);
+            }
+        }
+
+        // Infinite scroll logic
+        window.addEventListener("scroll", () => {
+            const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+            if (scrollTop + clientHeight >= scrollHeight - 5) {
+                // Simulate loading delay
+                document.getElementById("loading").style.display = "block";
+                setTimeout(() => {
+                    loadMorePosts();
+                    document.getElementById("loading").style.display = "none";
+                }, 1000);
+            }
+        });
+
+        // Initial load
+        loadMorePosts();
+    </script>
+</body>
+</html>
