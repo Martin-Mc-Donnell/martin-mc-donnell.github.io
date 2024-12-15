@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Your Own Road Sign</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+    }
+
+    .design-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 600px;
+      width: 100%;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      margin: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 90%;
+      margin: 5px 0;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid grey;
+      border-radius: 5px;
+    }
+
+    .sign-preview {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+      color: white;
+      font-size: 1.5rem;
+      text-align: center;
+      font-weight: bold;
+      position: relative;
+    }
+
+    /* Warning Sign (Triangle) */
+    .warning-sign {
+      width: 0;
+      height: 0;
+      border-left: 150px solid transparent;
+      border-right: 150px solid transparent;
+      border-bottom: 260px solid red;
+      position: relative;
+    }
+
+    .warning-sign::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      left: -140px;
+      border-left: 140px solid transparent;
+      border-right: 140px solid transparent;
+      border-bottom: 240px solid white;
+    }
+
+    /* Centering Text for the Triangle */
+    .warning-sign .text-preview {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, 750%);
+      text-align: center;
+      width: 100%;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: black;
+  	}
+
+    /* Circle Sign */
+    .regulatory-sign {
+      width: 250px;
+      height: 250px;
+      background-color: white;
+      border: 15px solid red;
+      border-radius: 50%;
+    }
+
+    /* Rectangle Sign */
+    .informational-sign {
+      width: 300px;
+      height: 150px;
+      background-color: blue;
+      border-radius: 5px;
+    }
+
+    .text-preview {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+      text-transform: uppercase;
+      color: inherit;
+    }
+
+    .btn-reset {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .btn-reset:hover {
+      background-color: blue;
+    }
+  </style>
+</head>
+<body>
+  <h1>Design Your Own Road Sign</h1>
+  <div class="design-container">
+    <label for="sign-type">Choose Sign Type:</label>
+    <select id="sign-type" onchange="updateSignType()">
+      <option value="warning">Warning - Triangle</option>
+      <option value="regulatory">Regulatory - Circle</option>
+      <option value="informational">Informational - Rectangle</option>
+    </select>
+
+    <label for="sign-text">Enter Sign Text:</label>
+    <input type="text" id="sign-text" placeholder="E.g., STOP" oninput="updateSignText()">
+
+    <label for="bg-color">Choose Background Color:</label>
+    <input type="color" id="bg-color" value="#ff0000" onchange="updateSignBackground()">
+
+    <label for="text-color">Choose Text Color:</label>
+    <input type="color" id="text-color" value="#ffffff" onchange="updateSignTextColor()">
+
+    <div id="sign-preview" class="sign-preview">
+    </div>
+
+    <button class="btn-reset" onclick="resetDesign()">Reset Sign</button>
+  </div>
+
+  <script>
+    const signPreview = document.getElementById('sign-preview');
+    const signTypeSelect = document.getElementById('sign-type');
+    const bgColorInput = document.getElementById('bg-color');
+    const textColorInput = document.getElementById('text-color');
+    const signTextInput = document.getElementById('sign-text');
+
+    // Update sign type
+    function updateSignType() {
+      const signType = signTypeSelect.value;
+      signPreview.className = 'sign-preview';
+
+      // Apply the appropriate sign type class
+      if (signType === 'warning') {
+        signPreview.classList.add('warning-sign');
+      } else if (signType === 'regulatory') {
+        signPreview.classList.add('regulatory-sign');
+      } else if (signType === 'informational') {
+        signPreview.classList.add('informational-sign');
+      }
+
+      updateSignBackground();
+      updateSignTextColor();
+      updateSignText();
+    }
+
+    function updateSignText() {
+        const signType = signTypeSelect.value;
+        signPreview.innerHTML = '';
+
+        // Create text preview
+        let signText = document.createElement('div');
+        signText.className = 'text-preview';
+        signText.textContent = signTextInput.value || 'STOP';
+        signPreview.appendChild(signText);
+    }
+
+    // Update background color
+    function updateSignBackground() {
+      signPreview.style.backgroundColor =
+        signTypeSelect.value === 'warning' ? '' : bgColorInput.value;
+    }
+
+    // Update text color
+    function updateSignTextColor() {
+      const textPreview = signPreview.querySelector('.text-preview');
+      if (textPreview) {
+        textPreview.style.color = textColorInput.value;
+      }
+    }
+
+    // Reset design
+    function resetDesign() {
+      signTypeSelect.value = 'warning';
+      signTextInput.value = 'STOP';
+      bgColorInput.value = '#ff0000';
+      textColorInput.value = '#ffffff';
+      updateSignType();
+    }
+
+    // Initialize default sign
+    updateSignType();
+  </script>
+</body>
+</html>
