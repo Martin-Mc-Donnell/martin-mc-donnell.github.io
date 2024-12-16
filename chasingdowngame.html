@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chasing Down Game</title>
+    <style>
+        body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+        position: relative;
+        background-color: #f4f4f4;
+        }
+
+        .cat-image {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        top: 200px;
+        left: 45%;
+        }
+
+        .start-button, .restart-button {
+        padding: 10px 20px;
+        font-size: 1rem;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        position: absolute;
+        top: 50px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        }
+
+        .start-button:hover, .restart-button:hover {
+        background-color: #0056b3;
+        }
+
+        .game-over-message {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: red;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        text-align: center;
+        }
+  </style>
+</head>
+<body>
+    <button class="start-button" id="start-button">Start Game</button>
+    <div class="game-over-message" id="game-over-message"></div>
+    <button class="restart-button" id="restart-button" style="display: none;">Play Again</button>
+    <img src="images/cat.png" id="cat-image" class="cat-image" alt="Cat Image">
+
+    <script>
+        const catImage = document.getElementById('cat-image');
+        const startButton = document.getElementById('start-button');
+        const restartButton = document.getElementById('restart-button');
+        const gameOverMessage = document.getElementById('game-over-message');
+
+        let gameRunning = false;
+        let mouseX = null;
+        let mouseY = null;
+        let catImageX = 0;
+        let catImageY = 0;
+        let mouseMoved = false;
+
+        // Function to start the game
+        startButton.addEventListener('click', () => {
+            startGame();
+        });
+
+        restartButton.addEventListener('click', () => {
+            startGame();
+        });
+
+        function startGame() {
+            // Reset initial conditions
+            gameRunning = true;
+            gameOverMessage.textContent = '';
+            startButton.style.display = 'none';
+            restartButton.style.display = 'none';
+
+            // Reset mouse and randomize cat starting position
+            catImageX = Math.random() * (window.innerWidth - 50);
+            catImageY = Math.random() * (window.innerHeight - 50);
+            catImage.style.left = `${catImageX}px`;
+            catImage.style.top = `${catImageY}px`;
+            // Reset the mouse movement flag and coordinates
+            mouseMoved = false; 
+            mouseX = null;
+            mouseY = null;
+
+            // Start tracking mouse movement
+            window.addEventListener('mousemove', updateMousePosition);
+
+            // Start moving the cat
+            requestAnimationFrame(moveCatImage);
+        }
+
+        // Function to track mouse position
+        function updateMousePosition(event) {
+            mouseX = event.clientX;
+            mouseY = event.clientY;
+            mouseMoved = true;
+        }
+
+        // Function to move the cat towards the mouse
+        function moveCatImage() {
+            if (!gameRunning || !mouseMoved || mouseX === null || mouseY === null) {
+                requestAnimationFrame(moveCatImage); // Keep the animation loop running
+                return;
+            }
+
+            const dx = mouseX - catImageX;
+            const dy = mouseY - catImageY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            // End game if the mouse is caught
+            if (distance < 25) {
+                endGame();
+                return;
+            }
+
+            // Move the cat closer to the mouse
+            const speed = 4;
+            if (distance > 0) {
+                catImageX += (dx / distance) * speed;
+                catImageY += (dy / distance) * speed;
+            }
+
+            // Constrain cat within the window boundaries
+            catImageX = Math.max(0, Math.min(catImageX, window.innerWidth - 50));
+            catImageY = Math.max(0, Math.min(catImageY, window.innerHeight - 50));
+
+            // Update the cat's position
+            catImage.style.left = `${catImageX}px`;
+            catImage.style.top = `${catImageY}px`;
+
+            // Continue moving the cat
+            requestAnimationFrame(moveCatImage);
+        }
+
+        function endGame() {
+            gameRunning = false;
+            gameOverMessage.textContent = 'Game Over! You got caught!!';
+            restartButton.style.display = 'block';
+            window.removeEventListener('mousemove', updateMousePosition);
+        }
+
+        window.addEventListener('resize', () => {
+            mouseX = Math.min(mouseX, window.innerWidth);
+            mouseY = Math.min(mouseY, window.innerHeight);
+            catImageX = Math.min(catImageX, window.innerWidth - catImage.offsetWidth);
+            catImageY = Math.min(catImageY, window.innerHeight - catImage.offsetHeight);
+        });
+    </script>
+</body>
+</html>
