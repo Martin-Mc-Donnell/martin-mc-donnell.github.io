@@ -52,6 +52,7 @@
         transform: translateX(-50%);
         z-index: 1000;
         text-align: center;
+        top: 250px;
         }
   </style>
 </head>
@@ -132,7 +133,7 @@
             }
 
             // Move the cat closer to the mouse
-            const speed = 4;
+            const speed = 9;
             if (distance > 0) {
                 catImageX += (dx / distance) * speed;
                 catImageY += (dy / distance) * speed;
