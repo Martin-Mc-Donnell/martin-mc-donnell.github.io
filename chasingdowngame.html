@@ -23,7 +23,9 @@
         width: 50px;
         height: 50px;
         top: 200px;
-        left: 45%;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
         }
 
         .start-button, .restart-button {
@@ -102,7 +104,7 @@
             catImage.style.left = `${catImageX}px`;
             catImage.style.top = `${catImageY}px`;
             // Reset the mouse movement flag and coordinates
-            mouseMoved = false; 
+            mouseMoved = false;
             mouseX = null;
             mouseY = null;
 
