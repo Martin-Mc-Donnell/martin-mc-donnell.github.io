@@ -74,7 +74,7 @@
             <!-- Array bars will be dynamically generated -->
         </section>
         <section class="pseudo-code">
-            <pre id="code-display">Select an algorithm to see its pseudo-code here.</pre>
+            <pre id="code-display">Select an algorithm to see its average performance.</pre>
         </section>
     </main>
     <script>
@@ -315,21 +315,27 @@
                 stopAnimation = false; // Allow new animation to proceed
                 switch (type) {
                     case "bubble":
+                    	document.getElementById("code-display").textContent="O(n²)";
                         bubbleSort([...array]);
                         break;
                     case "selection":
+                    	document.getElementById("code-display").textContent="O(n²)";
                         selectionSort([...array]);
                         break;
                     case "insertion":
+                    	document.getElementById("code-display").textContent="O(n²)";
                         insertionSort([...array]);
                         break;
                     case "merge":
+                    	document.getElementById("code-display").textContent="O(n log n)";
                         mergeSort([...array]);
                         break;
                     case "quick":
+                    	document.getElementById("code-display").textContent="O(n log n)";
                         quickSort([...array]);
                         break;
                     case "heap":
+                    	document.getElementById("code-display").textContent="O(n log n)";
                         heapSort([...array]);
                         break;
                     default:
