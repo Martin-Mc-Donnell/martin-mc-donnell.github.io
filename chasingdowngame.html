@@ -5,60 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chasing Down Game</title>
     <style>
-        body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-        overflow: hidden;
-        position: relative;
-        background-color: #f4f4f4;
+        .header-card {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
         }
 
-        h1{
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            position: relative;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
             text-align: center;
         }
 
         .cat-image {
-        position: absolute;
-        width: 50px;
-        height: 50px;
-        top: 200px;
-        left: 47%;
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            top: 200px;
+            left: 47%;
         }
 
         .start-button, .restart-button {
-        padding: 10px 20px;
-        font-size: 1rem;
-        font-weight: bold;
-        border: none;
-        border-radius: 5px;
-        background-color: #007bff;
-        color: white;
-        cursor: pointer;
-        position: absolute;
-        top: 150px;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            position: absolute;
+            top: 150px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
         }
 
         .start-button:hover, .restart-button:hover {
-        background-color: #0056b3;
+            background-color: #0056b3;
         }
 
         .game-over-message {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: red;
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1000;
-        text-align: center;
-        top: 250px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: red;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            text-align: center;
+            top: 250px;
         }
-  </style>
+    </style>
 </head>
 <body>
     <h1>Chasing Down Game</h1>
@@ -66,12 +75,17 @@
     <div class="game-over-message" id="game-over-message"></div>
     <button class="restart-button" id="restart-button" style="display: none;">Play Again</button>
     <img src="images/cat.png" id="cat-image" class="cat-image" alt="Cat Image">
+    <div class="header-card">
+        <label id="minutes">00</label>:<label id="seconds">00</label>
+    </div>
 
     <script>
         const catImage = document.getElementById('cat-image');
         const startButton = document.getElementById('start-button');
         const restartButton = document.getElementById('restart-button');
         const gameOverMessage = document.getElementById('game-over-message');
+        const secondsLabel = document.getElementById("seconds");
+        const minutesLabel = document.getElementById("minutes");
 
         let gameRunning = false;
         let mouseX = null;
@@ -79,6 +93,8 @@
         let catImageX = 0;
         let catImageY = 0;
         let mouseMoved = false;
+        let timerInterval;
+        let totalSeconds = 0;
 
         // Function to start the game
         startButton.addEventListener('click', () => {
@@ -101,6 +117,7 @@
             catImageY = Math.random() * (window.innerHeight - 50);
             catImage.style.left = `${catImageX}px`;
             catImage.style.top = `${catImageY}px`;
+
             // Reset the mouse movement flag and coordinates
             mouseMoved = false;
             mouseX = null;
@@ -111,6 +128,10 @@
 
             // Start moving the cat
             requestAnimationFrame(moveCatImage);
+
+            // Start/reset the timer
+            resetTimer();
+            startTimer();
         }
 
         // Function to track mouse position
@@ -158,9 +179,32 @@
 
         function endGame() {
             gameRunning = false;
-            gameOverMessage.textContent = 'Game Over! You got caught!!';
+            gameOverMessage.textContent = "Game Over! You got caught!! Score: " + totalSeconds + " seconds";
             restartButton.style.display = 'block';
             window.removeEventListener('mousemove', updateMousePosition);
+            stopTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                totalSeconds++;
+                secondsLabel.textContent = pad(totalSeconds % 60);
+                minutesLabel.textContent = pad(parseInt(totalSeconds / 60));
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+
+        function resetTimer() {
+            totalSeconds = 0;
+            secondsLabel.textContent = "00";
+            minutesLabel.textContent = "00";
+        }
+
+        function pad(val) {
+            return val < 10 ? "0" + val : val;
         }
 
         window.addEventListener('resize', () => {
