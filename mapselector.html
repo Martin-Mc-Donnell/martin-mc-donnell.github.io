@@ -1,9 +1,9 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Click on a Country</title>
+    <title>Find the country</title>
     <style>
         #map {
             width: 100%;
@@ -11,23 +11,20 @@
             border: 1px solid black;
         }
         header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: #007BFF;
-            color: white;
             text-align: center;
-            padding: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
+            padding: 20px;
+            background-color: #7737d6;
+            color: white;
         }
     </style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 <body>
-    <h1>Click on a Country</h1>
-    <p>Click on any country on the map to select it.</p>
+    <header>
+        <h1>Find the country</h1>
+        <p>Click on the map to guess!</p>
+    </header>
     <div id="map"></div>
     <p id="country-info"></p>
     <p id="prompt"></p>
