@@ -1,0 +1,99 @@
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click on a Country</title>
+    <style>
+        #map {
+            width: 100%;
+            height: 500px;
+            border: 1px solid black;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+    <h1>Click on a Country</h1>
+    <p>Click on any country on the map to select it.</p>
+    <div id="map"></div>
+    <p id="country-info"></p>
+    <p id="prompt"></p>
+    <p id="guess"></p>
+
+    <script>
+        // Give the user a random country to guess
+    	const countryList = ['Afghanistan', 'Angola', 'Albania', 'United Arab Emirates', 'Argentina', 'Armenia', 'Antarctica', 'Fr. S. Antarctic Lands', 'Australia', 'Austria', 'Azerbaijan', 'Burundi', 'Belgium', 'Benin', 'Burkina Faso', 'Bangladesh', 'Bulgaria', 'Bahamas', 'Bosnia and Herz.', 'Belarus', 'Belize', 'Bolivia', 'Brazil', 'Brunei', 'Bhutan', 'Botswana', 'Central African Rep.', 'Canada', 'Switzerland', 'Chile', 'China', "Côte d'Ivoire", 'Cameroon', 'Dem. Rep. Congo', 'Congo', 'Colombia', 'Costa Rica', 'Cuba', 'N. Cyprus', 'Cyprus', 'Czech Rep.', 'Germany', 'Djibouti', 'Denmark', 'Dominican Rep.', 'Algeria', 'Ecuador', 'Egypt', 'Eritrea', 'Spain', 'Estonia', 'Ethiopia', 'Finland', 'Fiji', 'Falkland Is.', 'France', 'Gabon', 'United Kingdom', 'Georgia', 'Ghana', 'Guinea', 'Gambia', 'Guinea-Bissau', 'Eq. Guinea', 'Greece', 'Greenland', 'Guatemala', 'Guyana', 'Honduras', 'Croatia', 'Haiti', 'Hungary', 'Indonesia', 'India', 'Ireland', 'Iran', 'Iraq', 'Iceland', 'Israel', 'Italy', 'Jamaica', 'Jordan', 'Japan', 'Kazakhstan', 'Kenya', 'Kyrgyzstan', 'Cambodia', 'Korea', 'Kosovo', 'Kuwait', 'Lao PDR', 'Lebanon', 'Liberia', 'Libya', 'Sri Lanka', 'Lesotho', 'Lithuania', 'Luxembourg', 'Latvia', 'Morocco', 'Moldova', 'Madagascar', 'Mexico', 'Macedonia', 'Mali', 'Myanmar', 'Montenegro', 'Mongolia', 'Mozambique', 'Mauritania', 'Malawi', 'Malaysia', 'Namibia', 'New Caledonia', 'Niger', 'Nigeria', 'Nicaragua', 'Netherlands', 'Norway', 'Nepal', 'New Zealand', 'Oman', 'Pakistan', 'Panama', 'Peru', 'Philippines', 'Papua New Guinea', 'Poland', 'Puerto Rico', 'Dem. Rep. Korea', 'Portugal', 'Paraguay', 'Palestine', 'Qatar', 'Romania', 'Russia', 'Rwanda', 'W. Sahara', 'Saudi Arabia', 'Sudan', 'S. Sudan', 'Senegal', 'Solomon Is.', 'Sierra Leone', 'El Salvador', 'Somaliland', 'Somalia', 'Serbia', 'Suriname', 'Slovakia', 'Slovenia', 'Sweden', 'Swaziland', 'Syria', 'Chad', 'Togo', 'Thailand', 'Tajikistan', 'Turkmenistan', 'Timor-Leste', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Taiwan', 'Tanzania', 'Uganda', 'Ukraine', 'Uruguay', 'United States', 'Uzbekistan', 'Venezuela', 'Vietnam', 'Vanuatu', 'Yemen', 'South Africa', 'Zambia', 'Zimbabwe']
+        let countryToGuess = countryList[Math.floor(Math.random() * countryList.length)];
+        document.getElementById('prompt').textContent = countryToGuess;
+        // Initialize the map
+        const map = L.map('map').setView([20, 0], 2); // Center of the world
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Add GeoJSON data for the borders of countries
+        fetch('https://raw.githubusercontent.com/datasets/geo-boundaries-world-110m/master/countries.geojson')
+        .then(response => response.json())
+        .then(data => {
+            const wrappedData = wrapGeoJSON(data);
+            L.geoJSON(wrappedData, {
+                style: {
+                    color: "#7737d6",
+                    weight: 1.5,
+                    fillOpacity: 0.3
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.on('click', function() {
+                        const countryName = feature.properties.name || feature.properties.ADMIN; // Adjust based on GeoJSON properties
+                        document.getElementById('country-info').innerText = `You clicked on: ${countryName || 'Unknown'}`;
+                        if (countryName === countryToGuess) {
+                            document.getElementById('guess').textContent = "Right!";
+                        } else {
+                            document.getElementById('guess').textContent = "Wrong!";
+                        };
+                    });
+                }
+            }).addTo(map);
+        }) .catch(error => console.error('Error loading GeoJSON data:', error));
+
+        // wrap the GeoJSON features for countries that cross the International Date Line
+        function wrapGeoJSON(data) {
+        const wrappedFeatures = [];
+        data.features.forEach((feature) => {
+            wrappedFeatures.push(feature);
+            // Handle polygons and multi-polygons
+            [-360, 360].forEach((offset) => {
+                const wrappedFeature = JSON.parse(JSON.stringify(feature));
+                if (feature.geometry.type === "Polygon") {
+                    wrappedFeature.geometry.coordinates = feature.geometry.coordinates.map(ring =>
+                        ring.map(([lng, lat]) => [lng + offset, lat])
+                    );
+                } else if (feature.geometry.type === "MultiPolygon") {
+                    wrappedFeature.geometry.coordinates = feature.geometry.coordinates.map(polygon =>
+                        polygon.map(ring =>
+                            ring.map(([lng, lat]) => [lng + offset, lat])
+                        )
+                    );
+                }
+                wrappedFeatures.push(wrappedFeature);
+            });
+        });
+        return { type: "FeatureCollection", features: wrappedFeatures };
+        }
+    </script>
+</body>
+</html>
