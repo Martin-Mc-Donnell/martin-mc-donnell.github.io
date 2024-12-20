@@ -69,11 +69,11 @@
     .warning-sign::before {
       content: "";
       position: absolute;
-      top: 10px;
-      left: -140px;
-      border-left: 140px solid transparent;
-      border-right: 140px solid transparent;
-      border-bottom: 240px solid white;
+      top: 24px;
+      left: -120px;
+      border-left: 120px solid transparent;
+      border-right: 120px solid transparent;
+      border-bottom: 220px solid white;
     }
 
     /* Centering Text for the Triangle */
@@ -87,7 +87,7 @@
       font-size: 1.5rem;
       font-weight: bold;
       color: black;
-  	}
+    }
 
     /* Circle Sign */
     .regulatory-sign {
@@ -186,20 +186,26 @@
     }
 
     function updateSignText() {
-        const signType = signTypeSelect.value;
-        signPreview.innerHTML = '';
+      const signType = signTypeSelect.value;
+      signPreview.innerHTML = '';
 
-        // Create text preview
-        let signText = document.createElement('div');
-        signText.className = 'text-preview';
-        signText.textContent = signTextInput.value || 'STOP';
-        signPreview.appendChild(signText);
+      // Create text preview
+      let signText = document.createElement('div');
+      signText.className = 'text-preview';
+      signText.textContent = signTextInput.value || 'STOP';
+      signPreview.appendChild(signText);
     }
 
     // Update background color
     function updateSignBackground() {
-      signPreview.style.backgroundColor =
-        signTypeSelect.value === 'warning' ? '' : bgColorInput.value;
+      const signType = signTypeSelect.value;
+
+      if (signType === 'warning') {
+        // Update the triangle's border color
+        signPreview.style.borderBottomColor = bgColorInput.value;
+      } else {
+        signPreview.style.backgroundColor = bgColorInput.value;
+      }
     }
 
     // Update text color
