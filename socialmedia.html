@@ -103,12 +103,12 @@
             "Feeling so happy",
         ];
         const images = [
-            "images/nature.png",
-            "images/cityscape.png",
-            "images/food.png",
-            "images/art.png",
-            "images/pets.png",
-            "images/travel.png",
+            "images/social_media/nature.png",
+            "images/social_media/cityscape.png",
+            "images/social_media/food.png",
+            "images/social_media/art.png",
+            "images/social_media/pets.png",
+            "images/social_media/travel.png",
         ];
 
         // Generate fake post
@@ -141,15 +141,23 @@
             }
         }
 
+        // Throttling mechanism
+        let isLoading = false;
+
         // Infinite scroll logic
         window.addEventListener("scroll", () => {
+            if (isLoading) return;
+
             const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
             if (scrollTop + clientHeight >= scrollHeight - 5) {
-                // Simulate loading delay
+                isLoading = true;
                 document.getElementById("loading").style.display = "block";
+
+                // Simulate loading delay
                 setTimeout(() => {
                     loadMorePosts();
                     document.getElementById("loading").style.display = "none";
+                    isLoading = false;
                 }, 1000);
             }
         });
