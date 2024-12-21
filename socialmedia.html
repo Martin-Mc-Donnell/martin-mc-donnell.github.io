@@ -74,6 +74,31 @@
             object-fit: cover;
         }
 
+        .post-footer {
+            display: flex;
+            justify-content: space-evenly;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+
+        .post-footer button {
+            flex: 1;
+            margin: 0 5px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 0;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .post-footer button:hover {
+            background-color: #0056b3;
+        }
+
         .loading {
             text-align: center;
             padding: 20px;
@@ -127,6 +152,11 @@
                 </div>
                 <div class="post-content">${content}</div>
                 <img class="post-image" src="${image}" alt="Post image">
+                <div class="post-footer">
+                    <button onclick="likePost(this)">Like</button>
+                    <button onclick="commentPost()">Comment</button>
+                    <button onclick="sharePost()">Share</button>
+                </div>
             `;
 
             return post;
@@ -139,6 +169,25 @@
                 const post = createPost();
                 feed.appendChild(post);
             }
+        }
+
+        // Example functions for buttons
+        function likePost(button) {
+        	if (button.textContent === "Like") {
+            	button.textContent = "Liked!";
+                button.style.backgroundColor = "grey";
+            } else {
+            	button.textContent = "Like";
+                button.style.backgroundColor = "#007BFF";
+            }
+        }
+
+        function commentPost() {
+            // TODO
+        }
+
+        function sharePost() {
+            // TODO
         }
 
         // Throttling mechanism
