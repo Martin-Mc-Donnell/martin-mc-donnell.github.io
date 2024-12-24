@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rubik's Cube Game</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #333;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        #cube-container {
+            perspective: 800px;
+        }
+
+        .cube {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            transform-style: preserve-3d;
+            transform: rotateX(20deg) rotateY(20deg);
+        }
+
+        .face {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+        }
+
+        .face div {
+            width: 100%;
+            height: 100%;
+            border: 1px solid black;
+            box-sizing: border-box;
+        }
+
+        .face.front  { transform: rotateY(0deg) translateZ(100px); background: red; }
+        .face.back   { transform: rotateY(180deg) translateZ(100px); background: orange; }
+        .face.left   { transform: rotateY(-90deg) translateZ(100px); background: blue; }
+        .face.right  { transform: rotateY(90deg) translateZ(100px); background: green; }
+        .face.top    { transform: rotateX(90deg) translateZ(100px); background: white; }
+        .face.bottom { transform: rotateX(-90deg) translateZ(100px); background: yellow; }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+            width: 400px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            background: #444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .button:hover {
+            background: #555;
+        }
+
+        .button:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="cube-container">
+        <div class="cube" id="cube">
+            <div class="face front" id="front">
+                <div style="background: red"></div><div style="background: red"></div><div style="background: red"></div>
+                <div style="background: red"></div><div style="background: red"></div><div style="background: red"></div>
+                <div style="background: red"></div><div style="background: red"></div><div style="background: red"></div>
+            </div>
+            <div class="face back" id="back">
+                <div style="background: orange"></div><div style="background: orange"></div><div style="background: orange"></div>
+                <div style="background: orange"></div><div style="background: orange"></div><div style="background: orange"></div>
+                <div style="background: orange"></div><div style="background: orange"></div><div style="background: orange"></div>
+            </div>
+            <div class="face left" id="left">
+                <div style="background: blue"></div><div style="background: blue"></div><div style="background: blue"></div>
+                <div style="background: blue"></div><div style="background: blue"></div><div style="background: blue"></div>
+                <div style="background: blue"></div><div style="background: blue"></div><div style="background: blue"></div>
+            </div>
+            <div class="face right" id="right">
+                <div style="background: green"></div><div style="background: green"></div><div style="background: green"></div>
+                <div style="background: green"></div><div style="background: green"></div><div style="background: green"></div>
+                <div style="background: green"></div><div style="background: green"></div><div style="background: green"></div>
+            </div>
+            <div class="face top" id="top">
+                <div style="background: white"></div><div style="background: white"></div><div style="background: white"></div>
+                <div style="background: white"></div><div style="background: white"></div><div style="background: white"></div>
+                <div style="background: white"></div><div style="background: white"></div><div style="background: white"></div>
+            </div>
+            <div class="face bottom" id="bottom">
+                <div style="background: yellow"></div><div style="background: yellow"></div><div style="background: yellow"></div>
+                <div style="background: yellow"></div><div style="background: yellow"></div><div style="background: yellow"></div>
+                <div style="background: yellow"></div><div style="background: yellow"></div><div style="background: yellow"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="button" onclick="rotateRow(0, 'left')">Top Row Left</button>
+        <button class="button" onclick="rotateRow(0, 'right')">Top Row Right</button>
+        <button class="button" onclick="rotateColumn(0, 'up')">Left Column Up</button>
+        <button class="button" onclick="rotateColumn(0, 'down')">Left Column Down</button>
+
+        <button class="button" onclick="rotateRow(1, 'left')">Middle Row Left</button>
+        <button class="button" onclick="rotateRow(1, 'right')">Middle Row Right</button>
+        <button class="button" onclick="rotateRow(2, 'left')">Bottom Row Left</button>
+        <button class="button" onclick="rotateRow(2, 'right')">Bottom Row Right</button>
+
+        <button class="button" onclick="rotateColumn(1, 'up')">Middle Column Up</button>
+        <button class="button" onclick="rotateColumn(1, 'down')">Middle Column Down</button>
+        <button class="button" onclick="rotateColumn(2, 'up')">Right Column Up</button>
+        <button class="button" onclick="rotateColumn(2, 'down')">Right Column Down</button>
+    </div>
+
+    <script>
+        const faces = {
+            front: document.getElementById('front'),
+            back: document.getElementById('back'),
+            left: document.getElementById('left'),
+            right: document.getElementById('right'),
+            top: document.getElementById('top'),
+            bottom: document.getElementById('bottom'),
+        };
+
+        function rotateRow(row, direction) {
+            const frontRow = getRow(faces.front, row);
+            const leftRow = getRow(faces.left, row);
+            const rightRow = getRow(faces.right, row);
+            const backRow = getRow(faces.back, row);
+
+            if (direction === 'left') {
+                setRow(faces.front, row, rightRow);
+                setRow(faces.right, row, backRow);
+                setRow(faces.back, row, leftRow);
+                setRow(faces.left, row, frontRow);
+            } else if (direction === 'right') {
+                setRow(faces.front, row, leftRow);
+                setRow(faces.left, row, backRow);
+                setRow(faces.back, row, rightRow);
+                setRow(faces.right, row, frontRow);
+            }
+        }
+
+        function rotateColumn(column, direction) {
+            const frontCol = getColumn(faces.front, column);
+            const topCol = getColumn(faces.top, column);
+            const bottomCol = getColumn(faces.bottom, column);
+            const backCol = getColumn(faces.back, 2 - column);
+
+            if (direction === 'up') {
+                setColumn(faces.front, column, topCol);
+                setColumn(faces.top, column, backCol.reverse());
+                setColumn(faces.back, 2 - column, bottomCol.reverse());
+                setColumn(faces.bottom, column, frontCol);
+            } else if (direction === 'down') {
+                setColumn(faces.front, column, bottomCol);
+                setColumn(faces.bottom, column, backCol.reverse());
+                setColumn(faces.back, 2 - column, topCol.reverse());
+                setColumn(faces.top, column, frontCol);
+            }
+        }
+
+        function getRow(face, row) {
+            const start = row * 3;
+            return [
+                face.children[start].style.background,
+                face.children[start + 1].style.background,
+                face.children[start + 2].style.background,
+            ];
+        }
+
+        function setRow(face, row, colors) {
+            const start = row * 3;
+            const rowCells = [...face.children].slice(start, start + 3);
+            rowCells.forEach((cell, i) => cell.style.background = colors[i]);
+        }
+
+        function getColumn(face, col) {
+            return [
+                face.children[col].style.background,
+                face.children[col + 3].style.background,
+                face.children[col + 6].style.background
+            ];
+        }
+
+        function setColumn(face, col, colors) {
+            face.children[col].style.background = colors[0];
+            face.children[col + 3].style.background = colors[1];
+            face.children[col + 6].style.background = colors[2];
+        }
+    </script>
+</body>
+</html>
