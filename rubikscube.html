@@ -195,12 +195,12 @@
             const bottomCol = getColumn(faces.bottom, column);
             const backCol = getColumn(faces.back, 2 - column);
 
-            if (direction === 'up') {
+            if (direction === 'down') {
                 setColumn(faces.front, column, topCol);
                 setColumn(faces.top, column, backCol.reverse());
                 setColumn(faces.back, 2 - column, bottomCol.reverse());
                 setColumn(faces.bottom, column, frontCol);
-            } else if (direction === 'down') {
+            } else if (direction === 'up') {
                 setColumn(faces.front, column, bottomCol);
                 setColumn(faces.bottom, column, backCol.reverse());
                 setColumn(faces.back, 2 - column, topCol.reverse());
