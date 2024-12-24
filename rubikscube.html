@@ -18,6 +18,7 @@
         }
 
         #cube-container {
+            position: relative;
             perspective: 800px;
         }
 
@@ -52,23 +53,17 @@
         .face.top    { transform: rotateX(90deg) translateZ(100px); background: white; }
         .face.bottom { transform: rotateX(-90deg) translateZ(100px); background: yellow; }
 
-        .controls {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-top: 20px;
-            width: 400px;
-        }
-
         .button {
-            padding: 10px 15px;
+            position: absolute;
+            padding: 10px;
             background: #444;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
             text-align: center;
+            white-space: nowrap;
         }
 
         .button:hover {
@@ -78,6 +73,22 @@
         .button:focus {
             outline: none;
         }
+
+        /* Button positions */
+        #top-row-left { top: 20%; left: -150px; transform: translateY(-50%); }
+        #top-row-right { top: 0%; right: -180px; transform: translateY(-50%); }
+        #middle-row-left { left: -150px; top: 50%; transform: translateY(-50%); }
+        #middle-row-right { right: -180px; top: 40%; transform: translateY(-50%); }
+        #bottom-row-left { bottom: 20%; left: -150px; transform: translateY(50%); }
+        #bottom-row-right { bottom: 25%; right: -180px; transform: translateY(50%); }
+
+        /* Move Up/Down buttons */
+        #left-column-up { top: -110px; left: 35%; transform: translate(-50%, 0); }
+        #left-column-down { bottom: -70px; left: 35%; transform: translate(-50%, 0); }
+        #middle-column-up { top: -110px; left: 70%; transform: translate(-50%, 0); }
+        #middle-column-down { bottom: -70px; left: 65%; transform: translate(-50%, 0); }
+        #right-column-up { top: -110px; right: 0px; transform: translate(50%, 0); }
+        #right-column-down { bottom: -70px; right: 5%; transform: translate(50%, 0); }
     </style>
 </head>
 <body>
@@ -114,23 +125,21 @@
                 <div style="background: yellow"></div><div style="background: yellow"></div><div style="background: yellow"></div>
             </div>
         </div>
-    </div>
 
-    <div class="controls">
-        <button class="button" onclick="rotateRow(0, 'left')">Top Row Left</button>
-        <button class="button" onclick="rotateRow(0, 'right')">Top Row Right</button>
-        <button class="button" onclick="rotateColumn(0, 'up')">Left Column Up</button>
-        <button class="button" onclick="rotateColumn(0, 'down')">Left Column Down</button>
+        <!-- Surrounding buttons -->
+        <button id="top-row-left" class="button" onclick="rotateRow(0, 'left')">⬅</button>
+        <button id="top-row-right" class="button" onclick="rotateRow(0, 'right')">➡</button>
+        <button id="middle-row-left" class="button" onclick="rotateRow(1, 'left')">⬅</button>
+        <button id="middle-row-right" class="button" onclick="rotateRow(1, 'right')">➡</button>
+        <button id="bottom-row-left" class="button" onclick="rotateRow(2, 'left')">⬅</button>
+        <button id="bottom-row-right" class="button" onclick="rotateRow(2, 'right')">➡</button>
 
-        <button class="button" onclick="rotateRow(1, 'left')">Middle Row Left</button>
-        <button class="button" onclick="rotateRow(1, 'right')">Middle Row Right</button>
-        <button class="button" onclick="rotateRow(2, 'left')">Bottom Row Left</button>
-        <button class="button" onclick="rotateRow(2, 'right')">Bottom Row Right</button>
-
-        <button class="button" onclick="rotateColumn(1, 'up')">Middle Column Up</button>
-        <button class="button" onclick="rotateColumn(1, 'down')">Middle Column Down</button>
-        <button class="button" onclick="rotateColumn(2, 'up')">Right Column Up</button>
-        <button class="button" onclick="rotateColumn(2, 'down')">Right Column Down</button>
+        <button id="left-column-up" class="button" onclick="rotateColumn(0, 'up')">⬆</button>
+        <button id="left-column-down" class="button" onclick="rotateColumn(0, 'down')">⬇</button>
+        <button id="middle-column-up" class="button" onclick="rotateColumn(1, 'up')">⬆</button>
+        <button id="middle-column-down" class="button" onclick="rotateColumn(1, 'down')">⬇</button>
+        <button id="right-column-up" class="button" onclick="rotateColumn(2, 'up')">⬆</button>
+        <button id="right-column-down" class="button" onclick="rotateColumn(2, 'down')">⬇</button>
     </div>
 
     <script>
