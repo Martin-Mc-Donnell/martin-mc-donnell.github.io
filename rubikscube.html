@@ -74,6 +74,23 @@
             outline: none;
         }
 
+        #mix-button {
+            position: absolute;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: orange;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            bottom: 25px;
+        }
+
+        #mix-button:hover {
+            background-color: #555;
+        }
+
         /* Button positions */
         #top-row-left { top: 20%; left: -150px; transform: translateY(-50%); }
         #top-row-right { top: 0%; right: -180px; transform: translateY(-50%); }
@@ -141,6 +158,7 @@
         <button id="right-column-up" class="button" onclick="rotateColumn(2, 'up')">⬆</button>
         <button id="right-column-down" class="button" onclick="rotateColumn(2, 'down')">⬇</button>
     </div>
+    <button id="mix-button">Mix</button>
 
     <script>
         const faces = {
@@ -218,6 +236,18 @@
             face.children[col + 3].style.background = colors[1];
             face.children[col + 6].style.background = colors[2];
         }
+
+        function randomizeCubeColors() {
+            const colors = ["red", "orange", "blue", "green", "white", "yellow"];
+            const faces = document.querySelectorAll(".face div");
+            faces.forEach(face => {
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                face.style.backgroundColor = randomColor;
+            });
+        }
+
+        // Add event listener to the Mix button
+        document.getElementById("mix-button").addEventListener("click", randomizeCubeColors);
     </script>
 </body>
 </html>
