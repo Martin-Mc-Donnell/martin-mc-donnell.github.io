@@ -281,12 +281,14 @@
         }
 
         function randomizeCubeColors() {
-            const colors = ["red", "orange", "blue", "green", "white", "yellow"];
-            const faces = document.querySelectorAll(".face div");
-            faces.forEach(face => {
-                const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                face.style.backgroundColor = randomColor;
-            });
+            const buttonNames = ["top-row-left", "top-row-right", "middle-row-left", "middle-row-right",
+            "bottom-row-left", "bottom-row-right", "left-column-up", "left-column-down", "middle-column-up",
+            "middle-column-down", "right-column-up", "right-column-down"]
+            for (let i = 0; i < 20; i++) {
+                    let randomButton = buttonNames[Math.floor(Math.random() * buttonNames.length)];
+                    let selectedButton = document.getElementById(randomButton);
+                    selectedButton.click();
+                }
         }
 
         // Add event listener to the Mix button
