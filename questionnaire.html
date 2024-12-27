@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .yes {
+            background-color: #4caf50;
+            color: white;
+        }
+        .no {
+            background-color: #f44336;
+            color: white;
+        }
+        .maybe {
+            background-color: #ffc107;
+            color: white;
+        }
+        .retry {
+            background-color: #2196f3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="question">Do you like coding?</h1>
+        <div class="buttons">
+            <button class="yes" id="yesButton" onclick="handleAnswer('yes')">Yes</button>
+            <button class="maybe" id="maybeButton" style="display: none;" onclick="handleAnswer('maybe')">Maybe</button>
+            <button class="no" id="noButton" onclick="handleAnswer('no')">No</button>
+            <button class="retry" id="retryButton" style="display: none;" onclick="resetQuestions()">Retry</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { text: "Do you like pizza?", options: ["yes", "no"] },
+            { text: "Do you enjoy movies?", options: ["yes", "no", "maybe"] },
+            { text: "Would you recommend this website to a friend?", options: ["yes", "no"] },
+            { text: "Do you find puzzles challenging?", options: ["yes", "no", "maybe"] },
+            { text: "Thank you for your answers!", options: [] } // End message
+        ];
+
+        let currentQuestionIndex = 0;
+
+        function handleAnswer(answer) {
+            currentQuestionIndex++;
+
+            const questionElement = document.getElementById("question");
+            const yesButton = document.getElementById("yesButton");
+            const noButton = document.getElementById("noButton");
+            const maybeButton = document.getElementById("maybeButton");
+            const retryButton = document.getElementById("retryButton");
+
+            if (currentQuestionIndex == questions.length-1) {
+                // Display final message with retry option
+                questionElement.textContent = "Thank you for answering!";
+                yesButton.style.display = "none";
+                noButton.style.display = "none";
+                maybeButton.style.display = "none";
+                retryButton.style.display = "inline-block";
+                return;
+            }
+
+            // Update question
+            const currentQuestion = questions[currentQuestionIndex];
+            questionElement.textContent = currentQuestion.text;
+
+            // Update button visibility based on available options
+            maybeButton.style.display = currentQuestion.options.includes("maybe") ? "inline-block" : "none";
+        }
+
+        function resetQuestions() {
+            currentQuestionIndex = 0;
+
+            const questionElement = document.getElementById("question");
+            const yesButton = document.getElementById("yesButton");
+            const noButton = document.getElementById("noButton");
+            const maybeButton = document.getElementById("maybeButton");
+            const retryButton = document.getElementById("retryButton");
+
+            // Reset to first question
+            questionElement.textContent = questions[currentQuestionIndex].text;
+            yesButton.style.display = "inline-block";
+            noButton.style.display = "inline-block";
+            maybeButton.style.display = questions[currentQuestionIndex].options.includes("maybe") ? "inline-block" : "none";
+            retryButton.style.display = "none";
+        }
+    </script>
+</body>
+</html>
+
