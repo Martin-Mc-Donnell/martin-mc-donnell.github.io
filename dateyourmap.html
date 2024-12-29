@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .yes {
+            background-color: #4caf50;
+            color: white;
+        }
+        .no {
+            background-color: #f44336;
+            color: white;
+        }
+        .maybe {
+            background-color: #ffc107;
+            color: white;
+        }
+        .retry {
+            background-color: #2196f3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="question">Istanbul or Constantinople?</h1>
+        <div class="buttons">
+            <button class="yes" id="yesButton" onclick="handleAnswer('yes')">Yes</button>
+            <button class="maybe" id="maybeButton" onclick="handleAnswer('maybe')">Maybe</button>
+            <button class="no" id="noButton" onclick="handleAnswer('no')">No</button>
+            <button class="retry" id="retryButton" style="display: none;" onclick="resetQuestions()">Retry</button>
+        </div>
+    </div>
+
+    <script>
+        // Tree structure for questions
+        const zaireHongKong = {
+                            text: "Zaire? or Hong Kong(UK)?",
+                            options: {
+                                yes: { text:"1992-1996"},
+                                no: {
+                                    text:"Serbia/Montenegro are...",
+                                    buttonLabels: { yes: "One Country", no: "Two Countries"},
+                                    options: {
+                                        yes: {text:"East Timor?",
+                                            options: {
+                                                yes: { text:"1997-2001"},
+                                                no: { text:"2002-2006"}
+                                            }
+                                        },
+                                        no: {text:"How many Sudans are there?",
+                                        buttonLabels: { yes: "One", no: "Two"},
+                                            options: {
+                                                yes: { text:"2007-2011"},
+                                                no: { text:"Is Crimea disputed?",
+                                                    options: {
+                                                        yes: { text:"2014-"},
+                                                        no: { text:"2012-2013"}
+                                                    }
+                                                }
+                                            }}
+                                    } 
+                                }
+                            }
+                        }
+        const frenchBlob = {
+                            text: "Is most of West Africa a giant French blob",
+                            options: {
+                                yes: { 
+                                	text: "Pakistan?", 
+                                	options: {
+                                		yes: { 
+                                            text: "Cambodia?", 
+                                            options: {
+                                                yes: { 
+                                                    text: "The United Arab Republic?", 
+                                                    options: {
+                                                        yes: { text: "1958-1960"},
+                                		                no: { text:"1954-1957"}
+                                                    } },
+                                		        no: { 
+                                                    text:"Eritrea is part of...", 
+                                                    buttonLabels: { yes: "Italy", no:"Ethiopia"},
+                                                    options: {
+                                                        yes: { 
+                                                            text: "Canada is missing a piece", 
+                                                            options: {
+                                                                yes: { text: "1948"},
+                                                                no: { 
+                                                                    text: "The town on I-25 between Albuquerque and El Paso is called?",
+                                                                    buttonLabels: { yes: "Hot Springs", no:"Truth Or Consequences"},
+                                                                    options: {
+                                                                        yes: { text: "1948-1949" },
+                                                                        no: { text: "1950-1952" }
+                                                                } }
+                                                            }},
+                                                        no: { text:"1952-1953"}}}}
+                                            },
+                                		no: { 
+                                        	text: "How many Germanys are there?",
+                    						buttonLabels: { yes: "One", maybe: "One but it's huge", no: "Two"},
+                                            options: {
+                                            	yes: { 
+                                                    text: "Persia or Iran", 
+                                                    buttonLabels: { yes: "Persia", no: "Iran"},
+                                                    options: {
+                                                        yes: { text: "1930-1934"},
+                                                        no: {text: "1935-1940"} }
+                                                },
+                                				maybe: { text: "1941-1945"},
+                                                no: { text: "1946-1947"}
+                                            } 
+                                        }
+                                    } 
+                                },
+                                no: { 
+                                	text: "How many Vietnams?", 
+                                    buttonLabels: { yes: "Two", no: "One"},
+                                    options: {
+                                    	yes: { 
+                                            text: "Bangladesh?", 
+                                            options: {
+                                                yes: { text: "1972-1975"},
+                                                no: { 
+                                                    text: "Is the area South of Lake Victria?",
+                                                    buttonLabels: { yes: "British", maybe:"Tanganyika", no: "Tanzania"},
+                                                    options: {
+                                                        yes: { text: "1960"},
+                                                        maybe: {text:"1961-1964"},
+                                                        no: {text: "1965-1971"}
+                                                    } }} },
+                                		no: { 
+                                            text: "The Sinai is part of what country?",
+                                            buttonLabels: { yes: "Israel", no: "Egypt"},
+                                            options: {
+                                                yes: { text: "1976-1980"},
+                                                no: { 
+                                                    text: "What is the Capital of Micronesia?",
+                                                    buttonLabels: { yes: "Kolonia", no: "Palikir"},
+                                                    options: {
+                                                        yes: { 
+                                                            text: "Republic or the Upper Volta of Burkina Faso?",  
+                                                            buttonLabels: { yes: "Upper Volta", no: "Burkina Faso"}, 
+                                                            options: {
+                                                                yes: { text: "1982-1984"},
+                                                                no: { text: "1985-1988"}
+                                                            }
+                                                        },
+                                                        no: {
+                                                            text: "(Number of Yemens) + (Number of Germanys) = ?",  
+                                                            buttonLabels: { yes: "Four", maybe:"Three", no: "Two"}, 
+                                                            options: {
+                                                                yes: { text: "1989-Early 1990"},
+                                                                maybe: {text: "Mid 1990"},
+                                                                no: { text: "Late1990-1991"}
+                                                            }
+                                                        }
+                                                    } 
+                                                }
+                                            }
+                                        }
+                                    }
+                                } 
+                            }
+                        }
+        const CanUsaTokyo = {
+                    text: "Do any of these exist? Independent Canada, US territory of Alaska or Tokyo",
+                    buttonLabels: { yes: "Yes", no: "No" },
+                    options: {
+                        yes: {
+                            text: "South Africa?",
+                            buttonLabels: { yes: "Yes", no: "No" },
+                            options: {
+                                yes: { text: "Austria-Hungary?", 
+                                    options: {
+                                        yes: {text:"Albania?", 
+                                            options: {
+                                                yes: {text:"1913-1918"},
+                                                no: {text:"1910-1912"}
+                                            }
+                                        },
+                                        no: {text:"Leningrad?",
+                                        options: {
+                                                yes: {text:"1924-1929"},
+                                                no: {text:"1919-1923"}
+                                            }
+                                        }
+                                    } },
+                                no: { 
+                                    text: "Rhodesia?", 
+                                        options: {
+                                            yes: { text: "Is Norway part of Sweden?", 
+                                                options: {
+                                                    yes: {text: "1896-1905"},
+                                                    no: {text: "1906-1909"}
+                                            } },
+                                            no: { 
+                                                text: "Is Bolivia landlocked?", 
+                                                options: {
+                                                    yes: { text: "1884-1895" },
+                                                    no: { 
+                                                        text: "Buda and Pest or Budapest",
+                                                        buttonLabels: { yes: "Buda and Pest", no: "Budapest" }, 
+                                                        options: {
+                                                            yes: { text: "1868-1872"},
+                                                            no: { text: "1873-1883"}} 
+                                                    }} }
+                                        } 
+                                    }
+                            }
+                        },
+                        no: { text: "The Holy Roman Empire?",
+                            options: {
+                                yes: { text: "-1805"},
+                                no: { 
+                                    text: "Texas is...", 
+                                    buttonLabels: { yes: "Mexican", maybe:"Independent", no: "American" },
+                                    options: {
+                                        yes: { 
+                                            text: "Florida is part of...", 
+                                            buttonLabels: { yes: "Spain", no: "USA" },
+                                            options: {
+                                                yes: { 
+                                                    text: "Paraguay?", 
+                                                    options: {
+                                                        yes: { text: "1811-1817"},
+                                                        no: { text: "1806-1810"}} },
+                                                no: { 
+                                                    text: "Venezuela/Ecuador?", 
+                                                    options: {
+                                                        yes: { text: "1830-1833"},
+                                                        no: { text: "1818-1829"}
+                                                    } }} },
+                                        maybe: { text: "1834-1845"},
+                                        no: { text: "Does Russia border the Sea of Japan?", options: {
+                                            yes: { text: "1858-1867"},
+                                            no: { text: "1846-1856"}
+                                        } }} }
+                            }
+                        }
+                    }
+                }
+        const questionTree = {
+            text: "Istanbul or Constantinople?",
+            buttonLabels: { yes: "Istanbul", maybe: "Neither", no: "Constantinople" },
+            options: {
+                yes: {
+                    text: "Does the Soviet Union exist?",
+                    options: {
+                        yes: frenchBlob,
+                        no: zaireHongKong,
+                    }
+                },
+                maybe: {
+                    text: "Does the ottoman Empire exist",
+                    options: { yes: CanUsaTokyo,
+                        no: { text:"The Soviet Union?", 
+                            options: { 
+                                yes: { text:"Saudi Arabia?", options:{ yes:{ frenchBlob }, no: {text:"1922-1932"}}},
+                                no: { text:"North Korea?", options:{ yes:{zaireHongKong}, no: CanUsaTokyo}}
+                            }
+                        }
+                    }
+                },
+                no: CanUsaTokyo
+            }
+        };
+
+        let currentNode = questionTree;
+
+        function updateButtonLabels(labels) {
+            const yesButton = document.getElementById("yesButton");
+            const noButton = document.getElementById("noButton");
+            const maybeButton = document.getElementById("maybeButton");
+
+            yesButton.textContent = labels?.yes || "Yes";
+            noButton.textContent = labels?.no || "No";
+            maybeButton.textContent = labels?.maybe || "Maybe";
+        }
+
+        function handleAnswer(answer) {
+            if (currentNode.options && currentNode.options[answer]) {
+                currentNode = currentNode.options[answer];
+
+                const questionElement = document.getElementById("question");
+                const yesButton = document.getElementById("yesButton");
+                const noButton = document.getElementById("noButton");
+                const maybeButton = document.getElementById("maybeButton");
+                const retryButton = document.getElementById("retryButton");
+
+                // Update question text
+                questionElement.textContent = currentNode.text;
+
+                // Update button labels if defined
+                updateButtonLabels(currentNode.buttonLabels);
+
+                // Update button visibility
+                yesButton.style.display = currentNode.options?.yes ? "inline-block" : "none";
+                noButton.style.display = currentNode.options?.no ? "inline-block" : "none";
+                maybeButton.style.display = currentNode.options?.maybe ? "inline-block" : "none";
+
+                if (Object.keys(currentNode.options || {}).length === 0) {
+                    retryButton.style.display = "inline-block";
+                }
+            }
+        }
+
+        function resetQuestions() {
+            currentNode = questionTree;
+
+            const questionElement = document.getElementById("question");
+            const yesButton = document.getElementById("yesButton");
+            const noButton = document.getElementById("noButton");
+            const maybeButton = document.getElementById("maybeButton");
+            const retryButton = document.getElementById("retryButton");
+
+            // Reset to root question
+            questionElement.textContent = currentNode.text;
+            updateButtonLabels(currentNode.buttonLabels);
+
+            yesButton.style.display = currentNode.options?.yes ? "inline-block" : "none";
+            noButton.style.display = currentNode.options?.no ? "inline-block" : "none";
+            maybeButton.style.display = currentNode.options?.maybe ? "inline-block" : "none";
+            retryButton.style.display = "none";
+        }
+
+        // Initialize with the root question's button labels
+        updateButtonLabels(questionTree.buttonLabels);
+    </script>
+</body>
+</html>
