@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Questionnaire</title>
+    <title>Date Your Map</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -66,7 +66,7 @@
 
     <script>
         // Tree structure for questions
-        const zaireHongKong = {
+        const zaireRoute = {
                             text: "Zaire? or Hong Kong(UK)?",
                             options: {
                                 yes: { text:"1992-1996"},
@@ -95,7 +95,7 @@
                                 }
                             }
                         }
-        const frenchBlob = {
+        const frenchBlobRoute = {
                             text: "Is most of West Africa a giant French blob",
                             options: {
                                 yes: { 
@@ -154,7 +154,7 @@
                                             options: {
                                                 yes: { text: "1972-1975"},
                                                 no: { 
-                                                    text: "Is the area South of Lake Victria?",
+                                                    text: "Is the area South of Lake Victoria?",
                                                     buttonLabels: { yes: "British", maybe:"Tanganyika", no: "Tanzania"},
                                                     options: {
                                                         yes: { text: "1960"},
@@ -195,7 +195,7 @@
                                 } 
                             }
                         }
-        const CanUsaTokyo = {
+        const canUsaTokyoRoute = {
                     text: "Do any of these exist? Independent Canada, US territory of Alaska or Tokyo",
                     buttonLabels: { yes: "Yes", no: "No" },
                     options: {
@@ -279,22 +279,22 @@
                 yes: {
                     text: "Does the Soviet Union exist?",
                     options: {
-                        yes: frenchBlob,
-                        no: zaireHongKong,
+                        yes: frenchBlobRoute,
+                        no: zaireRoute,
                     }
                 },
                 maybe: {
                     text: "Does the ottoman Empire exist",
-                    options: { yes: CanUsaTokyo,
+                    options: { yes: canUsaTokyoRoute,
                         no: { text:"The Soviet Union?", 
                             options: { 
-                                yes: { text:"Saudi Arabia?", options:{ yes:{ frenchBlob }, no: {text:"1922-1932"}}},
-                                no: { text:"North Korea?", options:{ yes:{zaireHongKong}, no: CanUsaTokyo}}
+                                yes: { text:"Saudi Arabia?", options:{ yes: frenchBlobRoute , no: {text:"1922-1932"}}},
+                                no: { text:"North Korea?", options:{ yes: zaireRoute, no: canUsaTokyoRoute}}
                             }
                         }
                     }
                 },
-                no: CanUsaTokyo
+                no: canUsaTokyoRoute
             }
         };
 
