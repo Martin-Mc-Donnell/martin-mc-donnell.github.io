@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knitting Chart Pattern Designer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            margin: 20px;
+            color: #4a4a4a;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .controls button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .controls button:hover {
+            background-color: #0056b3;
+        }
+
+        .controls select, .controls input[type="color"], .controls input[type="text"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .grid {
+            display: grid;
+            gap: 1px;
+            background-color: #ddd;
+        }
+
+        .cell {
+            width: 30px;
+            height: 30px;
+            background-color: white;
+            border: 1px solid #ccc;
+            text-align: center;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .cell:hover {
+            border-color: #888;
+        }
+    </style>
+</head>
+<body>
+    <h1>Knitting Chart Pattern Designer</h1>
+
+    <div class="controls">
+        <select id="stitchPicker">
+            <option value="">Select Stitch</option>
+            <option value="K">Knit (K)</option>
+            <option value="P">Purl (P)</option>
+            <option value="/">K2tog (/)</option>
+            <option value="//">M1R (//)</option>
+            <option value="\">SSK (\)</option>
+            <option value="\\">M1L (\\)</option>
+            <option value="O">Yarn Over (O)</option>
+        </select>
+        <input type="color" id="colorPicker" value="#ffffff" style="background-color: #ffffff;">
+        <select id="rowsPicker">
+            <option value="5">5 rows</option>
+            <option value="10">10 rows</option>
+            <option value="20" selected>20 rows</option>
+            <option value="30">30 rows</option>
+            <option value="40">40 rows</option>
+            <option value="50">50 rows</option>
+        </select>
+        <select id="colsPicker">
+            <option value="5">5 columns</option>
+            <option value="10">10 columns</option>
+            <option value="20" selected>20 columns</option>
+            <option value="30">30 columns</option>
+            <option value="40">40 columns</option>
+            <option value="50">50 columns</option>
+        </select>
+        <input type="text" id="fileNameInput" placeholder="File name (e.g., my-chart.txt)">
+        <button id="resizeButton">Resize Grid</button>
+        <button id="clearButton">Clear Grid</button>
+        <button id="downloadButton">Download Chart</button>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const stitchPicker = document.getElementById('stitchPicker');
+        const colorPicker = document.getElementById('colorPicker');
+        const clearButton = document.getElementById('clearButton');
+        const downloadButton = document.getElementById('downloadButton');
+        const resizeButton = document.getElementById('resizeButton');
+        const rowsPicker = document.getElementById('rowsPicker');
+        const colsPicker = document.getElementById('colsPicker');
+        const fileNameInput = document.getElementById('fileNameInput');
+
+        function createGrid(rows, cols) {
+            grid.innerHTML = '';
+            grid.style.gridTemplateColumns = `repeat(${cols}, 30px)`;
+            grid.style.gridTemplateRows = `repeat(${rows}, 30px)`;
+
+            for (let i = 0; i < rows * cols; i++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+
+                // Add behavior for cell clicks
+                cell.addEventListener('click', () => {
+                    const selectedColor = colorPicker.value;
+                    const selectedStitch = stitchPicker.value;
+
+                    if (selectedColor) {
+                        cell.style.backgroundColor = selectedColor;
+                    }
+
+                    if (selectedStitch) {
+                        cell.textContent = selectedStitch;
+                    }
+                });
+
+                grid.appendChild(cell);
+            }
+        }
+
+        // Update the background color of the color picker
+        colorPicker.addEventListener('input', () => {
+            colorPicker.style.backgroundColor = colorPicker.value;
+        });
+
+        // Initial grid creation
+        createGrid(20, 20);
+
+        // Resize grid
+        resizeButton.addEventListener('click', () => {
+            const rows = parseInt(rowsPicker.value, 10);
+            const cols = parseInt(colsPicker.value, 10);
+            createGrid(rows, cols);
+        });
+
+        // Clear grid
+        clearButton.addEventListener('click', () => {
+            document.querySelectorAll('.cell').forEach(cell => {
+                cell.textContent = '';
+                cell.style.backgroundColor = 'white';
+            });
+        });
+
+        // Download design
+        downloadButton.addEventListener('click', () => {
+            let chart = '';
+            const cells = document.querySelectorAll('.cell');
+            const cols = parseInt(colsPicker.value, 10);
+
+            for (let i = 0; i < cells.length; i++) {
+                const cell = cells[i];
+                const color = cell.style.backgroundColor;
+                const stitch = cell.textContent;
+
+                if (color) {
+                    chart += `[${color}]`; // Represent colors with brackets
+                } else {
+                    chart += stitch || '.'; // Use '.' for empty cells
+                }
+
+                if ((i + 1) % cols === 0) {
+                    chart += '\n'; // New row after every specified number of columns
+                }
+            }
+
+            const fileName = fileNameInput.value.trim() || 'knitting-chart.txt';
+
+            const blob = new Blob([chart], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.download = fileName;
+            link.href = URL.createObjectURL(blob);
+            link.click();
+        });
+    </script>
+</body>
+</html>
