@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Page with Sidebar</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 160px;
+            height: 100%;
+            background-color: #f4f4f4;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar a {
+            display: block;
+            margin: 10px 0px;
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: #007BFF;
+        }
+
+        .content {
+            margin-left: 240px;
+            max-width: 800px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        #title {
+            font-size: 60px;
+        }
+
+
+        h1, h2 {
+            color: #333;
+        }
+
+        h1 {
+            margin-top: 40px;
+        }
+
+        h2 {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="#introduction">Introduction</a>
+        <a href="#Kitchener">Kitchener</a>  
+        <a href="#Cable">Cable</a>  
+        <a href="#Garter">Garter</a>  
+        <a href="#Stockinette">Stockinette</a>  
+        <a href="#Seed">Seed</a>  
+        <a href="#GarterRibbing">Garter Ribbing</a>  
+        <a href="#BrokenRib">Broken Rib</a>  
+        <a href="#Sand">Sand</a>  
+        <a href="#BeadedRib">Beaded Rib</a>  
+        <a href="#SeededRib">Seeded Rib</a>  
+        <a href="#DoubleMoss">Double Moss</a>  
+        <a href="#IrishMoss">Irish Moss</a>  
+        <a href="#PerlRidge">Perl Ridge</a>  
+        <a href="#Waffle">Waffle</a>  
+        <a href="#ReverseRidge">Reverse Ridge</a>  
+        <a href="#DiagonalSeed">Diagonal Seed</a>  
+        <a href="#Raindrops">Raindrops</a>  
+        <a href="#PennantPleating">Pennant Pleating</a>  
+        <a href="#ChevronRib">Chevron Rib</a>  
+        <a href="#DiamondBrocade">Diamond Brocade</a>  
+        <a href="#WideBasketWeave">Wide Basket Weave</a>  
+        <a href="#Caterpillar">Caterpillar</a>  
+        <a href="#DiagonalChevronZigzag">Diagonal Chevron Zigzag</a>  
+        <a href="#EdgeStitch">Edge Stitch</a>  
+        <a href="#FanFlare">Fan Flare</a>  
+        <a href="#LaceCable">Lace Cable</a>  
+        <a href="#Teardrop">Teardrop</a>  
+        <a href="#Honeycomb">Honeycomb</a>  
+        <a href="#FishermansRib">Fisherman's Rib</a>  
+        <a href="#RidgedFeather">Ridged Feather</a>  
+        <a> - </a> 
+
+
+    </div>
+    <div class="content">
+        <div class="section">
+            <h1 id="title">Knitting Info</h1>
+        </div>
+
+        <div class="section" id="introduction">
+            <h1>Introduction</h1>
+            <p>Welcome to this knitting information page.</p>
+        </div>
+
+        <div class="section" id="Kitchener">
+            <h1>Kitchener</h1>
+            <p>The Kitchener stitch is a finishing technique used in knitting to create an invisible, seamless join between two sets of live stitches, often used for grafting sock toes, shoulders, or other pieces. It involves weaving yarn through the stitches with a tapestry needle in a specific sequence that mimics the knit and purl structure, ensuring the join looks like continuous knitting. This technique is valued for its polished and professional appearance.</p>
+        </div>
+
+        <div class="section" id="Cable">
+            <h1>Cable</h1>
+            <p>The cable stitch is a knitting technique used to create a twisted or braided texture on the fabric. It involves temporarily transferring a group of stitches to a cable needle, holding them to the front or back of the work, and then knitting the next stitches before returning to the held stitches. This process creates the appearance of intertwining strands, commonly used in patterns for sweaters, hats, and scarves. Cable stitches add depth and dimension, making them a popular choice for decorative knitting projects.</p>
+        </div>
+
+
+        <div class="section" id="Garter">
+            <h1>Garter</h1>
+            <p>The garter stitch is one of the simplest and most basic knitting stitches, created by knitting every row (or purling every row) when working flat. It produces a fabric with a ridged, textured appearance that is stretchy and lays flat without curling. Garter stitch is highly versatile, often used in scarves, blankets, and edges of garments due to its simplicity and clean look. It's an excellent choice for beginners or projects that require a sturdy and visually appealing texture.</p>
+        </div>
+
+
+        <div class="section" id="Stockinette">
+            <h1>Stockinette</h1>
+            <p>The stockinette stitch is a classic knitting pattern that alternates between knit stitches on the right side and purl stitches on the wrong side when worked flat. It creates a smooth, even fabric on the front (right side) with a "v" pattern, while the back (wrong side) has a bumpy texture. Stockinette stitch is commonly used in garments and accessories, as it drapes well and is visually clean. However, it tends to curl at the edges, so it’s often paired with a border like garter or ribbing.</p>
+        </div>
+
+
+        <div class="section" id="Seed">
+            <h1>Seed</h1>
+            <p>The seed stitch is a textured knitting pattern created by alternating knit and purl stitches in a specific sequence. Typically, it involves knitting one stitch, then purling the next, but the pattern shifts every row to maintain a staggered, seed-like appearance. This stitch creates a dense, bumpy texture that is reversible and lays flat, making it ideal for scarves, blankets, and edges of garments. Seed stitch is known for its flexibility, visual interest, and ability to prevent fabric from curling.</p>
+        </div>
+
+
+        <div class="section" id="GarterRibbing">
+            <h1>Garter ribbing</h1>
+            <p>Garter ribbing is a combination of garter stitch and ribbing that creates a stretchy, textured fabric. It typically involves alternating knit and purl stitches in a pattern, but with the added twist of working the knit stitches in the round or in a flat piece, which creates a subtle ribbed effect while maintaining the ridges of the garter stitch. This stitch provides a flexible, elastic fabric that's commonly used for cuffs, edges, and accessories like hats or scarves, offering both texture and a snug fit.</p>
+        </div>
+
+
+        <div class="section" id="BrokenRib">
+            <h1>Broken rib</h1>
+            <p>The broken rib stitch is a textured knitting pattern that combines elements of ribbing with alternating knit and purl stitches, but with the pattern interrupted by non-repeating rows. It typically alternates between a few rows of standard ribbing (like knit 2, purl 2) and a row where the purls and knits are staggered or switched, giving the fabric a "broken" look. This stitch creates a stretchy, textured fabric with a subtle, irregular pattern, often used for scarves, sweaters, and cuffs to add visual interest without the firmness of traditional ribbing.</p>
+        </div>
+
+
+        <div class="section" id="Sand">
+            <h1>Sand</h1>
+            <p>The sand stitch is a textured knitting pattern that creates a soft, bumpy effect resembling grains of sand. It is typically worked by alternating knit and purl stitches in a specific sequence, often in a two-stitch or four-stitch repeat. This creates a fabric with a subtle, uneven texture that is both visually interesting and comfortable. Sand stitch is often used for scarves, blankets, and other accessories, as it provides both structure and a gentle, tactile feel. It is similar to seed stitch but with a more uniform and slightly gentler texture.</p>
+        </div>
+
+
+        <div class="section" id="BeadedRib">
+            <h1>Beaded Rib</h1>
+            <p>The beaded rib stitch is a decorative knitting pattern that combines the structure of ribbing with beads or other embellishments, adding texture and visual interest to the fabric. Typically, it involves knitting and purling in a ribbing pattern, with beads being added at specific intervals or stitches within the pattern. The beads are usually threaded onto the yarn before being knitted into place, creating small, raised bumps that add a touch of sparkle or texture. This stitch is commonly used for scarves, shawls, and accessories where a bit of flair is desired.</p>
+        </div>
+
+
+        <div class="section" id="SeededRib">
+            <h1>Seeded Rib</h1>
+            <p>The seeded rib stitch is a textured knitting pattern that combines the structure of ribbing with the bumpy texture of seed stitch. It typically alternates between knit and purl stitches in a staggered manner, creating a ribbed effect, while the purls are placed in such a way that they form a "seeded" or bumpy texture. This stitch creates a fabric that is stretchy, textured, and visually interesting, offering a subtle, woven look. Seeded rib is often used for scarves, cuffs, and edges, providing a neat, elastic finish without the curling tendency of traditional stockinette.</p>
+        </div>
+
+        <div class="section" id="DoubleMoss">
+            <h1>Double Moss</h1>
+            <p>The double moss stitch is a textured knitting pattern that creates a dense, bumpy fabric with a balanced, woven appearance. It involves alternating knit and purl stitches in a specific sequence, typically using two knit stitches and two purl stitches in a staggered pattern. The pattern is worked in a repeat every few rows, with the position of the knit and purl stitches shifting each row to create a textured effect. The double moss stitch is thicker and more textured than single moss stitch, making it ideal for scarves, blankets, and other accessories where a durable, tactile texture is desired.</p>
+        </div>
+
+
+        <div class="section" id="IrishMoss">
+            <h1>Irish Moss</h1>
+            <p>The Irish moss stitch is a textured knitting pattern that combines knit and purl stitches to create a dense, slightly raised pattern. It typically involves alternating knit and purl stitches within a row, with the pattern shifting every few rows to create a staggered, moss-like effect. This stitch creates a fabric with subtle texture and a reversible pattern, making it suitable for scarves, blankets, and other accessories. The Irish moss stitch is known for its clean, structured look, providing both elasticity and visual interest without curling at the edges.</p>
+        </div>
+
+
+        <div class="section" id="PerlRidge">
+            <h1>Perl Ridge</h1>
+            <p>The Perl Ridge stitch is a textured knitting pattern that creates a series of ridges on the fabric, giving it a soft, bumpy texture. It is worked by alternating rows of knit stitches and purl stitches, typically with a simple pattern of knitting one row and purling the next. This creates raised ridges on the right side of the fabric, while the wrong side remains smooth. Perl Ridge stitch is commonly used in scarves, blankets, and other accessories, providing a subtle texture that adds visual interest without being too bulky. It is easy to learn and creates a cozy, cushioned fabric.</p>
+        </div>
+
+
+        <div class="section" id="Waffle">
+            <h1>Waffle</h1>
+            <p>The waffle stitch is a textured knitting pattern that creates a raised, grid-like design, resembling the appearance of a waffle. It typically involves alternating between knit and purl stitches in a specific pattern, often using a combination of knit 2, purl 2 in one row, and then shifting the pattern slightly in the following rows. The result is a thick, cushioned fabric with a distinctive, square-shaped texture. Waffle stitch is commonly used in blankets, dishcloths, and scarves, offering both visual interest and warmth due to its dense structure.</p>
+        </div>
+
+
+        <div class="section" id="ReverseRidge">
+            <h1>Reverse Ridge</h1>
+            <p>The Reverse Ridge stitch is a textured knitting pattern that creates raised ridges on the wrong side of the fabric, contrasting with the smoother right side. It is typically worked by alternating knit and purl stitches in a specific sequence, often using knit stitches on the wrong side and purl stitches on the right side, or vice versa. The pattern results in a subtle, bumpy texture that provides a bit of elasticity and visual interest. Reverse Ridge stitch is often used for edges, scarves, and other accessories, offering a clean and slightly textured finish without curling at the edges.</p>
+        </div>
+
+
+        <div class="section" id="DiagonalSeed">
+            <h1>Diagonal Seed</h1>
+            <p>The Diagonal Seed stitch is a variation of the traditional seed stitch that creates a diagonal pattern of textured bumps across the fabric. It is typically worked by alternating knit and purl stitches, with the sequence shifting every few rows to form the diagonal effect. The result is a fabric with a distinctive, slanted texture that adds visual interest and dimension. Diagonal Seed stitch is often used for scarves, blankets, and garments, providing both a smooth surface and a textured, dynamic look. It's a great choice for projects where you want a subtle, yet engaging pattern.</p>
+        </div>
+
+
+        <div class="section" id="Raindrops">
+            <h1>Raindrops</h1>
+            <p>The Raindrops stitch is a textured knitting pattern that creates a series of raised, droplet-like shapes across the fabric, resembling falling raindrops. This stitch is typically worked by creating a combination of knit and purl stitches, often with some decreases and yarn overs to form the distinctive teardrop shapes. The result is a fabric with a soft, bumpy texture that is both visually appealing and tactile. Raindrops stitch is commonly used in scarves, shawls, and blankets, offering a delicate and elegant design with a bit of texture.</p>
+        </div>
+
+
+        <div class="section" id="PennantPleating">
+            <h1>Pennant Pleating</h1>
+            <p>The Pennant Pleating stitch is a textured knitting pattern that creates a series of triangular, pleated shapes resembling pennants or flags. This stitch typically involves alternating between knit and purl stitches, along with some increases and decreases, to form the pleated effect. The result is a fabric with a unique, sculptural texture that adds depth and visual interest. Pennant Pleating is often used in decorative projects like scarves, shawls, or garments, providing a striking, dimensional pattern that stands out and adds a touch of elegance.</p>
+        </div>
+
+
+        <div class="section" id="ChevronRib">
+            <h1>Chevron Rib</h1>
+            <p>The Chevron Rib stitch is a textured knitting pattern that combines the structure of ribbing with a zigzag or V-shaped chevron pattern. It is typically created by alternating knit and purl stitches in a way that shifts the pattern every few rows, forming angled lines that resemble a series of chevrons. This stitch results in a fabric with a pronounced, dynamic texture and a bit of stretch. Chevron Rib is commonly used in scarves, sweaters, and other accessories to add both visual interest and elasticity, offering a stylish, textured look.</p>
+        </div>
+
+        <div class="section" id="DiamondBrocade">
+            <h1>Diamond Brocade</h1>
+            <p>The Diamond Brocade stitch is a decorative knitting pattern that creates a textured, diamond-shaped design on the fabric. It typically combines knit and purl stitches in a specific sequence, often with cable-like techniques or slipped stitches, to form the intricate diamond shapes. This stitch results in a fabric with a rich, textured appearance, often resembling woven or embroidered patterns. Diamond Brocade is commonly used for scarves, blankets, and garments, adding an elegant, refined look with a bit of depth and structure.</p>
+        </div>
+
+        <div class="section" id="WideBasketWeave">
+            <h1>Wide Basket Weave</h1>
+            <p>The Wide Basket Weave stitch is a textured knitting pattern that creates a thick, woven appearance resembling a basket. It is achieved by alternating blocks of knit and purl stitches, typically working several stitches in one direction (knit or purl) before switching to the other direction. The "wide" aspect refers to using larger blocks of knit and purl stitches, which creates a bolder, more pronounced woven effect compared to the standard basket weave. This stitch is often used in blankets, scarves, and sweaters, offering a cozy, durable fabric with a visually appealing, structured texture.</p>
+        </div>
+
+        <div class="section" id="Caterpillar">
+            <h1>Caterpillar</h1>
+            <p>The Caterpillar stitch is a textured knitting pattern that creates a series of raised, segmented shapes, resembling the body of a caterpillar. It is typically worked by alternating knit and purl stitches in a specific sequence, often incorporating increases and decreases to form the bumpy, segmented effect. This stitch results in a fabric with a fun, playful texture that adds depth and visual interest. The Caterpillar stitch is commonly used in scarves, blankets, and other accessories, providing a unique, whimsical design that stands out.</p>
+        </div>
+
+        <div class="section" id="DiagonalChevronZigzag">
+            <h1>Diagonal Chevron Zigzag</h1>
+            <p>The Diagonal Chevron Zigzag stitch is a textured knitting pattern that creates a series of angled, zigzag lines running diagonally across the fabric. It is typically worked by alternating knit and purl stitches in a sequence that shifts every few rows, forming sharp, V-shaped chevrons. The result is a dynamic, slanted pattern that adds movement and visual interest to the fabric. This stitch is commonly used in scarves, blankets, and shawls, providing a bold, geometric design with a strong diagonal effect.</p>
+        </div>
+
+        <div class="section" id="EdgeStitch">
+            <h1>Edge Stitch</h1>
+            <p>The Edge Stitch is a simple and functional knitting pattern often used for finishing the edges of projects. It typically involves working a series of knit stitches along the edge of a piece, often combined with a purl stitch or a slip stitch on alternate rows, to create a neat, clean border. This stitch prevents the edges from curling and gives a polished, structured finish. The Edge Stitch is commonly used for scarves, shawls, blankets, and the edges of garments, providing a subtle yet effective way to frame the project and enhance its overall appearance.</p>
+        </div>
+
+        <div class="section" id="FanFlare">
+            <h1>Fan Flare</h1>
+            <p>The Fan Flare stitch is a decorative knitting pattern that creates a fan-like, flared shape within the fabric. It typically involves a combination of increases and decreases to shape the fabric into a series of rounded or triangular "fan" motifs. The stitch creates a visually striking texture, with the fans often radiating out in a curved or flared fashion. This stitch is commonly used in shawls, scarves, and other accessories to add a soft, elegant flare, providing a feminine, airy look with a sense of movement.</p>
+        </div>
+
+        <div class="section" id="LaceCable">
+            <h1>Lace Cable</h1>
+            <p>The Lace Cable stitch is a knitting pattern that combines the delicate, openwork design of lace with the twisting, braided effect of cables. It typically involves working a series of cable twists, often using a cable needle, while also incorporating lace techniques like yarn overs and decreases to create holes and airy spaces in the fabric. This stitch results in a fabric with both texture and openness, offering a sophisticated, intricate look. Lace Cable is commonly used in shawls, scarves, and delicate garments, adding elegance and visual interest through its combination of twisted cables and lacework.</p>
+        </div>
+
+        <div class="section" id="Teardrop">
+            <h1>Teardrop</h1>
+            <p>The Teardrop stitch is a decorative knitting pattern that creates a series of elongated, tear-shaped motifs within the fabric. It is typically worked by combining increases and decreases, along with yarn overs, to form the pointed, droplet-like shapes. The stitch gives a delicate, airy appearance with a subtle, flowing texture. Teardrop stitch is often used in lace shawls, scarves, or garments, providing an elegant and feminine design that adds both visual interest and a sense of movement to the fabric.</p>
+        </div>
+
+        <div class="section" id="Honeycomb">
+            <h1>Honeycomb</h1>
+            <p>The Honeycomb stitch is a textured knitting pattern that creates a series of hexagonal or honeycomb-like shapes across the fabric. It is typically worked by alternating knit and purl stitches in a specific sequence, often incorporating decreases and yarn overs to form the distinct, raised cells that resemble a honeycomb structure. This stitch creates a thick, cushioned fabric with a subtle, geometric texture. Honeycomb stitch is commonly used in blankets, scarves, and garments, offering both visual appeal and warmth due to its dense, structured pattern.</p>
+        </div>
+
+        <div class="section" id="FishermansRib">
+            <h1>Fisherman's Rib</h1>
+            <p>The Fisherman's Rib stitch is a textured knitting pattern that creates a thick, stretchy, and cozy fabric with a soft, ridged texture. It is typically worked by knitting one stitch in the usual manner and then working a knit stitch into the row below, creating a fabric with pronounced vertical ribs. This stitch gives a plush, lofty feel, similar to the texture of a ribbed fabric but with more depth. Fisherman's Rib is often used for scarves, blankets, and garments where warmth, elasticity, and texture are desired. It's particularly popular for its ability to create a dense, insulating fabric.</p>
+        </div>
+
+        <div class="section" id="RidgedFeather">
+            <h1>Ridged Feather</h1>
+            <p>The Ridged Feather stitch is a decorative knitting pattern that combines the appearance of feather-like motifs with textured ridges. It typically involves alternating knit and purl stitches in a specific sequence, creating a fabric with subtle, raised lines (the "ridges") and soft, flowing shapes that resemble feathers. The result is a fabric with both depth and movement, making it visually interesting and tactile. Ridged Feather stitch is commonly used for scarves, shawls, and other accessories, offering a delicate, textured look with a touch of elegance and fluidity.</p>
+        </div>
+
+    <script>
+        // Smooth scrolling when a link is clicked in the sidebar
+        document.querySelectorAll('.sidebar a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
