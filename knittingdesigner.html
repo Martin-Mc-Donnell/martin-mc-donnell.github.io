@@ -204,14 +204,17 @@
 
             for (let i = 0; i < cells.length; i++) {
                 const cell = cells[i];
-                const color = cell.style.backgroundColor;
                 const stitch = cell.textContent;
 
-                if (color) {
-                    chart += `[${color}]`; // Represent colors with brackets
+                if (stitch.length > 0) {
+                    chart += stitch;
+                    if (stitch.length == 1) {
+                        chart += ' ';
+                    }
                 } else {
-                    chart += stitch || '.'; // Use '.' for empty cells
+                    chart += '. '; // Use '.' for empty cells
                 }
+                chart += '|';
 
                 if ((i + 1) % cols === 0) {
                     chart += '\n'; // New row after every specified number of columns

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Render of Sword and Shield with Strap</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #000;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    // Setup scene, camera, and renderer
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    scene.background = new THREE.Color(0x546d20);
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(1, 1, 99);
+    scene.add(directionalLight);
+
+    // Sword blade
+    const bladeGeometry = new THREE.BoxGeometry(0.2, 4, 0.1); // Long, thin rectangle
+    const bladeMaterial = new THREE.MeshStandardMaterial({
+      color: 0xcccccc, // Silver/metallic color
+      metalness: 0.8,
+      roughness: 0.2,
+    });
+    const blade = new THREE.Mesh(bladeGeometry, bladeMaterial);
+    blade.position.y = 1; // Move blade up
+    scene.add(blade);
+
+    // Custom rectangular pyramid tip
+    const tipGeometry = new THREE.BufferGeometry();
+    const tipVertices = new Float32Array([
+      // Base vertices
+      -0.09, 0, -0.05, // Bottom-left
+       0.09, 0, -0.05, // Bottom-right
+       0.07, 0,  0.05, // Top-right
+      -0.07, 0,  0.05, // Top-left
+      // Tip vertex
+       0, 0.5, 0,       // Top point of the pyramid
+    ]);
+
+    // Faces of the pyramid (indices)
+    const tipIndices = [
+      0, 1, 4, // Front face
+      1, 2, 4, // Right face
+      2, 3, 4, // Back face
+      3, 0, 4, // Left face
+      0, 1, 2, // Base triangle 1
+      0, 2, 3, // Base triangle 2
+    ];
+
+    // Assign vertices and faces to the geometry
+    tipGeometry.setAttribute('position', new THREE.BufferAttribute(tipVertices, 3));
+    tipGeometry.setIndex(tipIndices);
+    tipGeometry.computeVertexNormals(); // Calculate normals for lighting
+
+    // Material and mesh for the tip
+    const tipMaterial = new THREE.MeshStandardMaterial({
+      color: 0xcccccc, // Same as the blade
+      metalness: 0.8,
+      roughness: 0.2,
+    });
+    const bladeTip = new THREE.Mesh(tipGeometry, tipMaterial);
+    bladeTip.position.set(0, 3, 0); // Adjusted to sit at the top of the blade
+    scene.add(bladeTip);
+
+    // Crossguard
+    const crossguardGeometry = new THREE.BoxGeometry(1, 0.1, 0.2);
+    const crossguardMaterial = new THREE.MeshStandardMaterial({
+      color: 0x555555,
+      metalness: 0.6,
+      roughness: 0.3,
+    });
+    const crossguard = new THREE.Mesh(crossguardGeometry, crossguardMaterial);
+    crossguard.position.y = -1; // Position at the bottom of the blade
+    scene.add(crossguard);
+
+    // Hilt (handle)
+    const hiltGeometry = new THREE.CylinderGeometry(0.1, 0.1, 1.05, 32);
+    const hiltMaterial = new THREE.MeshStandardMaterial({
+      color: 0x8b4513, // Dark brown handle
+    });
+    const hilt = new THREE.Mesh(hiltGeometry, hiltMaterial);
+    hilt.position.y = -1.6; // Below the cross guard
+    scene.add(hilt);
+
+    // Pommel
+    const pommelGeometry = new THREE.SphereGeometry(0.15, 50, 32);
+    const pommelMaterial = new THREE.MeshStandardMaterial({
+      color: 0x555555,
+      metalness: 0.7,
+      roughness: 0.3,
+    });
+    const pommel = new THREE.Mesh(pommelGeometry, pommelMaterial);
+    pommel.position.y = -2.2; // At the end of the hilt
+    scene.add(pommel);
+
+    // Shield
+    const shieldGeometry = new THREE.CylinderGeometry(2.5, 3, 0.2, 64);
+    const shieldMaterial = new THREE.MeshStandardMaterial({
+      color: 0x777777,
+      metalness: 0.8,
+      roughness: 0.3,
+    });
+    const shield = new THREE.Mesh(shieldGeometry, shieldMaterial);
+    shield.position.set(-4, 1, 0); // Position to the left of the sword
+    shield.rotation.x = Math.PI / 2; // Face the shield forward
+    scene.add(shield);
+
+    // Leather strap for the shield
+    const strapGeometry = new THREE.TorusGeometry(1, 0.1, 16, 100, 3.14); // Halve the torus for one side
+    const strapMaterial = new THREE.MeshStandardMaterial({
+      color: 0x8b4513, // Brown leather look
+      metalness: 0.2,
+      roughness: 0.8,
+    });
+    const strap = new THREE.Mesh(strapGeometry, strapMaterial);
+    strap.position.set(-4, 1, -0.3);
+    strap.rotation.x = Math.PI/2;
+    strap.rotation.z = Math.PI;
+    
+    scene.add(strap);
+
+    // Camera positioning
+    camera.position.z = 8;
+
+    // Animation loop
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Rotate the sword and shield
+      bladeTip.rotation.y += 0.01;
+      blade.rotation.y += 0.01;
+      crossguard.rotation.y += 0.01;
+      hilt.rotation.y += 0.01;
+      pommel.rotation.y += 0.01;
+      shield.rotation.z -= 0.01;
+      strap.rotation.z -= 0.01;
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // Resize handling
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
