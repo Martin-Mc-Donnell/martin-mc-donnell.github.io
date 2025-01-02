@@ -44,6 +44,7 @@
     });
     const blade = new THREE.Mesh(bladeGeometry, bladeMaterial);
     blade.position.y = 1; // Move blade up
+    blade.position.x = 3;
     scene.add(blade);
 
     // Custom rectangular pyramid tip
@@ -81,6 +82,7 @@
     });
     const bladeTip = new THREE.Mesh(tipGeometry, tipMaterial);
     bladeTip.position.set(0, 3, 0); // Adjusted to sit at the top of the blade
+    bladeTip.position.x = 3;
     scene.add(bladeTip);
 
     // Crossguard
@@ -92,6 +94,7 @@
     });
     const crossguard = new THREE.Mesh(crossguardGeometry, crossguardMaterial);
     crossguard.position.y = -1; // Position at the bottom of the blade
+    crossguard.position.x = 3;
     scene.add(crossguard);
 
     // Hilt (handle)
@@ -101,6 +104,7 @@
     });
     const hilt = new THREE.Mesh(hiltGeometry, hiltMaterial);
     hilt.position.y = -1.6; // Below the cross guard
+    hilt.position.x = 3;
     scene.add(hilt);
 
     // Pommel
@@ -112,6 +116,7 @@
     });
     const pommel = new THREE.Mesh(pommelGeometry, pommelMaterial);
     pommel.position.y = -2.2; // At the end of the hilt
+    pommel.position.x = 3;
     scene.add(pommel);
 
     // Shield
@@ -122,7 +127,7 @@
       roughness: 0.3,
     });
     const shield = new THREE.Mesh(shieldGeometry, shieldMaterial);
-    shield.position.set(-4, 1, 0); // Position to the left of the sword
+    shield.position.set(-1, 1, 0);
     shield.rotation.x = Math.PI / 2; // Face the shield forward
     scene.add(shield);
 
@@ -134,7 +139,7 @@
       roughness: 0.8,
     });
     const strap = new THREE.Mesh(strapGeometry, strapMaterial);
-    strap.position.set(-4, 1, -0.3);
+    strap.position.set(-1, 1, -0.3);
     strap.rotation.x = Math.PI/2;
     strap.rotation.z = Math.PI;
     
@@ -169,3 +174,4 @@
     });
   </script>
 </body>
+</html>
