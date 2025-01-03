@@ -20,25 +20,31 @@
   <script>
     // Setup scene, camera, and renderer
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
     scene.background = new THREE.Color(0x546d20);
 
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
+    // Static Light (Ambient light)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(1, 1, 99);
-    scene.add(directionalLight);
+    // Static Light (Directional light)
+    const staticLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    staticLight.position.set(5, 5, 5);
+    scene.add(staticLight);
+
+    // Blue Dynamic Light (Moving point light)
+    const dynamicLight = new THREE.PointLight(0x7ab2d6, 1, 50);
+    dynamicLight.position.set(0, 5, 0);
+    scene.add(dynamicLight);
 
     // Sword blade
-    const bladeGeometry = new THREE.BoxGeometry(0.2, 4, 0.1); // Long, thin rectangle
+    const bladeGeometry = new THREE.BoxGeometry(0.2, 4, 0.1);
     const bladeMaterial = new THREE.MeshStandardMaterial({
-      color: 0xcccccc, // Silver/metallic color
+      color: 0xcccccc,
       metalness: 0.8,
       roughness: 0.2,
     });
@@ -47,33 +53,30 @@
     blade.position.x = 3;
     scene.add(blade);
 
-    // Custom rectangular pyramid tip
+    // Blade tip
     const tipGeometry = new THREE.BufferGeometry();
     const tipVertices = new Float32Array([
-      // Base vertices
-      -0.09, 0, -0.05, // Bottom-left
-       0.09, 0, -0.05, // Bottom-right
-       0.07, 0,  0.05, // Top-right
-      -0.07, 0,  0.05, // Top-left
-      // Tip vertex
-       0, 0.5, 0,       // Top point of the pyramid
+    // Base vertices
+    -0.09, 0, -0.05, // Bottom-left
+    0.09, 0, -0.05, // Bottom-right
+    0.07, 0,  0.05, // Top-right
+    -0.07, 0,  0.05, // Top-left
+    // Tip vertex
+    0, 0.5, 0,       // Top point of the pyramid
     ]);
-
     // Faces of the pyramid (indices)
     const tipIndices = [
-      0, 1, 4, // Front face
-      1, 2, 4, // Right face
-      2, 3, 4, // Back face
-      3, 0, 4, // Left face
-      0, 1, 2, // Base triangle 1
-      0, 2, 3, // Base triangle 2
+        0, 1, 4, // Front face
+        1, 2, 4, // Right face
+        2, 3, 4, // Back face
+        3, 0, 4, // Left face
+        0, 1, 2, // Base triangle 1
+        0, 2, 3, // Base triangle 2
     ];
-
     // Assign vertices and faces to the geometry
     tipGeometry.setAttribute('position', new THREE.BufferAttribute(tipVertices, 3));
     tipGeometry.setIndex(tipIndices);
-    tipGeometry.computeVertexNormals(); // Calculate normals for lighting
-
+    tipGeometry.computeVertexNormals();
     // Material and mesh for the tip
     const tipMaterial = new THREE.MeshStandardMaterial({
       color: 0xcccccc, // Same as the blade
@@ -140,9 +143,8 @@
     });
     const strap = new THREE.Mesh(strapGeometry, strapMaterial);
     strap.position.set(-1, 1, -0.3);
-    strap.rotation.x = Math.PI/2;
+    strap.rotation.x = Math.PI / 2;
     strap.rotation.z = Math.PI;
-    
     scene.add(strap);
 
     // Camera positioning
@@ -160,6 +162,10 @@
       pommel.rotation.y += 0.01;
       shield.rotation.z -= 0.01;
       strap.rotation.z -= 0.01;
+
+      // Dynamic lighting effect - make the dynamic light move in a circular motion
+      dynamicLight.position.x = Math.sin(Date.now() * 0.001) * 5;
+      dynamicLight.position.z = Math.cos(Date.now() * 0.001) * 5;
 
       renderer.render(scene, camera);
     }
