@@ -29,7 +29,6 @@
             margin-bottom: 20px;
             width: 90%;
             padding: 10px;
-            box-sizing: border-box;
         }
 
         .controls select,
@@ -41,7 +40,7 @@
             border: 1px solid #ccc;
             cursor: pointer;
             flex: 1;
-            min-width: 90px;
+            min-width: 70px;
         }
 
         .controls button {
@@ -78,13 +77,6 @@
                 flex-direction: column;
                 gap: 5px;
             }
-
-            .controls select,
-            .controls input[type="color"],
-            .controls input[type="text"],
-            .controls button {
-                width: 50%;
-            }
         }
     </style>
 </head>
@@ -103,33 +95,11 @@
             <option value="O">Yarn Over (O)</option>
         </select>
         <input type="color" id="colorPicker" value="#ffffff" style="background-color: #ffffff;">
-        <select id="rowsPicker">
-            <option value="5">5 rows</option>
-            <option value="10">10 rows</option>
-            <option value="15">15 rows</option>
-            <option value="20" selected>20 rows</option>
-            <option value="25">25 rows</option>
-            <option value="30">30 rows</option>
-            <option value="35">35 rows</option>
-            <option value="40">40 rows</option>
-            <option value="45">45 rows</option>
-            <option value="50">50 rows</option>
-        </select>
-        <select id="colsPicker">
-            <option value="5">5 columns</option>
-            <option value="10">10 columns</option>
-            <option value="15">15 columns</option>
-            <option value="20" selected>20 columns</option>
-            <option value="25">25 columns</option>
-            <option value="30">30 columns</option>
-            <option value="35">35 columns</option>
-            <option value="40">40 columns</option>
-            <option value="45">45 columns</option>
-            <option value="50">50 columns</option>
-        </select>
-        <input type="text" id="fileNameInput" placeholder="File name">
+        <input type="text" id="rowsInput" placeholder="Rows (3-100)" value="20">
+        <input type="text" id="colsInput" placeholder="Columns (3-100)" value="20">
         <button id="resizeButton">Resize Grid</button>
         <button id="clearButton">Clear Grid</button>
+        <input type="text" id="fileNameInput" placeholder="File name">
         <button id="downloadButton">Download Chart</button>
     </div>
 
@@ -142,8 +112,8 @@
         const clearButton = document.getElementById('clearButton');
         const downloadButton = document.getElementById('downloadButton');
         const resizeButton = document.getElementById('resizeButton');
-        const rowsPicker = document.getElementById('rowsPicker');
-        const colsPicker = document.getElementById('colsPicker');
+        const rowsInput = document.getElementById('rowsInput');
+        const colsInput = document.getElementById('colsInput');
         const fileNameInput = document.getElementById('fileNameInput');
 
         function createGrid(rows, cols) {
@@ -181,11 +151,23 @@
         // Initial grid creation
         createGrid(20, 20);
 
+        // Validate input
+        function validateInput(value) {
+            const num = parseInt(value, 10);
+            return !isNaN(num) && num >= 3 && num <= 100;
+        }
+
         // Resize grid
         resizeButton.addEventListener('click', () => {
-            const rows = parseInt(rowsPicker.value, 10);
-            const cols = parseInt(colsPicker.value, 10);
-            createGrid(rows, cols);
+            const rows = rowsInput.value.trim();
+            const cols = colsInput.value.trim();
+
+            if (!validateInput(rows) || !validateInput(cols)) {
+                alert('Please enter valid numbers between 3 and 100 for rows and columns.');
+                return;
+            }
+
+            createGrid(parseInt(rows, 10), parseInt(cols, 10));
         });
 
         // Clear grid
@@ -200,7 +182,7 @@
         downloadButton.addEventListener('click', () => {
             let chart = '';
             const cells = document.querySelectorAll('.cell');
-            const cols = parseInt(colsPicker.value, 10);
+            const cols = parseInt(colsInput.value, 10);
 
             for (let i = 0; i < cells.length; i++) {
                 const cell = cells[i];
