@@ -303,24 +303,24 @@
         }
 
         function rotateFront(direction) {
-            rotateFace(faces.front, direction);
-
-            // Handle adjacent faces
+            // Get the rows/columns of adjacent faces that also rotate
             const leftCol = getColumn(faces.left, 2);
             const topRow = getRow(faces.top, 2);
             const rightCol = getColumn(faces.right, 0);
             const bottomRow = getRow(faces.bottom, 0);
 
-            if (direction === 'counterclockwise') {
-                setColumn(faces.left, 2, bottomRow.reverse());
+            if (direction === 'clockwise') {
+            	rotateFace(faces.front, 'counterclockwise');
+                setColumn(faces.left, 2, bottomRow);
                 setRow(faces.top, 2, leftCol);
-                setColumn(faces.right, 0, topRow.reverse());
+                setColumn(faces.right, 0, topRow);
                 setRow(faces.bottom, 0, rightCol);
-            } else if (direction === 'clockwise') {
+            } else if (direction === 'counterclockwise') {
+            	rotateFace(faces.front, 'clockwise');
                 setColumn(faces.left, 2, topRow);
-                setRow(faces.top, 2, rightCol.reverse());
+                setRow(faces.top, 2, rightCol);
                 setColumn(faces.right, 0, bottomRow);
-                setRow(faces.bottom, 0, leftCol.reverse());
+                setRow(faces.bottom, 0, leftCol);
             }
         }
 
