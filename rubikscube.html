@@ -311,12 +311,12 @@
             const rightCol = getColumn(faces.right, 0);
             const bottomRow = getRow(faces.bottom, 0);
 
-            if (direction === 'clockwise') {
+            if (direction === 'counterclockwise') {
                 setColumn(faces.left, 2, bottomRow.reverse());
                 setRow(faces.top, 2, leftCol);
                 setColumn(faces.right, 0, topRow.reverse());
                 setRow(faces.bottom, 0, rightCol);
-            } else if (direction === 'counterclockwise') {
+            } else if (direction === 'clockwise') {
                 setColumn(faces.left, 2, topRow);
                 setRow(faces.top, 2, rightCol.reverse());
                 setColumn(faces.right, 0, bottomRow);
