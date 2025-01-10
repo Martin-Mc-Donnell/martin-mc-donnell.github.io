@@ -22,6 +22,10 @@
             text-align: center;
         }
 
+        label {
+            padding-top: 12px;
+        }
+
         .controls {
             display: flex;
             flex-wrap: wrap;
@@ -35,6 +39,7 @@
         .controls select,
         .controls input[type="color"],
         .controls input[type="text"],
+        .controls input[type="range"],
         .controls button {
             padding: 10px;
             border-radius: 5px;
@@ -60,12 +65,10 @@
         }
 
         .cell {
-            width: 30px;
-            height: 30px;
             background-color: white;
             border: 1px solid #ccc;
             text-align: center;
-            font-size: 22px;
+            font-size: 16px;
             cursor: pointer;
         }
 
@@ -82,13 +85,6 @@
             justify-content: center;
             background-color: #f9f9f9;
         }
-
-        .grid {
-            display: grid;
-            gap: 1px;
-            background-color: #ddd;
-        }
-
 
         @media (max-width: 300px) {
             .controls {
@@ -116,6 +112,8 @@
         <input type="text" id="rowsInput" placeholder="Rows (3-100)" value="20">
         <input type="text" id="colsInput" placeholder="Columns (3-100)" value="20">
         <button id="resizeButton">Resize Grid</button>
+        <label for="scaleSlider">Cell Size</label>
+        <input type="range" id="scaleSlider" min="10" max="50" value="20">
         <button id="clearButton">Clear Grid</button>
         <input type="text" id="fileNameInput" placeholder="File name">
         <button id="downloadButton">Download Chart</button>
@@ -132,34 +130,54 @@
         const clearButton = document.getElementById('clearButton');
         const downloadButton = document.getElementById('downloadButton');
         const resizeButton = document.getElementById('resizeButton');
+        const scaleSlider = document.getElementById('scaleSlider');
         const rowsInput = document.getElementById('rowsInput');
         const colsInput = document.getElementById('colsInput');
         const fileNameInput = document.getElementById('fileNameInput');
 
+        let currentCellSize = parseInt(scaleSlider.value, 10);
+        let gridData = [];
+
         function createGrid(rows, cols) {
             grid.innerHTML = '';
-            grid.style.gridTemplateColumns = `repeat(${cols}, 30px)`;
-            grid.style.gridTemplateRows = `repeat(${rows}, 30px)`;
+            grid.style.gridTemplateColumns = `repeat(${cols}, ${currentCellSize}px)`;
+            grid.style.gridTemplateRows = `repeat(${rows}, ${currentCellSize}px)`;
 
-            for (let i = 0; i < rows * cols; i++) {
-                const cell = document.createElement('div');
-                cell.classList.add('cell');
+            for (let row = 0; row < rows; row++) {
+                gridData[row] = gridData[row] || []; // Store existing row data
+                for (let col = 0; col < cols; col++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    cell.style.width = `${currentCellSize}px`;
+                    cell.style.height = `${currentCellSize}px`;
+                    cell.style.fontSize = `${currentCellSize}px`;
 
-                // Add behavior for cell clicks
-                cell.addEventListener('click', () => {
-                    const selectedColor = colorPicker.value;
-                    const selectedStitch = stitchPicker.value;
-
-                    if (selectedColor) {
-                        cell.style.backgroundColor = selectedColor;
+                    // Restore saved data
+                    if (gridData[row][col]) {
+                        cell.style.backgroundColor = gridData[row][col].color || 'white';
+                        cell.textContent = gridData[row][col].stitch || '';
+                    } else {
+                        gridData[row][col] = { color: 'white', stitch: '' }; // Initialize empty cell
                     }
 
-                    if (selectedStitch) {
-                        cell.textContent = selectedStitch;
-                    }
-                });
+                    // Add behavior for cell clicks
+                    cell.addEventListener('click', () => {
+                        const selectedColor = colorPicker.value;
+                        const selectedStitch = stitchPicker.value;
 
-                grid.appendChild(cell);
+                        if (selectedColor) {
+                            cell.style.backgroundColor = selectedColor;
+                            gridData[row][col].color = selectedColor;
+                        }
+
+                        if (selectedStitch) {
+                            cell.textContent = selectedStitch;
+                            gridData[row][col].stitch = selectedStitch;
+                        }
+                    });
+
+                    grid.appendChild(cell);
+                }
             }
         }
 
@@ -168,14 +186,16 @@
             colorPicker.style.backgroundColor = colorPicker.value;
         });
 
-        // Initial grid creation
-        createGrid(20, 20);
-
         // Validate input
         function validateInput(value) {
             const num = parseInt(value, 10);
             return !isNaN(num) && num >= 3 && num <= 100;
         }
+
+        // Initial grid creation
+        const initialRows = parseInt(rowsInput.value, 10);
+        const initialCols = parseInt(colsInput.value, 10);
+        createGrid(initialRows, initialCols);
 
         // Resize grid
         resizeButton.addEventListener('click', () => {
@@ -187,11 +207,37 @@
                 return;
             }
 
-            createGrid(parseInt(rows, 10), parseInt(cols, 10));
+            // Update gridData to match the new grid size
+            const newRows = parseInt(rows, 10);
+            const newCols = parseInt(cols, 10);
+
+            const newGridData = [];
+            for (let row = 0; row < newRows; row++) {
+                newGridData[row] = [];
+                for (let col = 0; col < newCols; col++) {
+                    newGridData[row][col] = (gridData[row] && gridData[row][col]) || { color: 'white', stitch: '' };
+                }
+            }
+
+            gridData = newGridData;
+            createGrid(newRows, newCols);
+        });
+
+        // Scale grid cells
+        scaleSlider.addEventListener('input', () => {
+            currentCellSize = parseInt(scaleSlider.value, 10); // Update cell size
+            const rows = parseInt(rowsInput.value, 10);
+            const cols = parseInt(colsInput.value, 10);
+            createGrid(rows, cols); // Recreate grid with new size
         });
 
         // Clear grid
         clearButton.addEventListener('click', () => {
+            gridData.forEach(row => row.forEach(cell => {
+                cell.color = 'white';
+                cell.stitch = '';
+            }));
+
             document.querySelectorAll('.cell').forEach(cell => {
                 cell.textContent = '';
                 cell.style.backgroundColor = 'white';
@@ -201,30 +247,16 @@
         // Download design
         downloadButton.addEventListener('click', () => {
             let chart = '';
-            const cells = document.querySelectorAll('.cell');
-            const cols = parseInt(colsInput.value, 10);
-
-            for (let i = 0; i < cells.length; i++) {
-                const cell = cells[i];
-                const stitch = cell.textContent;
-
-                if (stitch.length > 0) {
-                    chart += stitch;
-                    if (stitch.length == 1) {
-                        chart += ' ';
-                    }
-                } else {
-                    chart += '. '; // Use '.' for empty cells
-                }
-                chart += '|';
-
-                if ((i + 1) % cols === 0) {
-                    chart += '\n'; // New row after every specified number of columns
-                }
-            }
+            gridData.forEach(row => {
+                row.forEach(cell => {
+                    const stitch = cell.stitch || '.';
+                    chart += stitch.length === 1 ? stitch + ' ' : stitch;
+                    chart += '|';
+                });
+                chart += '\n';
+            });
 
             const fileName = fileNameInput.value.trim() || 'knitting-chart.txt';
-
             const blob = new Blob([chart], { type: 'text/plain' });
             const link = document.createElement('a');
             link.download = fileName;
