@@ -81,7 +81,7 @@
 
         #mix-button {
             position: absolute;
-            margin-top: 20px;
+            left: 50%;
             padding: 10px 20px;
             background-color: orange;
             color: black;
@@ -89,14 +89,17 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            bottom: 25px;
+            bottom: -70%;
         }
 
         #mix-button:hover {
             background-color: #555;
         }
 
-        /* Button positions */
+        #front-clockwise { top: -55%; left: -40%; }
+        #front-counterclockwise { top: -55%; right: -60%; }
+
+        /* Move Left/Right buttons */
         #top-row-left { top: 20%; left: -120px; transform: translateY(-50%); }
         #top-row-right { top: 20%; right: -120px; transform: translateY(-50%); }
         #middle-row-left { top: 50%; left: -120px; transform: translateY(-50%); }
@@ -148,6 +151,9 @@
                 <div style="background: yellow"></div><div style="background: yellow"></div><div style="background: yellow"></div>
             </div>
         </div>
+        <button id="mix-button">Mix</button>
+    <button id="front-clockwise" class="button" onclick="rotateFront('clockwise')">⟳</button>
+        <button id="front-counterclockwise" class="button" onclick="rotateFront('counterclockwise')">⟲</button>
 
         <!-- Surrounding buttons -->
         <button id="top-row-left" class="button" onclick="rotateRow(0, 'left')">⬅</button>
@@ -164,7 +170,6 @@
         <button id="right-column-up" class="button" onclick="rotateColumn(2, 'up')">⬆</button>
         <button id="right-column-down" class="button" onclick="rotateColumn(2, 'down')">⬇</button>
     </div>
-    <button id="mix-button">Mix</button>
 
     <script>
         const faces = {
@@ -295,6 +300,28 @@
                     let selectedButton = document.getElementById(randomButton);
                     selectedButton.click();
                 }
+        }
+
+        function rotateFront(direction) {
+            rotateFace(faces.front, direction);
+
+            // Handle adjacent faces
+            const leftCol = getColumn(faces.left, 2);
+            const topRow = getRow(faces.top, 2);
+            const rightCol = getColumn(faces.right, 0);
+            const bottomRow = getRow(faces.bottom, 0);
+
+            if (direction === 'clockwise') {
+                setColumn(faces.left, 2, bottomRow.reverse());
+                setRow(faces.top, 2, leftCol);
+                setColumn(faces.right, 0, topRow.reverse());
+                setRow(faces.bottom, 0, rightCol);
+            } else if (direction === 'counterclockwise') {
+                setColumn(faces.left, 2, topRow);
+                setRow(faces.top, 2, rightCol.reverse());
+                setColumn(faces.right, 0, bottomRow);
+                setRow(faces.bottom, 0, leftCol.reverse());
+            }
         }
 
         // Add event listener to the Mix button
