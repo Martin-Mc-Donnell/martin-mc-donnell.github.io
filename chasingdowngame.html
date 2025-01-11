@@ -39,7 +39,7 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 300px;
+            width: 350px;
             transform: translate(-50%, -50%);
             background: white;
             border: 2px solid #ccc;
@@ -81,13 +81,19 @@
         }
 
         .radio-buttons {
-            text-align: center;
-            margin: 10px 0;
+            vertical-align: middle;
+        }
+
+        pre {
+            font-family: Arial, sans-serif;
         }
 
         input[type="radio"] {
             margin-right: 10px;
             transform: scale(1.5);
+            margin-top: -3px;
+            vertical-align: middle;
+            margin-left: 9px;
         }
 
         .radio-buttons span {
@@ -100,7 +106,6 @@
         <h1 id="heading1">Chasing Down Game</h1>
         <section class="white-box" id="white-box">
             <button class="button" id="start-button">Start Game</button>
-            <div class="game-over-message hidden" id="game-over-message"></div>
             <form id="difficulty-form">
                 <div class="radio-buttons">
                     <label>
@@ -117,6 +122,7 @@
                     </label>
                 </div>
             </form>
+            <pre class="game-over-message hidden" id="game-over-message"></pre>
         </section>
         <img src="images/cat.png" id="cat-image" class="cat-image" alt="Cat Image">
         <div class="header-card">
@@ -181,7 +187,8 @@
             toggleVisibility(whiteBox, true);
             toggleVisibility(gameOverMessage, true);
             toggleVisibility(startButton, true);
-            gameOverMessage.textContent = `Game Over! You got caught!! Score: ${totalSeconds} seconds`;
+            gameOverMessage.textContent = `Game Over! You got caught!
+Score: ${totalSeconds} seconds`;
             stopTimer();
             window.removeEventListener('mousemove', updateMousePosition);
         };
