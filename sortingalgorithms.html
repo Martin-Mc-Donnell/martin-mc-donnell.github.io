@@ -55,6 +55,15 @@
             margin: 1px;
             display: inline-block;
         }
+
+        footer {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -66,19 +75,25 @@
             <button onclick="startSorting('bubble')">Bubble Sort</button>
             <button onclick="startSorting('selection')">Selection Sort</button>
             <button onclick="startSorting('insertion')">Insertion Sort</button>
-            <button onclick="startSorting('merge')">Merge Sort</button>
             <button onclick="startSorting('quick')">Quick Sort</button>
             <button onclick="startSorting('heap')">Heap Sort</button>
+            <button onclick="startSorting('merge')">Merge Sort</button>
         </section>
         <section class="visualization" id="visualization">
-            <!-- Array bars will be dynamically generated -->
         </section>
         <section class="pseudo-code">
             <pre id="code-display">Select an algorithm to see its average performance.</pre>
         </section>
+        <section class="pseudo-code">
+            <img src="images/bigograph.png" id="big-O-graph" alt="Cat Image">
+        </section>
+        <footer>
+            2024 Martin McDonnell
+        </footer>
     </main>
     <script>
         const visualization = document.getElementById("visualization");
+        const performanceLabel = document.getElementById("code-display");
         let stopAnimation = false; // Flag to stop animations
         let array = []; // The current array
 
@@ -315,28 +330,28 @@
                 stopAnimation = false; // Allow new animation to proceed
                 switch (type) {
                     case "bubble":
-                    	document.getElementById("code-display").textContent="O(n²)";
+                        performanceLabel.textContent="O(n²)";
                         bubbleSort([...array]);
                         break;
                     case "selection":
-                    	document.getElementById("code-display").textContent="O(n²)";
+                        performanceLabel.textContent="O(n²)";
                         selectionSort([...array]);
                         break;
                     case "insertion":
-                    	document.getElementById("code-display").textContent="O(n²)";
+                        performanceLabel.textContent="O(n²)";
                         insertionSort([...array]);
                         break;
-                    case "merge":
-                    	document.getElementById("code-display").textContent="O(n log n)";
-                        mergeSort([...array]);
-                        break;
                     case "quick":
-                    	document.getElementById("code-display").textContent="O(n log n)";
+                        performanceLabel.textContent="O(n log n)";
                         quickSort([...array]);
                         break;
                     case "heap":
-                    	document.getElementById("code-display").textContent="O(n log n)";
+                        performanceLabel.textContent="O(n log n)";
                         heapSort([...array]);
+                        break;
+                    case "merge":
+                        performanceLabel.textContent="O(n log n)";
+                        mergeSort([...array]);
                         break;
                     default:
                         console.log("Algorithm not implemented.");
