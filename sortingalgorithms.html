@@ -41,12 +41,12 @@
             border: 1px solid #ddd;
         }
 
-        .pseudo-code {
+        .info-blocks {
             margin: 1rem;
             padding: 1rem;
             background: #f1f1f1;
             border: 1px solid #ddd;
-            max-width: 800px;
+            max-width: 520px;
         }
 
         .array-bar {
@@ -64,6 +64,10 @@
             background-color: #6200ea;
             color: white;
             font-size: 10px;
+        }
+
+        pre {
+            white-space: pre-wrap;
         }
 
         button:hover {
@@ -96,10 +100,13 @@
         </section>
         <section class="visualization" id="visualization">
         </section>
-        <section class="pseudo-code">
-            <pre id="code-display">Select an algorithm to see its average performance.</pre>
+        <section class="info-blocks">
+            <pre id="algo-summary">Select an algorithm to see it's summary.</pre>
         </section>
-        <section class="pseudo-code">
+        <section class="info-blocks">
+            <pre id="big-o-performance">Select an algorithm to see it's average performance.</pre>
+        </section>
+        <section class="info-blocks">
             <img src="images/bigograph.png" id="big-O-graph" alt="Cat Image">
         </section>
         <footer>
@@ -108,7 +115,8 @@
     </main>
     <script>
         const visualization = document.getElementById("visualization");
-        const performanceLabel = document.getElementById("code-display");
+        const performanceLabel = document.getElementById("big-o-performance");
+        const summaryLabel = document.getElementById("algo-summary");
         let stopAnimation = false; // Flag to stop animations
         let array = []; // The current array
 
@@ -346,30 +354,37 @@
                 switch (type) {
                     case "bubble":
                         performanceLabel.textContent="O(n²)";
+                        summaryLabel.textContent="The bubble sort algorithm repeatedly compares adjacent elements in a list, swapping them if they are in the wrong order, until the entire list is sorted.";
                         bubbleSort([...array]);
                         break;
                     case "selection":
                         performanceLabel.textContent="O(n²)";
+                        summaryLabel.textContent="The selection sort algorithm repeatedly selects the smallest (or largest) element from the unsorted portion of the list and swaps it with the first unsorted element.";
                         selectionSort([...array]);
                         break;
                     case "insertion":
                         performanceLabel.textContent="O(n²)";
+                        summaryLabel.textContent="The insertion sort algorithm builds a sorted portion of the list one element at a time by repeatedly taking the next unsorted element and inserting it into its correct position within the sorted portion.";
                         insertionSort([...array]);
                         break;
                     case "quick":
                         performanceLabel.textContent="O(n log n)";
+                        summaryLabel.textContent="The quicksort algorithm sorts a list by selecting a pivot element, partitioning the list into elements less than and greater than the pivot, then recursively sorting the partitions.";
                         quickSort([...array]);
                         break;
                     case "heap":
                         performanceLabel.textContent="O(n log n)";
+                        summaryLabel.textContent="The heap sort algorithm organizes the list into a binary heap structure, repeatedly extracts the maximum (or minimum) element from the heap and places it in it's sorted position.";
                         heapSort([...array]);
                         break;
                     case "merge":
                         performanceLabel.textContent="O(n log n)";
+                        summaryLabel.textContent="The merge sort algorithm recursively divides the list into smaller sub-lists, sorts each sub-list, and then merges the sorted sub-lists back together to create the sorted list.";
                         mergeSort([...array]);
                         break;
                     default:
-                        console.log("Algorithm not implemented.");
+                        performanceLabel.textContent="Algorithm not implemented, select another.";
+                        summaryLabel.textContent="Algorithm not implemented, select another.";
                 }
             }, 100); // Delay to ensure the reset is visible
         }
