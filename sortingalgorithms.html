@@ -239,34 +239,57 @@
 
         async function merge(array, left, mid, right) {
             const bars = document.getElementsByClassName("array-bar");
+            let i = left, j = mid + 1, k = 0;
             const temp = [];
-            let i = left, j = mid + 1;
 
-            while (i <= mid && j <= right) {
-                if (stopAnimation) return; // Stop if reset is triggered
-                bars[i].style.background = "red";
-                bars[j].style.background = "red";
-                await sleep(100);
-
-                if (array[i] < array[j]) {
-                    temp.push(array[i++]);
-                } else {
-                    temp.push(array[j++]);
-                }
-
-                bars[i - 1].style.background = "#6200ea";
-                bars[j - 1].style.background = "#6200ea";
+            // Highlight the two parts being merged
+            for (let l = left; l <= mid; l++) {
+                bars[l].style.background = "yellow"; // Highlight left part
+            }
+            for (let l = mid + 1; l <= right; l++) {
+                bars[l].style.background = "blue"; // Highlight right part
             }
 
-            while (i <= mid) temp.push(array[i++]);
-            while (j <= right) temp.push(array[j++]);
+            // Merge the two subarrays into temp
+            while (i <= mid && j <= right) {
+                if (stopAnimation) return;  // Stop if animation is reset
 
-            for (let k = left; k <= right; k++) {
-                if (stopAnimation) return; // Stop if reset is triggered
-                array[k] = temp[k - left];
+                // Compare the elements of the left and right subarrays
+                if (array[i] < array[j]) {
+                    temp.push(array[i]);
+                    i++;
+                } else {
+                    temp.push(array[j]);
+                    j++;
+                }
+
+                // Re-render after comparison for visualization
                 renderArray(array);
-                bars[k].style.background = "green";
-                await sleep(100);
+                await sleep(100);  // Wait for animation effect
+            }
+
+            // Add any remaining elements from the left part
+            while (i <= mid) {
+                temp.push(array[i]);
+                i++;
+            }
+
+            // Add any remaining elements from the right part
+            while (j <= right) {
+                temp.push(array[j]);
+                j++;
+            }
+
+            // Copy the merged result back to the original array
+            for (let i = 0; i < temp.length; i++) {
+                if (stopAnimation) return;  // Stop if animation is reset
+
+                array[left + i] = temp[i];
+                renderArray(array);  // Re-render after each update
+
+                // Highlight the merged bars as green
+                bars[left + i].style.background = "green";
+                await sleep(100);  // Wait for animation effect
             }
         }
 
