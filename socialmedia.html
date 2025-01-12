@@ -145,9 +145,9 @@
     <div class="loading" id="loading">Loading more posts...</div>
 
     <script>
-        // Fake data generators
+        // Users, captions and images for the fake post generator
         const usernames = ["user123", "coolCat", "football_insights", "TravelTheGlobe", "steven", "techGuru", "user321", "Jane", "BOB"];
-        const posts = [
+        const captions = [
             "Totally loving this weather",
             "Just finished a book!",
             "Anyone else busy this weekend??",
@@ -168,7 +168,6 @@
             "images/social_media/travel.png",
             "images/social_media/bookshelf.png",
             "images/social_media/tunnel.png",
-            "images/social_media/pumpkin.png",
             "images/social_media/pottery.png",
             "images/social_media/pie.png",
         ];
@@ -179,7 +178,7 @@
             post.className = "post";
 
             const username = usernames[Math.floor(Math.random() * usernames.length)];
-            const content = posts[Math.floor(Math.random() * posts.length)];
+            const caption = captions[Math.floor(Math.random() * captions.length)];
             const image = images[Math.floor(Math.random() * images.length)];
 
             post.innerHTML = `
@@ -187,19 +186,19 @@
                     <div class="avatar"></div>
                     <div class="username">${username}</div>
                 </div>
-                <div class="post-content">${content}</div>
+                <div class="post-content">${caption}</div>
                 <img class="post-image" src="${image}" alt="Post image">
                 <div class="post-footer">
                     <button onclick="likePost(this)">Like</button>
                     <button onclick="commentPost(this)">Comment</button>
-                    <button onclick="sharePost()">Share</button>
+                    <button onclick="sharePost(this)">Share</button>
                 </div>
             `;
 
             return post;
         }
 
-        // Add multiple posts to the feed
+        // Add 5 posts to the feed
         function loadMorePosts() {
             const feed = document.getElementById("feed");
             for (let i = 0; i < 5; i++) {
@@ -306,8 +305,16 @@
             }
         }
 
-        function sharePost() {
-            // TODO
+        async function sharePost(button) {
+            button.textContent = "Shared!";
+            button.style.backgroundColor = "grey";
+            await delay(1200);
+            button.textContent = "Share";
+            button.style.backgroundColor = "#007BFF";
+        }
+
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         }
 
         // Throttling mechanism
@@ -327,7 +334,7 @@
                     loadMorePosts();
                     document.getElementById("loading").style.display = "none";
                     isLoading = false;
-                }, 1000);
+                }, 900);
             }
         });
 
