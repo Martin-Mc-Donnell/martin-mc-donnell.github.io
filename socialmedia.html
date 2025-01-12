@@ -99,6 +99,35 @@
             background-color: #0056b3;
         }
 
+        .comment-box textarea {
+            resize: none;
+            padding: 5px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .comment-box button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .comment-section div {
+            background-color: #f1f1f1;
+            padding: 5px;
+            border-radius: 5px;
+            margin-top: 10px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
         .loading {
             text-align: center;
             padding: 20px;
@@ -117,15 +146,18 @@
 
     <script>
         // Fake data generators
-        const usernames = ["user123", "coolCat", "dogLover", "travelFan", "foodie99", "techGuru"];
+        const usernames = ["user123", "coolCat", "football_insights", "TravelTheGlobe", "steven", "techGuru", "user321", "Jane", "BOB"];
         const posts = [
             "Totally loving this weather",
             "Just finished a book!",
-            "My new drawing",
             "Anyone else busy this weekend??",
             "Looking nice",
             "Tried something new",
             "Feeling so happy",
+            "Good times ahead",
+            "Should we start a new trend??",
+            "I don't get why people stay inside so much",
+            "Finally taking a moment to myself",
         ];
         const images = [
             "images/social_media/nature.png",
@@ -134,6 +166,11 @@
             "images/social_media/art.png",
             "images/social_media/pets.png",
             "images/social_media/travel.png",
+            "images/social_media/bookshelf.png",
+            "images/social_media/tunnel.png",
+            "images/social_media/pumpkin.png",
+            "images/social_media/pottery.png",
+            "images/social_media/pie.png",
         ];
 
         // Generate fake post
@@ -154,7 +191,7 @@
                 <img class="post-image" src="${image}" alt="Post image">
                 <div class="post-footer">
                     <button onclick="likePost(this)">Like</button>
-                    <button onclick="commentPost()">Comment</button>
+                    <button onclick="commentPost(this)">Comment</button>
                     <button onclick="sharePost()">Share</button>
                 </div>
             `;
@@ -182,8 +219,91 @@
             }
         }
 
-        function commentPost() {
-            // TODO
+        function commentPost(button) {
+            // Get the parent post element
+            const post = button.closest(".post");
+            let commentSection = post.querySelector(".comment-section");
+
+            // Create the comment section if it doesn't exist
+            if (!commentSection) {
+                commentSection = document.createElement("div");
+                commentSection.className = "comment-section";
+                commentSection.style.marginTop = "10px";
+                commentSection.style.padding = "10px";
+                commentSection.style.backgroundColor = "#f9f9f9";
+                commentSection.style.borderTop = "1px solid #ddd";
+
+                post.appendChild(commentSection);
+            }
+
+            // Create a comment box if none exists
+            let commentBox = commentSection.querySelector(".comment-box");
+            if (!commentBox) {
+                // Create the surrounding container
+                commentBox = document.createElement("div");
+                commentBox.className = "comment-box";
+                commentBox.style.marginTop = "10px";
+
+                // Add a textarea for the comment
+                const textarea = document.createElement("textarea");
+                textarea.style.width = "100%";
+                textarea.style.marginBottom = "5px";
+                textarea.placeholder = "Write a comment...";
+                textarea.style.resize = "none";
+                textarea.style.padding = "5px";
+                textarea.style.border = "1px solid #ddd";
+                textarea.style.borderRadius = "5px";
+                commentBox.appendChild(textarea);
+
+                // Add post and cancel buttons
+                const postButton = document.createElement("button");
+                postButton.textContent = "Post";
+                postButton.style.marginRight = "5px";
+                postButton.style.backgroundColor = "#28a745"; // Green for post button
+                postButton.style.color = "white";
+                postButton.style.padding = "5px 10px";
+                postButton.style.border = "none";
+                postButton.style.borderRadius = "5px";
+                postButton.style.cursor = "pointer";
+
+                const cancelButton = document.createElement("button");
+                cancelButton.textContent = "Cancel";
+                cancelButton.style.backgroundColor = "#dc3545";
+                cancelButton.style.color = "white";
+                cancelButton.style.padding = "5px 10px";
+                cancelButton.style.border = "none";
+                cancelButton.style.borderRadius = "5px";
+                cancelButton.style.cursor = "pointer";
+
+                commentBox.appendChild(postButton);
+                commentBox.appendChild(cancelButton);
+
+                // Append the comment box to the comment section
+                commentSection.appendChild(commentBox);
+
+                // Post the comment when the post button is clicked
+                postButton.addEventListener("click", () => {
+                    const commentText = textarea.value.trim();
+                    if (commentText) {
+                        // Create a comment label
+                        const commentLabel = document.createElement("div");
+                        commentLabel.textContent = commentText;
+                        commentLabel.style.marginTop = "10px";
+                        commentLabel.style.padding = "5px";
+                        commentLabel.style.backgroundColor = "#f1f1f1";
+                        commentLabel.style.borderRadius = "5px";
+
+                        // Add the comment and empty the comment text box
+                        commentSection.insertBefore(commentLabel, commentBox);
+                        textarea.value = "";
+                    }
+                });
+
+                // Remove the comment box if the Cancel button is click
+                cancelButton.addEventListener("click", () => {
+                    commentSection.removeChild(commentBox);
+                });
+            }
         }
 
         function sharePost() {
