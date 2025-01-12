@@ -284,21 +284,34 @@
                 postButton.addEventListener("click", () => {
                     const commentText = textarea.value.trim();
                     if (commentText) {
-                        // Create a comment label
+                        // Create a container for the comment
+                        const commentContainer = document.createElement("div");
+                        commentContainer.style.marginTop = "10px";
+
+                        // Add the username
+                        const usernameLabel = document.createElement("div");
+                        usernameLabel.textContent = "new_account2025";
+                        usernameLabel.style.color = "blue";
+                        usernameLabel.style.fontWeight = "bold";
+                        usernameLabel.style.marginBottom = "5px";
+                        usernameLabel.style.marginBottom = "2px";
+
+                        // Add the comment text
                         const commentLabel = document.createElement("div");
                         commentLabel.textContent = commentText;
-                        commentLabel.style.marginTop = "10px";
                         commentLabel.style.padding = "5px";
                         commentLabel.style.backgroundColor = "#f1f1f1";
                         commentLabel.style.borderRadius = "5px";
 
                         // Add the comment and empty the comment text box
-                        commentSection.insertBefore(commentLabel, commentBox);
+                        commentContainer.appendChild(usernameLabel);
+                        commentContainer.appendChild(commentLabel);
+                        commentSection.insertBefore(commentContainer, commentBox);
                         textarea.value = "";
                     }
                 });
 
-                // Remove the comment box if the Cancel button is click
+                // Remove the comment box if the Cancel button is clicked
                 cancelButton.addEventListener("click", () => {
                     commentSection.removeChild(commentBox);
                 });
