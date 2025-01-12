@@ -257,11 +257,11 @@
                 bars[l].style.background = "blue"; // Highlight right part
             }
 
-            // Merge the two subarrays into temp
+            // Merge the two sub-arrays into temp
             while (i <= mid && j <= right) {
                 if (stopAnimation) return;  // Stop if animation is reset
 
-                // Compare the elements of the left and right subarrays
+                // Compare the elements of the left and right sub-arrays
                 if (array[i] < array[j]) {
                     temp.push(array[i]);
                     i++;
