@@ -76,7 +76,6 @@
       border-bottom: 220px solid white;
     }
 
-    /* Centering Text for the Triangle */
     .warning-sign .text-preview {
       position: absolute;
       top: 50%;
@@ -94,8 +93,25 @@
       width: 250px;
       height: 250px;
       background-color: white;
-      border: 15px solid red;
+      border: 15px solid transparent;
       border-radius: 50%;
+      position: relative;
+    }
+
+    /* Inner Circle (white) */
+    .regulatory-sign::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      width: calc(100% - 30px);
+      height: calc(100% - 30px);
+      background-color: white;
+      border-radius: 50%;
+    }
+
+    .regulatory-sign .text-preview {
+      color: black;
     }
 
     /* Rectangle Sign */
@@ -183,39 +199,51 @@
       const signType = signTypeSelect.value;
       signPreview.className = 'sign-preview';
 
-      // Apply the appropriate sign type class
+      // Remove any existing background styling and apply the right one
+      signPreview.style = '';
       if (signType === 'warning') {
         signPreview.classList.add('warning-sign');
+        recreateWarningSign();
       } else if (signType === 'regulatory') {
         signPreview.classList.add('regulatory-sign');
+        signPreview.style.backgroundColor = bgColorInput.value;
       } else if (signType === 'informational') {
         signPreview.classList.add('informational-sign');
+        signPreview.style.backgroundColor = bgColorInput.value;
       }
 
-      updateSignBackground();
       updateSignTextColor();
       updateSignText();
     }
 
     function updateSignText() {
-      const signType = signTypeSelect.value;
       signPreview.innerHTML = '';
 
-      // Create text preview
+      // Create new text preview
       let signText = document.createElement('div');
       signText.className = 'text-preview';
       signText.textContent = signTextInput.value || 'STOP';
       signPreview.appendChild(signText);
     }
 
-    // Update background color
+    // Recreate the warning sign's triangle background with correct color
+    function recreateWarningSign() {
+      signPreview.style.borderBottomColor = bgColorInput.value;
+    }
+
+    // Update background color for regulatory and informational signs
     function updateSignBackground() {
       const signType = signTypeSelect.value;
 
       if (signType === 'warning') {
-        // Update the triangle's border color
+        // Update the triangle's border color (the outer triangle)
         signPreview.style.borderBottomColor = bgColorInput.value;
+      } else if (signType === 'regulatory') {
+        // Change the outer circle's border color (not affecting the inner circle)
+        signPreview.style.borderColor = bgColorInput.value;
+        signPreview.style.backgroundColor = bgColorInput.value;
       } else {
+        // For rectangle signs, apply the background color
         signPreview.style.backgroundColor = bgColorInput.value;
       }
     }
