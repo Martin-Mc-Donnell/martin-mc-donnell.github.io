@@ -11,6 +11,22 @@ This repo is for showcasing my personal projects.
 - **Hosting**: GitHub Pages
 - **Other Tools**: Git, three.js, leaflet and CartoDB
 
+## 📖 Projects
+
+1. [CV Website](#cv-website)
+2. [Latin Word Search](#latin-word-search)
+3. [Social Media](#social-media)
+4. [Sign Designer](#sign-designer)
+5. [Chasing Down Game](#chasing-down-game)
+6. [Sorting Algorithms](#sorting-algorithms)
+7. [Python Requests](#python-requests)
+8. [Map Selector](#map-selector)
+9. [Rubiks Cube](#rubiks-cube)
+10. [Date your Map](#date-your-map)
+11. [Knitting Designer](#knitting-designer)
+12. [Knitting Info](#knitting-info)
+13. [Sword and Shield Render](#sword-and-shield-render)
+
 ---
 
 ## CV Website
