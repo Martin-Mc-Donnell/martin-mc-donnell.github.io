@@ -135,6 +135,97 @@
             font-size: 1.2em;
             color: #666;
         }
+
+        #postButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 10%;
+            width: 90px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        #postModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        #postModalContent {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+        }
+
+        #postModalContent textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .thumbnail {
+            display: inline-block;
+            margin: 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 5px;
+        }
+
+        .thumbnail img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .thumbnail.selected {
+            border-color: #007BFF;
+        }
+
+        #postModalButtons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #postModalButtons button {
+            flex: 1;
+            margin: 5px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        #postModalButtons button.post {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        #postModalButtons button.cancel {
+            background-color: #dc4535;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -144,6 +235,25 @@
 
     <div id="feed"></div>
     <div class="loading" id="loading">Loading more posts...</div>
+
+    <button id="postButton">Post</button>
+    <div id="postModal">
+        <div id="postModalContent">
+            <textarea id="postMessage" placeholder="What's on your mind?"></textarea>
+            <div id="thumbnails">
+                <div class="thumbnail" data-image="images/social_media/nature.png">
+                    <img src="images/social_media/nature.png" alt="Nature">
+                </div>
+                <div class="thumbnail" data-image="images/social_media/pets.png">
+                    <img src="images/social_media/pets.png" alt="Pets">
+                </div>
+            </div>
+            <div id="postModalButtons">
+                <button id="postNowButton" class="post">Post</button>
+                <button class="cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Users, captions and images for the fake post generator
@@ -354,6 +464,70 @@
 
         // Initial load
         loadMorePosts();
+
+        // Elements
+        const postButton = document.getElementById('postButton');
+        const postModal = document.getElementById('postModal');
+        const postMessage = document.getElementById('postMessage');
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const postNowButton = document.getElementById('postNowButton'); // Updated reference
+        let selectedImage = null;
+
+        // Open post modal
+        postButton.addEventListener('click', () => {
+            postModal.style.display = 'flex';
+        });
+
+        // Close modal
+        document.querySelector('.cancel').addEventListener('click', () => {
+            postModal.style.display = 'none';
+            resetModal();
+        });
+
+        // Select an image
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener('click', () => {
+                thumbnails.forEach(thumb => thumb.classList.remove('selected'));
+                thumbnail.classList.add('selected');
+                selectedImage = thumbnail.getAttribute('data-image');
+            });
+        });
+
+        // Post the new message
+        postNowButton.addEventListener('click', () => { // Ensure this targets the correct button
+            const message = postMessage.value.trim();
+            if (!message) {
+                alert('Please enter a message!');
+                return;
+            }
+
+            const post = document.createElement('div');
+            post.className = 'post';
+            post.innerHTML = `
+                <div class="post-header">
+                    <div class="avatar"></div>
+                    <div class="username">new_account2025</div>
+                </div>
+                <div class="post-content">${message}</div>
+                ${selectedImage ? `<img class="post-image" src="${selectedImage}" alt="Post image">` : ''}
+                <div class="post-footer">
+                    <button onclick="likePost(this)">Like</button>
+                    <button onclick="commentPost(this)">Comment</button>
+                    <button onclick="sharePost(this)">Share</button>
+                </div>
+            `;
+
+            document.getElementById('feed').prepend(post);
+            postModal.style.display = 'none';
+            resetModal();
+        });
+
+        // Reset modal content
+        function resetModal() {
+            postMessage.value = '';
+            thumbnails.forEach(thumbnail => thumbnail.classList.remove('selected'));
+            selectedImage = null;
+        }
     </script>
 </body>
 </html>
