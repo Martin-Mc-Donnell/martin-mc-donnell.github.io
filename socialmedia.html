@@ -318,7 +318,6 @@
             }
         }
 
-        // Example functions for buttons
         function likePost(button) {
         	if (button.textContent === "Like") {
             	button.textContent = "Liked!";
@@ -369,7 +368,7 @@
                 const postButton = document.createElement("button");
                 postButton.textContent = "Post";
                 postButton.style.marginRight = "5px";
-                postButton.style.backgroundColor = "#28a745"; // Green for post button
+                postButton.style.backgroundColor = "#28a745";
                 postButton.style.color = "white";
                 postButton.style.padding = "5px 10px";
                 postButton.style.border = "none";
@@ -399,7 +398,7 @@
                         const commentContainer = document.createElement("div");
                         commentContainer.style.marginTop = "10px";
 
-                        // Add the username
+                        // Style the username label
                         const usernameLabel = document.createElement("div");
                         usernameLabel.textContent = "new_account2025";
                         usernameLabel.style.color = "blue";
@@ -407,14 +406,14 @@
                         usernameLabel.style.marginBottom = "5px";
                         usernameLabel.style.marginBottom = "2px";
 
-                        // Add the comment text
+                        // Style the comment label
                         const commentLabel = document.createElement("div");
                         commentLabel.textContent = commentText;
                         commentLabel.style.padding = "5px";
                         commentLabel.style.backgroundColor = "#f1f1f1";
                         commentLabel.style.borderRadius = "5px";
 
-                        // Add the comment and empty the comment text box
+                        // Add username and comment to container and empty the comment text box
                         commentContainer.appendChild(usernameLabel);
                         commentContainer.appendChild(commentLabel);
                         commentSection.insertBefore(commentContainer, commentBox);
@@ -470,7 +469,7 @@
         const postModal = document.getElementById('postModal');
         const postMessage = document.getElementById('postMessage');
         const thumbnails = document.querySelectorAll('.thumbnail');
-        const postNowButton = document.getElementById('postNowButton'); // Updated reference
+        const postNowButton = document.getElementById('postNowButton');
         let selectedImage = null;
 
         // Open post modal
@@ -494,12 +493,17 @@
         });
 
         // Post the new message
-        postNowButton.addEventListener('click', () => { // Ensure this targets the correct button
+        postNowButton.addEventListener('click', async () => {
             const message = postMessage.value.trim();
             if (!message) {
                 alert('Please enter a message!');
                 return;
             }
+
+            postModal.style.display = 'none';
+            resetModal();
+
+            await delay(1200);
 
             const post = document.createElement('div');
             post.className = 'post';
@@ -518,8 +522,6 @@
             `;
 
             document.getElementById('feed').prepend(post);
-            postModal.style.display = 'none';
-            resetModal();
         });
 
         // Reset modal content
