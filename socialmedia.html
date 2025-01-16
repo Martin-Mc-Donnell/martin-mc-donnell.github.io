@@ -500,11 +500,6 @@
                 return;
             }
 
-            postModal.style.display = 'none';
-            resetModal();
-
-            await delay(1200);
-
             const post = document.createElement('div');
             post.className = 'post';
             post.innerHTML = `
@@ -520,7 +515,10 @@
                     <button onclick="sharePost(this)">Share</button>
                 </div>
             `;
-
+            // Hide post window, reset it, wait and then post it to the feed
+            postModal.style.display = 'none';
+            resetModal();
+            await delay(1200);
             document.getElementById('feed').prepend(post);
         });
 
