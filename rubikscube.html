@@ -298,7 +298,7 @@
         async function randomizeCubeColors() {
             const buttonNames = ["top-row-left", "top-row-right", "middle-row-left", "middle-row-right",
             "bottom-row-left", "bottom-row-right", "left-column-up", "left-column-down", "middle-column-up",
-            "middle-column-down", "right-column-up", "right-column-down"]
+            "middle-column-down", "right-column-up", "right-column-down", "front-clockwise", "front-counterclockwise"]
             for (let i = 0; i < 9; i++) {
                     await delay(110);
                     let randomButton = buttonNames[Math.floor(Math.random() * buttonNames.length)];
