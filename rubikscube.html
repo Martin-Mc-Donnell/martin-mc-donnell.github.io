@@ -291,11 +291,16 @@
             [...face.children].forEach((cell, i) => cell.style.background = newColors[i]);
         }
 
-        function randomizeCubeColors() {
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function randomizeCubeColors() {
             const buttonNames = ["top-row-left", "top-row-right", "middle-row-left", "middle-row-right",
             "bottom-row-left", "bottom-row-right", "left-column-up", "left-column-down", "middle-column-up",
             "middle-column-down", "right-column-up", "right-column-down"]
             for (let i = 0; i < 9; i++) {
+                    await delay(110);
                     let randomButton = buttonNames[Math.floor(Math.random() * buttonNames.length)];
                     let selectedButton = document.getElementById(randomButton);
                     selectedButton.click();
