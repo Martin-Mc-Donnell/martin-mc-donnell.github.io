@@ -287,25 +287,39 @@
         function createPost() {
             const post = document.createElement("div");
             post.className = "post";
-
             const username = usernames[Math.floor(Math.random() * usernames.length)];
             const caption = captions[Math.floor(Math.random() * captions.length)];
             const image = images[Math.floor(Math.random() * images.length)];
 
-            post.innerHTML = `
-                <div class="post-header">
-                    <div class="avatar"></div>
-                    <div class="username">${username}</div>
-                </div>
-                <div class="post-content">${caption}</div>
-                <img class="post-image" src="${image}" alt="Post image">
-                <div class="post-footer">
-                    <button onclick="likePost(this)">Like</button>
-                    <button onclick="commentPost(this)">Comment</button>
-                    <button onclick="sharePost(this)">Share</button>
-                </div>
-            `;
-
+            // Randomly add pictures to some generated posts and keep others as just text posts
+            if (Math.random() > 0.5) {
+                post.innerHTML = `
+                    <div class="post-header">
+                        <div class="avatar"></div>
+                        <div class="username">${username}</div>
+                    </div>
+                    <div class="post-content">${caption}</div>
+                    <img class="post-image" src="${image}" alt="Post image">
+                    <div class="post-footer">
+                        <button onclick="likePost(this)">Like</button>
+                        <button onclick="commentPost(this)">Comment</button>
+                        <button onclick="sharePost(this)">Share</button>
+                    </div>
+                `;
+             } else {
+                post.innerHTML = `
+                    <div class="post-header">
+                        <div class="avatar"></div>
+                        <div class="username">${username}</div>
+                    </div>
+                    <div class="post-content">${caption}</div>
+                    <div class="post-footer">
+                        <button onclick="likePost(this)">Like</button>
+                        <button onclick="commentPost(this)">Comment</button>
+                        <button onclick="sharePost(this)">Share</button>
+                    </div>
+                `;
+             }
             return post;
         }
 
