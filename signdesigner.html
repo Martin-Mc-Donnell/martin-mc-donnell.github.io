@@ -118,8 +118,14 @@
     .informational-sign {
       width: 300px;
       height: 150px;
-      background-color: blue;
+      background-color: white;
+      border: 10px solid transparent;
       border-radius: 5px;
+      position: relative;
+    }
+
+    .informational-sign .text-preview {
+      color: black;
     }
 
     .text-preview {
@@ -209,7 +215,8 @@
         signPreview.style.backgroundColor = bgColorInput.value;
       } else if (signType === 'informational') {
         signPreview.classList.add('informational-sign');
-        signPreview.style.backgroundColor = bgColorInput.value;
+        signPreview.style.backgroundColor = 'white';
+        signPreview.style.borderColor = bgColorInput.value;
       }
 
       updateSignTextColor();
@@ -243,8 +250,9 @@
         signPreview.style.borderColor = bgColorInput.value;
         signPreview.style.backgroundColor = bgColorInput.value;
       } else {
-        // For rectangle signs, apply the background color
-        signPreview.style.backgroundColor = bgColorInput.value;
+        // For rectangle signs, apply the border color and keep the inside white
+        signPreview.style.borderColor = bgColorInput.value;
+        signPreview.style.backgroundColor = 'white';
       }
     }
 
