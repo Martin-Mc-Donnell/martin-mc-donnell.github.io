@@ -57,6 +57,7 @@
     <div class="container">
         <h1 id="question">Istanbul or Constantinople?</h1>
         <div class="buttons">
+            <button class="back" id="backButton" style="display: none;" onclick="goBack()">←</button>
             <button class="yes" id="yesButton" onclick="handleAnswer('yes')">Yes</button>
             <button class="maybe" id="maybeButton" onclick="handleAnswer('maybe')">Maybe</button>
             <button class="no" id="noButton" onclick="handleAnswer('no')">No</button>
@@ -299,6 +300,7 @@
         };
 
         let currentNode = questionTree;
+        let historyStack = []; // Stack to keep track of navigation history
 
         function updateButtonLabels(labels) {
             const yesButton = document.getElementById("yesButton");
@@ -312,6 +314,9 @@
 
         function handleAnswer(answer) {
             if (currentNode.options && currentNode.options[answer]) {
+                // Save the current node to history before moving forward
+                historyStack.push(currentNode);
+
                 currentNode = currentNode.options[answer];
 
                 const questionElement = document.getElementById("question");
@@ -319,6 +324,7 @@
                 const noButton = document.getElementById("noButton");
                 const maybeButton = document.getElementById("maybeButton");
                 const retryButton = document.getElementById("retryButton");
+                const backButton = document.getElementById("backButton");
 
                 // Update question text
                 questionElement.textContent = currentNode.text;
@@ -334,17 +340,22 @@
                 if (Object.keys(currentNode.options || {}).length === 0) {
                     retryButton.style.display = "inline-block";
                 }
+
+                // Show back button if there's history
+                backButton.style.display = historyStack.length > 0 ? "inline-block" : "none";
             }
         }
 
         function resetQuestions() {
             currentNode = questionTree;
+            historyStack = [];
 
             const questionElement = document.getElementById("question");
             const yesButton = document.getElementById("yesButton");
             const noButton = document.getElementById("noButton");
             const maybeButton = document.getElementById("maybeButton");
             const retryButton = document.getElementById("retryButton");
+            const backButton = document.getElementById("backButton");
 
             // Reset to root question
             questionElement.textContent = currentNode.text;
@@ -354,6 +365,36 @@
             noButton.style.display = currentNode.options?.no ? "inline-block" : "none";
             maybeButton.style.display = currentNode.options?.maybe ? "inline-block" : "none";
             retryButton.style.display = "none";
+            backButton.style.display = "none"; // Hide back button on reset
+        }
+
+        function goBack() {
+            if (historyStack.length > 0) {
+                // Pop the last node from the history stack
+                currentNode = historyStack.pop();
+
+                const questionElement = document.getElementById("question");
+                const yesButton = document.getElementById("yesButton");
+                const noButton = document.getElementById("noButton");
+                const maybeButton = document.getElementById("maybeButton");
+                const retryButton = document.getElementById("retryButton");
+                const backButton = document.getElementById("backButton");
+
+                // Update question text
+                questionElement.textContent = currentNode.text;
+
+                // Update button labels if defined
+                updateButtonLabels(currentNode.buttonLabels);
+
+                // Update button visibility
+                yesButton.style.display = currentNode.options?.yes ? "inline-block" : "none";
+                noButton.style.display = currentNode.options?.no ? "inline-block" : "none";
+                maybeButton.style.display = currentNode.options?.maybe ? "inline-block" : "none";
+                retryButton.style.display = Object.keys(currentNode.options || {}).length === 0 ? "inline-block" : "none";
+
+                // Hide back button if no history left
+                backButton.style.display = historyStack.length > 0 ? "inline-block" : "none";
+            }
         }
 
         // Initialize with the root question's button labels
