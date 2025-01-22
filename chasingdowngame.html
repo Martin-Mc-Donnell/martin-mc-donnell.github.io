@@ -35,6 +35,14 @@
             z-index: 1;
         }
 
+        .fire-image {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
         .white-box {
             position: absolute;
             top: 50%;
@@ -93,11 +101,12 @@
             transform: scale(1.5);
             margin-top: -3px;
             vertical-align: middle;
-            margin-left: 15px;
+            margin-left: 10px;
         }
 
         .radio-buttons span {
             font-size: 1.5rem;
+            margin-right: 10px;
         }
     </style>
 </head>
@@ -151,6 +160,7 @@
         let mouseMoved = false;
         let timerInterval;
         let totalSeconds = 0;
+        let lastFireTime = 0;
 
         const stopTimer = () => clearInterval(timerInterval);
 
@@ -195,6 +205,7 @@
 Score: ${totalSeconds} seconds`;
             stopTimer();
             window.removeEventListener('mousemove', updateMousePosition);
+            document.querySelectorAll(".fire-image").forEach((fire) => fire.remove());
         };
 
         const startTimer = () => {
@@ -212,10 +223,75 @@ Score: ${totalSeconds} seconds`;
             mouseMoved = true;
         };
 
+        const createFireImage = (direction) => {
+            const fireImage = document.createElement("img");
+            fireImage.src = "images/fire.png";
+            fireImage.style.position = "absolute";
+            fireImage.style.width = "30px";
+            fireImage.style.height = "30px";
+            fireImage.style.left = `${catImageX + 25}px`;
+            fireImage.style.top = `${catImageY + 25}px`;
+            fireImage.classList.add("fire-image");
+            document.body.appendChild(fireImage);
+
+            const speed = 8;
+            let dx = 0, dy = 0;
+
+            switch (direction) {
+                case "top": dy = -speed; break;
+                case "right": dx = speed; break;
+                case "bottom": dy = speed; break;
+                case "left": dx = -speed; break;
+            }
+
+            const moveFireImage = () => {
+                const rect = fireImage.getBoundingClientRect();
+                const mouseDistance = Math.sqrt((rect.left - mouseX) ** 2 + (rect.top - mouseY) ** 2);
+
+                if (mouseDistance < 20) endGame();
+
+                fireImage.style.left = `${rect.left + dx}px`;
+                fireImage.style.top = `${rect.top + dy}px`;
+
+                if (rect.left < 0 || rect.top < 0 || rect.right > window.innerWidth || rect.bottom > window.innerHeight) {
+                    fireImage.remove();
+                } else {
+                    requestAnimationFrame(moveFireImage);
+                }
+            };
+
+            moveFireImage();
+        };
+
+        const shootFire = () => {
+            ["top", "right", "bottom", "left"].forEach(createFireImage);
+        };
+
         const moveCatImage = () => {
             if (!gameRunning || !mouseMoved) {
                 requestAnimationFrame(moveCatImage);
                 return;
+            }
+
+            const difficulty = difficultyForm.querySelector('input[name="difficulty"]:checked').value;
+
+            if (difficulty === "extreme") {
+                const currentTime = performance.now();
+
+                if (currentTime - lastFireTime > 10000) {
+                    lastFireTime = currentTime;
+                    shootFire();
+                    stopMovingCatToSpitFire();
+                    return;
+                }
+
+                // Increase cat size for Extreme
+                catImage.style.width = "70px";
+                catImage.style.height = "70px";
+            } else {
+                // Reset size for other difficulties
+                catImage.style.width = "50px";
+                catImage.style.height = "50px";
             }
 
             const dx = mouseX - catImageX;
@@ -223,23 +299,7 @@ Score: ${totalSeconds} seconds`;
             const distance = Math.sqrt(dx ** 2 + dy ** 2);
             if (distance < 25) return endGame();
 
-            const difficulty = difficultyForm.querySelector('input[name="difficulty"]:checked').value;
-
-            const speed = {
-                easy: 2,
-                normal: 5,
-                hard: 9,
-                extreme: 15,
-            }[difficulty];
-
-            if (difficulty === "extreme") {
-                catImage.style.width = "70px"; // Increase cat size for Extreme
-                catImage.style.height = "70px";
-            } else {
-                catImage.style.width = "50px"; // Reset size for other difficulties
-                catImage.style.height = "50px";
-            }
-
+            const speed = { easy: 2, normal: 5, hard: 9, extreme: 15 }[difficulty];
             if (distance > 0) {
                 catImageX += (dx / distance) * speed;
                 catImageY += (dy / distance) * speed;
@@ -249,6 +309,14 @@ Score: ${totalSeconds} seconds`;
             catImage.style.top = `${Math.max(0, Math.min(catImageY, window.innerHeight - 50))}px`;
 
             requestAnimationFrame(moveCatImage);
+        };
+
+        const stopMovingCatToSpitFire = () => {
+            gameRunning = false;
+            setTimeout(() => {
+                gameRunning = true;
+                requestAnimationFrame(moveCatImage);
+            }, 2000);
         };
 
         startButton.addEventListener('click', startGame);
