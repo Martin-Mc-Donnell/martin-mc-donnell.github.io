@@ -93,7 +93,7 @@
             transform: scale(1.5);
             margin-top: -3px;
             vertical-align: middle;
-            margin-left: 9px;
+            margin-left: 15px;
         }
 
         .radio-buttons span {
@@ -119,6 +119,10 @@
                     <label>
                         <input type="radio" name="difficulty" value="hard">
                         <span>Hard</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="difficulty" value="extreme">
+                        <span>Extreme</span>
                     </label>
                 </div>
             </form>
@@ -219,11 +223,22 @@ Score: ${totalSeconds} seconds`;
             const distance = Math.sqrt(dx ** 2 + dy ** 2);
             if (distance < 25) return endGame();
 
+            const difficulty = difficultyForm.querySelector('input[name="difficulty"]:checked').value;
+
             const speed = {
                 easy: 2,
                 normal: 5,
                 hard: 9,
-            }[difficultyForm.querySelector('input[name="difficulty"]:checked').value];
+                extreme: 15,
+            }[difficulty];
+
+            if (difficulty === "extreme") {
+                catImage.style.width = "70px"; // Increase cat size for Extreme
+                catImage.style.height = "70px";
+            } else {
+                catImage.style.width = "50px"; // Reset size for other difficulties
+                catImage.style.height = "50px";
+            }
 
             if (distance > 0) {
                 catImageX += (dx / distance) * speed;
