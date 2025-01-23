@@ -179,16 +179,20 @@
             mouseMoved = false;
             mouseX = null;
             mouseY = null;
+            catImageX = window.innerWidth / 5;
+            catImageY = window.innerHeight / 5;
             catImage.style.left = `${catImageX}px`;
             catImage.style.top = `${catImageY}px`;
+
+            // Remove all fire elements
+            document.querySelectorAll(".fire-image").forEach((fire) => fire.remove());
         };
 
         const startGame = () => {
             resetGame();
             toggleVisibility(whiteBox, false);
+            toggleVisibility(gameOverMessage, false);
             startButton.textContent = "Play Again";
-            catImageX = window.innerWidth / 5;
-            catImageY = window.innerHeight / 5;
             gameRunning = true;
 
             window.addEventListener('mousemove', updateMousePosition);
@@ -200,9 +204,7 @@
             gameRunning = false;
             toggleVisibility(whiteBox, true);
             toggleVisibility(gameOverMessage, true);
-            toggleVisibility(startButton, true);
-            gameOverMessage.textContent = `Game Over! You got caught!
-Score: ${totalSeconds} seconds`;
+            gameOverMessage.textContent = `Game Over! You got caught!\nScore: ${totalSeconds} seconds`;
             stopTimer();
             window.removeEventListener('mousemove', updateMousePosition);
             document.querySelectorAll(".fire-image").forEach((fire) => fire.remove());
@@ -245,15 +247,24 @@ Score: ${totalSeconds} seconds`;
             }
 
             const moveFireImage = () => {
+                if (!fireImage.parentElement) return;
+
                 const rect = fireImage.getBoundingClientRect();
                 const mouseDistance = Math.sqrt((rect.left - mouseX) ** 2 + (rect.top - mouseY) ** 2);
 
-                if (mouseDistance < 20) endGame();
+                // End game if the mouse was hit by fire
+                if (mouseDistance < 20) {
+                    endGame();
+                    return;
+                }
 
                 fireImage.style.left = `${rect.left + dx}px`;
                 fireImage.style.top = `${rect.top + dy}px`;
 
-                if (rect.left < 0 || rect.top < 0 || rect.right > window.innerWidth || rect.bottom > window.innerHeight) {
+                if (
+                    rect.left < 0 || rect.top < 0 ||
+                    rect.right > window.innerWidth || rect.bottom > window.innerHeight
+                ) {
                     fireImage.remove();
                 } else {
                     requestAnimationFrame(moveFireImage);
@@ -297,7 +308,12 @@ Score: ${totalSeconds} seconds`;
             const dx = mouseX - catImageX;
             const dy = mouseY - catImageY;
             const distance = Math.sqrt(dx ** 2 + dy ** 2);
-            if (distance < 25) return endGame();
+
+            // End the game if the cat catches the mouse
+            if (distance < 25) {
+                endGame();
+                return;
+            }
 
             const speed = { easy: 2, normal: 5, hard: 9, extreme: 15 }[difficulty];
             if (distance > 0) {
