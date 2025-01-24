@@ -131,16 +131,14 @@
     // Shield
     const shieldShape = new THREE.Shape();
 
-    // Define the edged shield shape (a pointed oval-like shape)
-    shieldShape.moveTo(0, 2.5); // Top center point
-    shieldShape.lineTo(1.5, 1.5); // Top right curve
-    shieldShape.lineTo(2, 0); // Right edge
-    shieldShape.lineTo(1.5, -2); // Bottom right curve
-    shieldShape.lineTo(0, -2.5); // Bottom center point
-    shieldShape.lineTo(-1.5, -2); // Bottom left curve
-    shieldShape.lineTo(-2, 0); // Left edge
-    shieldShape.lineTo(-1.5, 1.5); // Top left curve
-    shieldShape.lineTo(0, 2.5); // Back to top center point
+    // Define the edged shield shape
+    shieldShape.moveTo(0, 2.5); // Bottom center point
+    shieldShape.lineTo(1.4, 1.5); // Bottom right curve
+    shieldShape.lineTo(1.5, -2); // Top right
+    shieldShape.quadraticCurveTo(0.75, -1.2, 0, -2.3); // Curve to the top center tip
+    shieldShape.quadraticCurveTo(-0.75, -1.2, -1.5, -2); // Curve to the top left
+    shieldShape.lineTo(-1.4, 1.5); // Bottom left curve
+    shieldShape.lineTo(0, 2.5); // Back to Bottom center point
 
     // Extrude the shield to give it depth
     const shieldExtrudeSettings = {
