@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPR Compression Rate Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f8ff;
+            overflow-y: auto;
+        }
+
+        #contentContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        #cprButton {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: red;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.1s;
+        }
+
+        #cprButton:active {
+            transform: scale(0.86);
+        }
+        
+        #cprButton:disabled:active {
+            transform: none;
+        }
+
+        #results {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            padding-bottom: 30px;
+        }
+
+        #results table {
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+
+        #results table, #results th, #results td {
+            border: 1px solid black;
+        }
+
+        #results th, #results td {
+            padding: 8px;
+        }
+
+        .out-of-range {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="contentContainer">
+        <h1>CPR Compression Rate Test</h1>
+        <p>The NHS suggests giving 100 - 120 compressions a minute.<br>Click the 
+            button below at try matching that rate for 12 seconds (20-24 clicks)</p>
+        <button id="cprButton">Start</button>
+    </div>
+
+    <div id="results">
+        <h2>Results</h2>
+        <p>Total Clicks: <span id="totalClicks">0</span></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Timestamp</th>
+                    <th>Time Between Clicks (ms)</th>
+                </tr>
+            </thead>
+            <tbody id="clickData">
+                <!-- Click data will be populated here after each test -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const cprButton = document.getElementById('cprButton');
+        const resultsDiv = document.getElementById('results');
+        const totalClicksSpan = document.getElementById('totalClicks');
+        const clickDataTable = document.getElementById('clickData');
+
+        let clickTimes = [];
+        let timerActive = false;
+        let timer;
+
+        cprButton.addEventListener('click', () => {
+            if (!timerActive) {
+                startTimer();
+                cprButton.textContent = "Click!";
+            } else {
+                recordClick();
+            }
+        });
+
+        function startTimer() {
+            timerActive = true;
+            clickTimes = [];
+
+            timer = setTimeout(() => {
+                endTimer();
+            }, 12000);
+        }
+
+        function recordClick() {
+            const now = Date.now();
+            clickTimes.push(now);
+        }
+
+        function endTimer() {
+            timerActive = false;
+            clearTimeout(timer);
+            cprButton.textContent = "Start";
+			cprButton.style.backgroundColor = "grey";
+            // Disable button temporarily after results
+            cprButton.disabled = true;
+            setTimeout(() => {
+                cprButton.disabled = false;
+                cprButton.style.backgroundColor = "red";
+            }, 3000);
+
+            // Calculate the intervals between clicks
+            const intervals = clickTimes.map((time, index) => {
+                return index > 0 ? time - clickTimes[index - 1] : 0;
+            });
+
+            // Display results
+            totalClicksSpan.textContent = clickTimes.length;
+            if (clickTimes.length < 20 || clickTimes.length > 24){
+            	totalClicksSpan.style.color = "red";
+            } else {
+            	totalClicksSpan.style.color = "black";
+            }
+
+            clickDataTable.innerHTML = clickTimes.map((time, index) => {
+                const interval = index > 0 ? intervals[index] : 0;
+                const isOutOfRange = interval < 500 || interval > 600;
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${new Date(time).toLocaleTimeString()}</td>
+                        <td class="${isOutOfRange ? 'out-of-range' : ''}">${index > 0 ? interval : "-"}</td>
+                    </tr>
+                `;
+            }).join('');
+            resultsDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
