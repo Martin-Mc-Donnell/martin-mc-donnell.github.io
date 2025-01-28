@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Race Simulator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    .track-container {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      background-color: #e5e7eb;
+      border: 2px solid black;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%; /* circle */
+      overflow: hidden;
+    }
+    .finish-line {
+      position: absolute;
+      width: 4px;
+      height: 20%;
+      background-color: black;
+      top: 50%;
+      left: 100%;
+      transform: translate(-50%, -38%) rotate(90deg);
+      z-index: 1;
+      opacity:30%;
+    }
+    .car {
+      position: absolute;
+      width: 24px;
+      height: 12px;
+      border-radius: 2px;
+      transform-origin: center;
+      transition: transform 0.1s linear;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1d4ed8;
+    }
+    .winner {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #16a34a;
+    }
+  </style>
+</head>
+<body>
+  <h1>Car Race Simulator</h1>
+  <div>
+  <div class="track-container" id="track">
+    <div class="finish-line" id="finishLine"></div>
+    <div class="car" id="car1" style="background-color: red;"></div>
+    <div class="car" id="car2" style="background-color: blue;"></div>
+    <div class="car" id="car3" style="background-color: green;"></div>
+    <div class="car" id="car4" style="background-color: yellow;">		</div>
+  </div>
+  </div>
+  <button id="startRace">Start Race</button>
+  <div class="winner" id="winner"></div>
+
+  <script>
+    const cars = [
+      { id: 'car1', color: 'red', angle: 0, hasFinished: false },
+      { id: 'car2', color: 'blue', angle: 0, hasFinished: false },
+      { id: 'car3', color: 'green', angle: 0, hasFinished: false },
+      { id: 'car4', color: 'yellow', angle: 0, hasFinished: false },
+    ];
+
+    const trackRadius = 180; // Fixed radius (half of track-container width/height)
+    const centerX = 200; // Center X coordinate of the track
+    const centerY = 200; // Center Y coordinate of the track
+    const track = document.getElementById('track');
+    const winnerDisplay = document.getElementById('winner');
+    const startButton = document.getElementById('startRace');
+
+    let raceInterval;
+
+    function updateCarPositions() {
+      cars.forEach(car => {
+        if (car.hasFinished) return; // Skip cars that have finished the race
+
+        const carElement = document.getElementById(car.id);
+        car.angle += Math.random() * 14; // Increment angle with random speed
+        if (car.angle >= 360) {
+          car.angle = 360; // Ensure the car stops at the end of the lap
+          car.hasFinished = true; // Mark the car as finished
+        }
+
+        const radians = (car.angle * Math.PI) / 180;
+        const x = centerX + trackRadius * Math.cos(radians);
+        const y = centerY + trackRadius * Math.sin(radians);
+        const rotation = car.angle + 90; // Add 90 degrees to face forward
+
+        carElement.style.transform = `translate(${x - 12}px, ${y - 6}px) rotate(${rotation}deg)`; // Adjust for car size and rotate
+      });
+    }
+
+    function placeCarsAtStart() {
+      cars.forEach(car => {
+        const carElement = document.getElementById(car.id);
+        const radians = (car.angle * Math.PI) / 180;
+        const x = centerX + trackRadius * Math.cos(radians);
+        const y = centerY + trackRadius * Math.sin(radians);
+        const rotation = car.angle + 90; // Add 90 degrees to face forwards
+
+        carElement.style.transform = `translate(${x - 12}px, ${y - 6}px) rotate(${rotation}deg)`;
+      });
+    }
+
+    function checkWinner() {
+      const winningCar = cars.find(car => car.hasFinished);
+      if (winningCar) {
+        clearInterval(raceInterval);
+        raceInterval = null;
+        winnerDisplay.textContent = `Winner: (${winningCar.color}) ${winningCar.id}!`;
+      }
+    }
+
+    function startRace() {
+      if (raceInterval) return; // Prevent multiple race intervals
+
+      winnerDisplay.textContent = '';
+      cars.forEach(car => {
+        car.angle = 0; // Reset angles
+        car.hasFinished = false; // Reset finish state
+      });
+
+      raceInterval = setInterval(() => {
+        updateCarPositions();
+        checkWinner();
+      }, 50); // Faster updates for smoother motion
+    }
+
+    startButton.addEventListener('click', startRace);
+    window.addEventListener('load', placeCarsAtStart); // Place cars on track when page loads
+  </script>
+</body>
+</html>
+
