@@ -37,7 +37,7 @@
       left: 100%;
       transform: translate(-50%, -38%) rotate(90deg);
       z-index: 1;
-      opacity:30%;
+      opacity: 30%;
     }
     .car {
       position: absolute;
@@ -47,6 +47,35 @@
       transform-origin: center;
       transition: transform 0.1s linear;
     }
+
+    .car .wheel {
+        position: absolute;
+        width: 10px;
+        height: 4px;
+        background-color: black;
+        border-radius: 50px; /* top down tyre shape */
+    }
+
+    .car .wheel.front-left {
+        top: -2px;
+        right: 0px;
+    }
+
+    .car .wheel.front-right {
+        bottom: -2px;
+        right: 0;
+    }
+
+    .car .wheel.rear-left {
+        top: -2px;
+        left: 0;
+    }
+
+    .car .wheel.rear-right {
+        bottom: -2px;
+        left: 0;
+    }
+
     button {
       margin-top: 20px;
       padding: 10px 20px;
@@ -69,13 +98,33 @@
 <body>
   <h1>Car Race Simulator</h1>
   <div>
-  <div class="track-container" id="track">
-    <div class="finish-line" id="finishLine"></div>
-    <div class="car" id="car1" style="background-color: red;"></div>
-    <div class="car" id="car2" style="background-color: blue;"></div>
-    <div class="car" id="car3" style="background-color: green;"></div>
-    <div class="car" id="car4" style="background-color: yellow;">		</div>
-  </div>
+    <div class="track-container" id="track">
+      <div class="finish-line" id="finishLine"></div>
+      <div class="car" id="car1" style="background-color: red;">
+        <div class="wheel front-left"></div>
+        <div class="wheel front-right"></div>
+        <div class="wheel rear-left"></div>
+        <div class="wheel rear-right"></div>
+      </div>
+      <div class="car" id="car2" style="background-color: blue;">
+        <div class="wheel front-left"></div>
+        <div class="wheel front-right"></div>
+        <div class="wheel rear-left"></div>
+        <div class="wheel rear-right"></div>
+      </div>
+      <div class="car" id="car3" style="background-color: green;">
+        <div class="wheel front-left"></div>
+        <div class="wheel front-right"></div>
+        <div class="wheel rear-left"></div>
+        <div class="wheel rear-right"></div>
+      </div>
+      <div class="car" id="car4" style="background-color: yellow;">
+        <div class="wheel front-left"></div>
+        <div class="wheel front-right"></div>
+        <div class="wheel rear-left"></div>
+        <div class="wheel rear-right"></div>
+      </div>
+    </div>
   </div>
   <button id="startRace">Start Race</button>
   <div class="winner" id="winner"></div>
@@ -150,7 +199,7 @@
       raceInterval = setInterval(() => {
         updateCarPositions();
         checkWinner();
-      }, 50); // Faster updates for smoother motion
+      }, 35); // Faster updates for smoother motion
     }
 
     startButton.addEventListener('click', startRace);
@@ -158,4 +207,3 @@
   </script>
 </body>
 </html>
-
