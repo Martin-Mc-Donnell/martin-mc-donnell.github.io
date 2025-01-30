@@ -147,23 +147,30 @@
     let raceInterval;
 
     function updateCarPositions() {
-      cars.forEach(car => {
-        if (car.hasFinished) return; // Skip cars that have finished the race
+        // Sort cars based on progress (angle)
+        cars.sort((a, b) => b.angle - a.angle);
 
-        const carElement = document.getElementById(car.id);
-        car.angle += Math.random() * 14; // Increment angle with random speed
-        if (car.angle >= 360) {
-          car.angle = 360; // Ensure the car stops at the end of the lap
-          car.hasFinished = true; // Mark the car as finished
-        }
+        cars.forEach((car, index) => {
+            if (car.hasFinished) return; // Skip cars that have finished the race
 
-        const radians = (car.angle * Math.PI) / 180;
-        const x = centerX + trackRadius * Math.cos(radians);
-        const y = centerY + trackRadius * Math.sin(radians);
-        const rotation = car.angle + 90; // Add 90 degrees to face forward
+            const carElement = document.getElementById(car.id);
+            car.angle += Math.random() * 14; // Increment angle with random speed
+            if (car.angle >= 360) {
+                car.angle = 360; // Ensure the car stops at the end of the lap
+                car.hasFinished = true; // Mark the car as finished
+            }
 
-        carElement.style.transform = `translate(${x - 12}px, ${y - 6}px) rotate(${rotation}deg)`; // Adjust for car size and rotate
-      });
+            const radians = (car.angle * Math.PI) / 180;
+            const x = centerX + trackRadius * Math.cos(radians);
+            const y = centerY + trackRadius * Math.sin(radians);
+            const rotation = car.angle + 90; // Add 90 degrees to face forward
+
+            // Update car position
+            carElement.style.transform = `translate(${x - 12}px, ${y - 6}px) rotate(${rotation}deg)`;
+
+            // Update z-index (first place gets highest value)
+            carElement.style.zIndex = `${cars.length - index}`;
+        });
     }
 
     function placeCarsAtStart() {
