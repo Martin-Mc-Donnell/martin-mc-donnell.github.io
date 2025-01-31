@@ -53,7 +53,7 @@
         width: 10px;
         height: 4px;
         background-color: black;
-        border-radius: 50px; /* top down tyre shape */
+        border-radius: 50px; /* Top down tyre shape */
     }
 
     .car .wheel.front-left {
@@ -195,18 +195,34 @@
     }
 
     function startRace() {
-      if (raceInterval) return; // Prevent multiple race intervals
+        if (raceInterval) return; // Prevent multiple race intervals
 
-      winnerDisplay.textContent = '';
-      cars.forEach(car => {
-        car.angle = 0; // Reset angles
-        car.hasFinished = false; // Reset finish state
-      });
+        winnerDisplay.textContent = '';
+        cars.forEach(car => {
+            const carElement = document.getElementById(car.id);
+            car.angle = 0;
+            car.hasFinished = false;
 
-      raceInterval = setInterval(() => {
-        updateCarPositions();
-        checkWinner();
-      }, 35); // Faster updates for smoother motion
+            // Disable transition temporarily
+            carElement.style.transition = 'none';
+
+            // Immediately reset car position to starting point
+            const radians = (car.angle * Math.PI) / 180;
+            const x = centerX + trackRadius * Math.cos(radians);
+            const y = centerY + trackRadius * Math.sin(radians);
+            carElement.style.transform = `translate(${x - 12}px, ${y - 6}px) rotate(90deg)`;
+
+            // Force a reflow to apply the change immediately
+            carElement.offsetHeight; // This forces the browser to apply the change before re-enabling transition
+
+            // Re-enable transition for smooth movement
+            carElement.style.transition = 'transform 0.1s linear';
+        });
+
+        raceInterval = setInterval(() => {
+            updateCarPositions();
+            checkWinner();
+        }, 35);
     }
 
     startButton.addEventListener('click', startRace);
