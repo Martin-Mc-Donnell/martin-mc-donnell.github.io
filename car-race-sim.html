@@ -6,48 +6,47 @@
   <title>Car Race Simulator</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f3f4f6;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f3f4f6;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
     }
     h1 {
-      margin-bottom: 20px;
+        margin-bottom: 20px;
     }
     .track-container {
-      position: relative;
-      width: 400px;
-      height: 400px;
-      background-color: #e5e7eb;
-      border: 2px solid black;
-      aspect-ratio: 1 / 1;
-      border-radius: 50%; /* circle */
-      overflow: hidden;
+        position: relative;
+        width: 400px;
+        height: 400px;
+        background-color: #e5e7eb;
+        border: 2px solid black;
+        aspect-ratio: 1 / 1;
+        border-radius: 50%; /* circle */
+        overflow: hidden;
     }
     .finish-line {
-      position: absolute;
-      width: 4px;
-      height: 20%;
-      background-color: black;
-      top: 50%;
-      left: 100%;
-      transform: translate(-50%, -38%) rotate(90deg);
-      z-index: 1;
-      opacity: 30%;
+        position: absolute;
+        width: 4px;
+        height: 20%;
+        background-color: black;
+        top: 50%;
+        left: 100%;
+        transform: translate(-50%, -38%) rotate(90deg);
+        z-index: 1;
+        opacity: 30%;
     }
     .car {
-      position: absolute;
-      width: 24px;
-      height: 12px;
-      border-radius: 2px;
-      transform-origin: center;
-      transition: transform 0.1s linear;
+        position: absolute;
+        width: 24px;
+        height: 12px;
+        border-radius: 2px;
+        transform-origin: center;
+        transition: transform 0.05s linear; /* Increased transition duration */
     }
-
     .car .wheel {
         position: absolute;
         width: 10px;
@@ -55,86 +54,91 @@
         background-color: black;
         border-radius: 50px; /* Top down tyre shape */
     }
-
     .car .wheel.front-left {
         top: -2px;
         right: 0px;
     }
-
     .car .wheel.front-right {
         bottom: -2px;
         right: 0;
     }
-
     .car .wheel.rear-left {
         top: -2px;
         left: 0;
     }
-
     .car .wheel.rear-right {
         bottom: -2px;
         left: 0;
     }
-
     button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
     }
     button:hover {
-      background-color: #1d4ed8;
+        background-color: #1d4ed8;
+    }
+    .countdown {
+        font-size: 20rem;
+        color: red;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
     }
     .winner {
-      margin-top: 20px;
-      font-size: 1.2rem;
-      color: #16a34a;
+        margin-top: 20px;
+        font-size: 1.2rem;
+        color: #16a34a;
     }
   </style>
 </head>
 <body>
-  <h1>Car Race Simulator</h1>
-  <div>
-    <div class="track-container" id="track">
-      <div class="finish-line" id="finishLine"></div>
-      <div class="car" id="car1" style="background-color: red;">
-        <div class="wheel front-left"></div>
-        <div class="wheel front-right"></div>
-        <div class="wheel rear-left"></div>
-        <div class="wheel rear-right"></div>
-      </div>
-      <div class="car" id="car2" style="background-color: blue;">
-        <div class="wheel front-left"></div>
-        <div class="wheel front-right"></div>
-        <div class="wheel rear-left"></div>
-        <div class="wheel rear-right"></div>
-      </div>
-      <div class="car" id="car3" style="background-color: green;">
-        <div class="wheel front-left"></div>
-        <div class="wheel front-right"></div>
-        <div class="wheel rear-left"></div>
-        <div class="wheel rear-right"></div>
-      </div>
-      <div class="car" id="car4" style="background-color: yellow;">
-        <div class="wheel front-left"></div>
-        <div class="wheel front-right"></div>
-        <div class="wheel rear-left"></div>
-        <div class="wheel rear-right"></div>
-      </div>
+    <h1>Car Race Simulator</h1>
+    <div>
+        <div class="track-container" id="track">
+            <div class="finish-line" id="finishLine"></div>
+            <div class="car" id="car1" style="background-color: red;">
+                <div class="wheel front-left"></div>
+                <div class="wheel front-right"></div>
+                <div class="wheel rear-left"></div>
+                <div class="wheel rear-right"></div>
+            </div>
+            <div class="car" id="car2" style="background-color: blue;">
+                <div class="wheel front-left"></div>
+                <div class="wheel front-right"></div>
+                <div class="wheel rear-left"></div>
+                <div class="wheel rear-right"></div>
+            </div>
+            <div class="car" id="car3" style="background-color: green;">
+                <div class="wheel front-left"></div>
+                <div class="wheel front-right"></div>
+                <div class="wheel rear-left"></div>
+                <div class="wheel rear-right"></div>
+            </div>
+            <div class="car" id="car4" style="background-color: yellow;">
+                <div class="wheel front-left"></div>
+                <div class="wheel front-right"></div>
+                <div class="wheel rear-left"></div>
+                <div class="wheel rear-right"></div>
+            </div>
+        </div>
     </div>
-  </div>
-  <button id="startRace">Start Race</button>
-  <div class="winner" id="winner"></div>
+    <button id="startRace">Start Race</button>
+    <div class="countdown" id="countdown"></div>
+    <div class="winner" id="winner"></div>
 
   <script>
     const cars = [
-      { id: 'car1', color: 'red', angle: 0, hasFinished: false },
-      { id: 'car2', color: 'blue', angle: 0, hasFinished: false },
-      { id: 'car3', color: 'green', angle: 0, hasFinished: false },
-      { id: 'car4', color: 'yellow', angle: 0, hasFinished: false },
+        { id: 'car1', color: 'red', angle: 0, hasFinished: false },
+        { id: 'car2', color: 'blue', angle: 0, hasFinished: false },
+        { id: 'car3', color: 'green', angle: 0, hasFinished: false },
+        { id: 'car4', color: 'yellow', angle: 0, hasFinished: false },
     ];
 
     const trackRadius = 180; // Fixed radius (half of track-container width/height)
@@ -142,27 +146,27 @@
     const centerY = 200; // Center Y coordinate of the track
     const track = document.getElementById('track');
     const winnerDisplay = document.getElementById('winner');
+    const countdownDisplay = document.getElementById('countdown');
     const startButton = document.getElementById('startRace');
 
     let raceInterval;
+    let countdownInterval;
 
     function updateCarPositions() {
-        // Sort cars based on progress (angle)
-        cars.sort((a, b) => b.angle - a.angle);
-
         cars.forEach((car, index) => {
             if (car.hasFinished) return; // Skip cars that have finished the race
 
             const carElement = document.getElementById(car.id);
-            car.angle += Math.random() * 14; // Increment angle with random speed
+            car.angle += Math.random() * 5; // Increment angle with random speed
             if (car.angle >= 360) {
                 car.angle = 360; // Ensure the car stops at the end of the lap
                 car.hasFinished = true; // Mark the car as finished
             }
 
             const radians = (car.angle * Math.PI) / 180;
-            const x = centerX + trackRadius * Math.cos(radians);
-            const y = centerY + trackRadius * Math.sin(radians);
+            const offset = (index - (cars.length + 1) / 2) * 20; // Offset cars to race side by side
+            const x = centerX + (trackRadius + offset) * Math.cos(radians);
+            const y = centerY + (trackRadius + offset) * Math.sin(radians);
             const rotation = car.angle + 90; // Add 90 degrees to face forward
 
             // Update car position
@@ -174,58 +178,61 @@
     }
 
     function placeCarsAtStart() {
-      cars.forEach(car => {
-        const carElement = document.getElementById(car.id);
-        const radians = (car.angle * Math.PI) / 180;
-        const x = centerX + trackRadius * Math.cos(radians);
-        const y = centerY + trackRadius * Math.sin(radians);
-        const rotation = car.angle + 90; // Add 90 degrees to face forwards
+        cars.forEach((car, index) => {
+            const carElement = document.getElementById(car.id);
+            car.angle = 0; // Reset angle to starting position
+            car.hasFinished = false; // Reset finish status
 
-        carElement.style.transform = `translate(${x - 12}px, ${y - 6}px) rotate(${rotation}deg)`;
-      });
+            const radians = (car.angle * Math.PI) / 180;
+            const offset = (index - (cars.length + 1) / 2) * 20; // Offset cars to start side by side
+            const x = centerX + (trackRadius + offset) * Math.cos(radians);
+            const y = centerY + (trackRadius + offset) * Math.sin(radians);
+            const rotation = car.angle + 90; // Add 90 degrees to face forwards
+
+            carElement.style.transform = `translate(${x - 12}px, ${y - 6}px) rotate(${rotation}deg)`;
+        });
     }
 
     function checkWinner() {
-      const winningCar = cars.find(car => car.hasFinished);
-      if (winningCar) {
-        clearInterval(raceInterval);
-        raceInterval = null;
-        winnerDisplay.textContent = `Winner: (${winningCar.color}) ${winningCar.id}!`;
-      }
+        const winningCar = cars.find(car => car.hasFinished);
+        if (winningCar) {
+            clearInterval(raceInterval);
+            raceInterval = null;
+            winnerDisplay.textContent = `Winner: (${winningCar.color}) ${winningCar.id}!`;
+        }
+    }
+
+    function startCountdown() {
+        let count = 3;
+        countdownDisplay.textContent = count;
+        countdownInterval = setInterval(() => {
+            count--;
+            if (count > 0) {
+                countdownDisplay.textContent = count;
+            } else {
+                clearInterval(countdownInterval);
+                countdownDisplay.textContent = '';
+                startRace();
+            }
+        }, 1000);
     }
 
     function startRace() {
         if (raceInterval) return; // Prevent multiple race intervals
 
         winnerDisplay.textContent = '';
-        cars.forEach(car => {
-            const carElement = document.getElementById(car.id);
-            car.angle = 0;
-            car.hasFinished = false;
-
-            // Disable transition temporarily
-            carElement.style.transition = 'none';
-
-            // Immediately reset car position to starting point
-            const radians = (car.angle * Math.PI) / 180;
-            const x = centerX + trackRadius * Math.cos(radians);
-            const y = centerY + trackRadius * Math.sin(radians);
-            carElement.style.transform = `translate(${x - 12}px, ${y - 6}px) rotate(90deg)`;
-
-            // Force a reflow to apply the change immediately
-            carElement.offsetHeight; // This forces the browser to apply the change before re-enabling transition
-
-            // Re-enable transition for smooth movement
-            carElement.style.transition = 'transform 0.1s linear';
-        });
 
         raceInterval = setInterval(() => {
             updateCarPositions();
             checkWinner();
-        }, 35);
+        }, 20);
     }
 
-    startButton.addEventListener('click', startRace);
+    startButton.addEventListener('click', () => {
+        placeCarsAtStart();
+        startCountdown();
+    });
+
     window.addEventListener('load', placeCarsAtStart); // Place cars on track when page loads
   </script>
 </body>
