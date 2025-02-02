@@ -87,7 +87,6 @@
         color: red;
         position: absolute;
         top: 50%;
-        left: 50%;
         transform: translate(-50%, -50%);
         z-index: 2;
     }
@@ -96,11 +95,29 @@
         font-size: 1.2rem;
         color: #16a34a;
     }
+    .container {
+        display: flex;
+        align-items: center;
+    }
+    .leaderboard {
+        margin-left: 20px;
+        font-size: 1.2rem;
+    }
+    .leaderboard h2 {
+        margin-bottom: 10px;
+    }
+    .leaderboard ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    .leaderboard li {
+        margin-bottom: 5px;
+    }
   </style>
 </head>
 <body>
     <h1>Car Race Simulator</h1>
-    <div>
+    <div class="container">
         <div class="track-container" id="track">
             <div class="finish-line" id="finishLine"></div>
             <div class="car" id="car1" style="background-color: red;">
@@ -128,6 +145,10 @@
                 <div class="wheel rear-right"></div>
             </div>
         </div>
+        <div class="leaderboard" id="leaderboard">
+            <h2>Leaderboard</h2>
+            <ul id="leaderboardList"></ul>
+        </div>
     </div>
     <button id="startRace">Start Race</button>
     <div class="countdown" id="countdown"></div>
@@ -148,6 +169,7 @@
     const winnerDisplay = document.getElementById('winner');
     const countdownDisplay = document.getElementById('countdown');
     const startButton = document.getElementById('startRace');
+    const leaderboardList = document.getElementById('leaderboardList');
 
     let raceInterval;
     let countdownInterval;
@@ -171,11 +193,22 @@
 
             // Update car position
             carElement.style.transform = `translate(${x - 12}px, ${y - 6}px) rotate(${rotation}deg)`;
-
-            // Update z-index (first place gets highest value)
-            carElement.style.zIndex = `${cars.length - index}`;
         });
+
+        // Update leaderboard
+        updateLeaderboard();
     }
+
+    function updateLeaderboard() {
+    leaderboardList.innerHTML = '';
+    // Sort cars based on angle
+    const sortedCars = [...cars].sort((a, b) => b.angle - a.angle);
+    sortedCars.forEach((car, index) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${index + 1}. ${car.color} (${car.id})`;
+        leaderboardList.appendChild(listItem);
+    });
+}
 
     function placeCarsAtStart() {
         cars.forEach((car, index) => {
@@ -191,6 +224,9 @@
 
             carElement.style.transform = `translate(${x - 12}px, ${y - 6}px) rotate(${rotation}deg)`;
         });
+
+        // Update leaderboard
+        updateLeaderboard();
     }
 
     function checkWinner() {
