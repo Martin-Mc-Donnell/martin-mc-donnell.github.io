@@ -3,14 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find the country</title>
+    <title>Find the Country</title>
     <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 40px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #7737d6;
+            color: white;
+            border-radius: 12px 12px 0 0;
+            width: 90%;
+            max-width: 600px;
+        }
+
         #map-container {
             position: relative;
             width: 90%;
-            height: 500px;
-            display: flex;
-            left: 20px;
+            height: 450px;
+            max-width: 600px;
+            border-radius: 12px 12px 12px 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
 
         #map {
@@ -19,35 +42,45 @@
             height: 100%;
         }
 
-        header {
-            text-align: center;
-            padding: 2px;
-            background-color: #7737d6;
-            color: white;
-        }
-
         #info-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 20px;
+            width: 90%;
+            max-width: 600px;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         #info-container p {
             margin: 0;
+            font-size: 1.2rem;
+            color: #333;
         }
 
         #score {
             text-align: right;
         }
 
+        #country-info, #guess {
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            font-size: 1.1rem;
+            color: #555;
+        }
+
         footer {
             text-align: center;
             font-size: 0.9rem;
             color: #777;
-            margin-top: 20px;
+            margin-top: 40px;
             border-top: 1px solid #ddd;
             padding-top: 10px;
+            padding-bottom: 10px;
         }
     </style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -55,7 +88,7 @@
 </head>
 <body>
     <header>
-        <h1>Find the country</h1>
+        <h1>Find the Country</h1>
     </header>
     <div id="info-container">
         <p id="prompt"></p>
@@ -76,7 +109,7 @@
         let countryToGuess = countryList[Math.floor(Math.random() * countryList.length)];
         let score = 0;  // Initialize score
 
-        document.getElementById('prompt').textContent = countryToGuess;
+        document.getElementById('prompt').textContent = `Find: ${countryToGuess}`;
 
         // Initialize the map
         const map = L.map('map').setView([20, 0], 2); // Center of the world
@@ -105,7 +138,7 @@
                             document.getElementById('score').textContent = `Score: ${score}`;
                             // Pick a new country
                             countryToGuess = countryList[Math.floor(Math.random() * countryList.length)];
-                            document.getElementById('prompt').textContent = countryToGuess;
+                            document.getElementById('prompt').textContent = `Find: ${countryToGuess}`;
                         } else {
                             document.getElementById('guess').textContent = "Wrong!";
                         };
