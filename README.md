@@ -1,6 +1,6 @@
 # Portfolio
 
-This repo is for showcasing my personal projects. View my portfolio by using this link - https://martin-mc-donnell.github.io/portfolio.html
+This repo is for showcasing my personal projects. View my portfolio by using this link - <https://martin-mc-donnell.github.io/portfolio.html>
 
 ---
 
