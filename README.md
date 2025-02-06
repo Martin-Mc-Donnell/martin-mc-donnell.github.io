@@ -26,6 +26,7 @@ This repo is for showcasing my personal projects.
 11. [Knitting Designer](#knitting-designer)
 12. [Knitting Info](#knitting-info)
 13. [Sword and Shield Render](#sword-and-shield-render)
+14. [CPR Compression Rate Test](#cpr-compression-rate-test)
 
 ---
 
@@ -104,3 +105,9 @@ Learn about all different kinds of knitting stitches by browsing the list and re
 ## Sword and Shield Render
 
 See a 3D rendering of a sword and shield using three.js a 3D library for Javascript. This powerful library allowed me to create a 3D sword and shield that rotates. I set up some lighting so that you can see the metal on the sword and shield when the light reflects.
+
+---
+
+## CPR Compression Rate Test
+
+Use this to see if you can stay within the recommended CPR compression rate for 12 seconds. Your results will be displayed after each attempt. Clicks that fall outside of the recommended rate are highlighted.
