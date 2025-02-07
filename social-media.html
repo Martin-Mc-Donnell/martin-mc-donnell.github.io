@@ -41,6 +41,7 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             overflow: hidden;
             margin-left: 6px;
+            margin-right: 6px;
         }
 
         .post-header {
@@ -351,7 +352,6 @@
             if (!commentSection) {
                 commentSection = document.createElement("div");
                 commentSection.className = "comment-section";
-                commentSection.style.marginTop = "10px";
                 commentSection.style.padding = "10px";
                 commentSection.style.backgroundColor = "#f9f9f9";
                 commentSection.style.borderTop = "1px solid #ddd";
@@ -435,9 +435,9 @@
                     }
                 });
 
-                // Remove the comment box if the Cancel button is clicked
+                // Remove the comment section if the Cancel button is clicked
                 cancelButton.addEventListener("click", () => {
-                    commentSection.removeChild(commentBox);
+                    post.removeChild(commentSection);
                 });
             }
         }
