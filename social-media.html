@@ -437,7 +437,12 @@
 
                 // Remove the comment section if the Cancel button is clicked
                 cancelButton.addEventListener("click", () => {
-                    post.removeChild(commentSection);
+                    const commentContainers = commentSection.querySelectorAll('.comment-section div:not(.comment-box)');
+                    if (commentContainers.length === 0) {
+                        post.removeChild(commentSection);
+                    } else {
+                        commentSection.removeChild(commentBox);
+                    }
                 });
             }
         }
