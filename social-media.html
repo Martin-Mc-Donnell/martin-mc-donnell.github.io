@@ -167,11 +167,12 @@
         #postModalContent {
             background-color: white;
             padding: 20px;
-            border-radius: 8px;
-            width: 90%;
+            border-radius: 12px;
+            width: 100%;
             max-width: 500px;
             text-align: center;
             position: relative;
+            box-sizing: border-box;
         }
 
         #postModalContent textarea {
@@ -181,7 +182,9 @@
             padding: 10px;
             font-size: 1rem;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 8px;
+            box-sizing: border-box;
+            resize: none;
         }
 
         .thumbnail {
