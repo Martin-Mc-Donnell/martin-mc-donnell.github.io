@@ -55,7 +55,6 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: #ddd;
             margin-right: 10px;
         }
 
@@ -299,7 +298,7 @@
             if (Math.random() > 0.5) {
                 post.innerHTML = `
                     <div class="post-header">
-                        <div class="avatar"></div>
+                        <div class="avatar" style="background-color: ${getUserColor(username)};"></div>
                         <div class="username">${username}</div>
                     </div>
                     <div class="post-content">${caption}</div>
@@ -313,7 +312,7 @@
              } else {
                 post.innerHTML = `
                     <div class="post-header">
-                        <div class="avatar"></div>
+                        <div class="avatar" style="background-color: ${getUserColor(username)};"></div>
                         <div class="username">${username}</div>
                     </div>
                     <div class="post-content">${caption}</div>
@@ -526,7 +525,7 @@
             post.className = 'post';
             post.innerHTML = `
                 <div class="post-header">
-                    <div class="avatar"></div>
+                    <div class="avatar" style="background-color: ${getUserColor('new_account2025')};">
                     <div class="username">new_account2025</div>
                 </div>
                 <div class="post-content">${message}</div>
@@ -549,6 +548,16 @@
             postMessage.value = '';
             thumbnails.forEach(thumbnail => thumbnail.classList.remove('selected'));
             selectedImage = null;
+        }
+
+        // Function to generate a color based on a username
+        function getUserColor(username) {
+            let hash = 0;
+            for (let i = 0; i < username.length; i++) {
+                hash = username.charCodeAt(i) + (hash * 31);
+            }
+            const hue = Math.abs(hash) % 360; // Convert hash to a hue value (0-359)
+            return `hsl(${hue}, 70%, 60%)`; // Constant saturation & lightness
         }
     </script>
 </body>
