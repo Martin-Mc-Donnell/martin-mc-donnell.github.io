@@ -529,10 +529,10 @@
             post.className = 'post';
             post.innerHTML = `
                 <div class="post-header">
-                    <div class="avatar" style="background-color: ${getUserColor('new_account2025')};">
+                    <div class="avatar" style="background-color: ${getUserColor('new_account2025')};"></div>
                     <div class="username">new_account2025</div>
                 </div>
-                <div class="post-content">${message}</div>
+                <div class="post-content" style="word-wrap: break-word; overflow-wrap: break-word; white-space: pre-wrap;"></div>
                 ${selectedImage ? `<img class="post-image" src="${selectedImage}" alt="Post image">` : ''}
                 <div class="post-footer">
                     <button onclick="likePost(this)">Like</button>
@@ -540,6 +540,10 @@
                     <button onclick="sharePost(this)">Share</button>
                 </div>
             `;
+
+            // Select the post-content div and set textContent to sanitize input
+            post.querySelector('.post-content').textContent = message;
+
             // Hide post window, reset it, wait and then post it to the feed
             postModal.style.display = 'none';
             resetModal();
