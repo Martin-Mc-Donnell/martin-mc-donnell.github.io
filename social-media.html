@@ -407,6 +407,9 @@
                 // Append the comment box to the comment section
                 commentSection.appendChild(commentBox);
 
+                // Focus the input on the comment textbox
+                textarea.focus();
+
                 // Post the comment when the post button is clicked
                 postButton.addEventListener("click", () => {
                     const commentText = textarea.value.trim();
