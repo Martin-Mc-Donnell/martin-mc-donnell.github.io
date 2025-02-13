@@ -63,6 +63,12 @@
             font-size: 1.1em;
         }
 
+        .post-time {
+            color: gray;
+            font-size: 0.9em;
+            margin-left: auto;
+        }
+
         .post-content {
             padding: 10px;
             font-size: 1em;
@@ -72,6 +78,7 @@
         .post-image {
             width: 100%;
             max-height: 300px;
+            border-radius: 12px;
             object-fit: cover;
         }
 
@@ -100,21 +107,11 @@
             background-color: #0056b3;
         }
 
-        .comment-box textarea {
-            resize: none;
-            padding: 5px;
-            font-size: 1rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            outline: none;
-        }
-
         .comment-box button {
             padding: 5px 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 0.9rem;
         }
 
         .comment-section div {
@@ -287,20 +284,30 @@
             "images/social_media/pie.png",
         ];
 
+        let lastTimestamp = new Date().getTime(); // Track the latest post timestamp
+
         // Generate fake post
         function createPost() {
             const post = document.createElement("div");
             post.className = "post";
             const username = usernames[Math.floor(Math.random() * usernames.length)];
             const caption = captions[Math.floor(Math.random() * captions.length)];
-            const image = images[Math.floor(Math.random() * images.length)];
+
+            // Assign timestamp slightly earlier than the last post
+            lastTimestamp -= Math.floor(Math.random() * 100000 + 1000);
+            const timestamp = new Date(lastTimestamp);
+
+            // Format time ago
+            const timeAgoText = timeAgo(timestamp);
 
             // Randomly add pictures to some generated posts and keep others as just text posts
             if (Math.random() > 0.5) {
+                const image = images[Math.floor(Math.random() * images.length)];
                 post.innerHTML = `
                     <div class="post-header">
                         <div class="avatar" style="background-color: ${getUserColor(username)};"></div>
                         <div class="username">${username}</div>
+                        <div class="post-time" data-timestamp="${timestamp.getTime()}">${timeAgoText}</div>
                     </div>
                     <div class="post-content">${caption}</div>
                     <img class="post-image" src="${image}" alt="Post image">
@@ -310,11 +317,12 @@
                         <button onclick="sharePost(this)">Share</button>
                     </div>
                 `;
-             } else {
+            } else {
                 post.innerHTML = `
                     <div class="post-header">
                         <div class="avatar" style="background-color: ${getUserColor(username)};"></div>
                         <div class="username">${username}</div>
+                        <div class="post-time" data-timestamp="${timestamp.getTime()}">${timeAgoText}</div>
                     </div>
                     <div class="post-content">${caption}</div>
                     <div class="post-footer">
@@ -323,7 +331,7 @@
                         <button onclick="sharePost(this)">Share</button>
                     </div>
                 `;
-             }
+            }
             return post;
         }
 
@@ -490,6 +498,9 @@
         // Initial load
         loadMorePosts();
 
+        // Update post timestamps every minute
+        setInterval(updatePostTimes, 60000);
+
         // Elements
         const postButton = document.getElementById('postButton');
         const postModal = document.getElementById('postModal');
@@ -528,10 +539,15 @@
 
             const post = document.createElement('div');
             post.className = 'post';
+
+            // Get current timestamp and store it
+            const timestamp = new Date();
+
             post.innerHTML = `
                 <div class="post-header">
                     <div class="avatar" style="background-color: ${getUserColor('new_account2025')};"></div>
                     <div class="username">new_account2025</div>
+                    <div class="post-time" data-timestamp="${timestamp.getTime()}">1 minute ago</div>
                 </div>
                 <div class="post-content" style="word-wrap: break-word; overflow-wrap: break-word; white-space: pre-wrap;"></div>
                 ${selectedImage ? `<img class="post-image" src="${selectedImage}" alt="Post image">` : ''}
@@ -550,7 +566,29 @@
             resetModal();
             await delay(1200);
             document.getElementById('feed').prepend(post);
+            // Update the time immediately
+            updatePostTimes();
         });
+
+        // Function to format how long ago a post was made
+        function timeAgo(timestamp) {
+            const now = new Date();
+            const secondsAgo = Math.floor((now - timestamp) / 1000);
+
+            if (secondsAgo < 60) return 'Just now';
+            if (secondsAgo < 3600) return `${Math.floor(secondsAgo / 60)} minute${Math.floor(secondsAgo / 60) === 1 ? '' : 's'} ago`;
+            if (secondsAgo < 86400) return `${Math.floor(secondsAgo / 3600)} hour${Math.floor(secondsAgo / 3600) === 1 ? '' : 's'} ago`;
+
+            return `${Math.floor(secondsAgo / 86400)} day${Math.floor(secondsAgo / 86400) === 1 ? '' : 's'} ago`;
+        }
+
+        // Function to update all post timestamps every minute
+        function updatePostTimes() {
+            document.querySelectorAll('.post-time').forEach(timeElement => {
+                const timestamp = new Date(parseInt(timeElement.dataset.timestamp));
+                timeElement.textContent = timeAgo(timestamp);
+            });
+        }
 
         // Reset modal content
         function resetModal() {
