@@ -177,7 +177,7 @@
             height: 100px;
             margin-bottom: 10px;
             padding: 10px;
-            font-size: 1rem;
+            font-size: 16px;
             border: 1px solid #ddd;
             border-radius: 8px;
             box-sizing: border-box;
@@ -512,6 +512,7 @@
         // Open post modal
         postButton.addEventListener('click', () => {
             postModal.style.display = 'flex';
+            postMessage.focus();
         });
 
         // Close modal
