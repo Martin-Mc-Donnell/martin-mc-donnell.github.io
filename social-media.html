@@ -24,7 +24,7 @@
             text-align: center;
             padding: 10px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
+            z-index: 100;
         }
 
         #feed {
@@ -108,6 +108,11 @@
             background-color: #0056b3;
         }
 
+        .shared-label{
+            color: grey;
+            padding-left: 20px;
+        }
+
         .comment-box button {
             padding: 5px 10px;
             border: none;
@@ -160,6 +165,8 @@
             background-color: rgba(0, 0, 0, 0.6);
             justify-content: center;
             align-items: center;
+            z-index: 101;
+            overflow: auto;
         }
 
         #postModalContent {
@@ -171,6 +178,8 @@
             text-align: center;
             position: relative;
             box-sizing: border-box;
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
         #postModalContent textarea {
@@ -463,14 +472,6 @@
             }
         }
 
-        async function sharePost(button) {
-            button.textContent = "Shared!";
-            button.style.backgroundColor = "grey";
-            await delay(1200);
-            button.textContent = "Share";
-            button.style.backgroundColor = "#007BFF";
-        }
-
         function delay(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
@@ -531,11 +532,38 @@
             });
         });
 
+        let sharedPost = null; // Store the shared post temporarily
+
+        function sharePost(button) {
+            const post = button.closest('.post'); // Get the original post being shared
+            sharedPost = post.cloneNode(true); // Clone the post to preserve data
+            sharedPost.querySelector('.post-footer').remove(); // Remove the footer buttons
+
+            // Open the post modal
+            postModal.style.display = 'flex';
+
+            // Display the shared post inside the modal
+            const sharedPostContainer = document.createElement('div');
+            sharedPostContainer.innerHTML = `<h4>Sharing this post:</h4>`;
+            sharedPostContainer.appendChild(sharedPost);
+
+            const modalContent = document.getElementById('postModalContent');
+            const existingSharedPost = modalContent.querySelector('.shared-preview');
+            if (existingSharedPost) {
+                modalContent.removeChild(existingSharedPost);
+            }
+
+            sharedPostContainer.classList.add('shared-preview');
+            modalContent.insertBefore(sharedPostContainer, postMessage);
+
+            postMessage.focus();
+        }
+
         // Post the new message
         postNowButton.addEventListener('click', async () => {
             const message = postMessage.value.trim();
-            if (!message) {
-                alert('Please enter a message!');
+            if (!message && !sharedPost) {
+                alert('Please enter a message or share a post!');
                 return;
             }
 
@@ -549,10 +577,28 @@
                 <div class="post-header">
                     <div class="avatar" style="background-color: ${getUserColor('new_account2025')};"></div>
                     <div class="username">new_account2025</div>
-                    <div class="post-time" data-timestamp="${timestamp.getTime()}">1 minute ago</div>
+                    <div class="post-time" data-timestamp="${timestamp.getTime()}">Just now</div>
                 </div>
-                <div class="post-content" style="word-wrap: break-word; overflow-wrap: break-word; white-space: pre-wrap;"></div>
-                ${selectedImage ? `<img class="post-image" src="${selectedImage}" alt="Post image">` : ''}
+                <div class="post-content" style="word-wrap: break-word; overflow-wrap: break-word; white-space: pre-wrap;">${message}</div>
+            `;
+
+            if (selectedImage) {
+                const img = document.createElement('img');
+                img.className = 'post-image';
+                img.src = selectedImage;
+                img.alt = 'Post image';
+                post.appendChild(img);
+            }
+
+            if (sharedPost) {
+                const sharedPostWrapper = document.createElement('div');
+                sharedPostWrapper.classList.add('shared-post');
+                sharedPostWrapper.innerHTML = `<p class="shared-label">Shared from ${sharedPost.querySelector('.username').textContent}:</p>`;
+                sharedPostWrapper.appendChild(sharedPost.cloneNode(true));
+                post.appendChild(sharedPostWrapper);
+            }
+
+            post.innerHTML += `
                 <div class="post-footer">
                     <button onclick="likePost(this)">Like</button>
                     <button onclick="commentPost(this)">Comment</button>
@@ -595,8 +641,14 @@
         // Reset modal content
         function resetModal() {
             postMessage.value = '';
-            thumbnails.forEach(thumbnail => thumbnail.classList.remove('selected'));
             selectedImage = null;
+            sharedPost = null;
+            thumbnails.forEach(thumb => thumb.classList.remove('selected'));
+
+            const existingSharedPost = document.querySelector('.shared-preview');
+            if (existingSharedPost) {
+                existingSharedPost.remove();
+            }
         }
 
         // Function to generate a color based on a username
