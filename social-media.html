@@ -595,6 +595,19 @@
                 sharedPostWrapper.classList.add('shared-post');
                 sharedPostWrapper.innerHTML = `<p class="shared-label">Shared from ${sharedPost.querySelector('.username').textContent}:</p>`;
                 sharedPostWrapper.appendChild(sharedPost.cloneNode(true));
+
+                // Manually count shared posts within the wrapper
+                const sharedPosts = sharedPostWrapper.querySelectorAll('.shared-post');
+
+                if (sharedPosts.length > 1) {
+                    // If there are more than two, we only want the newest two
+                    const excessPosts = sharedPosts.length - 2;
+                    // Remove any excess posts from the share chain
+                    for (let i = 1; i < sharedPosts.length; i++) {
+                        sharedPosts[i].remove();
+                    }
+                }
+
                 post.appendChild(sharedPostWrapper);
             }
 
