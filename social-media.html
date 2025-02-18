@@ -435,15 +435,17 @@
                     if (commentText) {
                         // Create a container for the comment
                         const commentContainer = document.createElement("div");
+                        commentContainer.style.display = "flex";
+                        commentContainer.style.alignItems = "center";
                         commentContainer.style.marginTop = "10px";
+                        commentContainer.style.paddingBottom = "12px";
 
                         // Style the username label
                         const usernameLabel = document.createElement("div");
                         usernameLabel.textContent = "new_account2025";
                         usernameLabel.style.color = "blue";
                         usernameLabel.style.fontWeight = "bold";
-                        usernameLabel.style.marginBottom = "5px";
-                        usernameLabel.style.marginBottom = "2px";
+                        usernameLabel.style.marginRight = "5px";
 
                         // Style the comment label
                         const commentLabel = document.createElement("div");
@@ -452,9 +454,30 @@
                         commentLabel.style.backgroundColor = "#f1f1f1";
                         commentLabel.style.borderRadius = "5px";
 
-                        // Add username and comment to container and empty the comment text box
+                        commentLabel.style.flexGrow = "1";
+
+                        // Create a delete button for the comment
+                        const deleteButton = document.createElement("button");
+                        deleteButton.textContent = "🗑️";
+                        deleteButton.style.backgroundColor = "white";
+                        deleteButton.style.color = "white";
+                        deleteButton.style.border = "none";
+                        deleteButton.style.borderRadius = "5px";
+                        deleteButton.style.padding = "5px 10px";
+                        deleteButton.style.marginLeft = "10px";
+                        deleteButton.style.marginTop = "10px"
+                        deleteButton.style.cursor = "pointer";
+
+                        // Delete the comment when clicked
+                        deleteButton.addEventListener("click", () => {
+                            commentContainer.remove();
+                        });
+
+                        // Add username, comment and delete to container and empty the comment text box
                         commentContainer.appendChild(usernameLabel);
                         commentContainer.appendChild(commentLabel);
+                        commentContainer.appendChild(deleteButton);
+
                         commentSection.insertBefore(commentContainer, commentBox);
                         textarea.value = "";
                     }
@@ -578,6 +601,7 @@
                     <div class="avatar" style="background-color: ${getUserColor('new_account2025')};"></div>
                     <div class="username">new_account2025</div>
                     <div class="post-time" data-timestamp="${timestamp.getTime()}">Just now</div>
+                    <button class="delete-post" onclick="deletePost(this)">🗑️"</button>
                 </div>
                 <div class="post-content" style="word-wrap: break-word; overflow-wrap: break-word; white-space: pre-wrap;">${message}</div>
             `;
@@ -630,6 +654,11 @@
             // Update the time immediately
             updatePostTimes();
         });
+
+        function deletePost(button) {
+            const post = button.closest(".post");
+            post.remove();
+        }
 
         // Function to format how long ago a post was made
         function timeAgo(timestamp) {
