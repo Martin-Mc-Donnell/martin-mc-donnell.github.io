@@ -235,6 +235,8 @@
             clearInterval(raceInterval);
             raceInterval = null;
             winnerDisplay.textContent = `Winner: (${winningCar.color}) ${winningCar.id}!`;
+            startButton.style.backgroundColor = "#2563eb";
+            startButton.disabled = false;
         }
     }
 
@@ -266,6 +268,9 @@
 
     startButton.addEventListener('click', () => {
         placeCarsAtStart();
+        startButton.disabled = true;
+        startButton.style.backgroundColor = "grey";
+        startButton.textContent = 'Restart Race';
         startCountdown();
     });
 
