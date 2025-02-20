@@ -200,15 +200,16 @@
     }
 
     function updateLeaderboard() {
-    leaderboardList.innerHTML = '';
-    // Sort cars based on angle
-    const sortedCars = [...cars].sort((a, b) => b.angle - a.angle);
-    sortedCars.forEach((car, index) => {
-        const listItem = document.createElement('li');
-        listItem.textContent = `${index + 1}. ${car.color} (${car.id})`;
-        leaderboardList.appendChild(listItem);
-    });
-}
+        leaderboardList.innerHTML = '';
+        // Sort cars based on angle
+        const sortedCars = [...cars].sort((a, b) => b.angle - a.angle);
+        sortedCars.forEach((car, index) => {
+            const progress = ((car.angle / 360) * 100).toFixed(2);
+            const listItem = document.createElement('li');
+            listItem.textContent = `${index + 1}. ${car.color} (${car.id}) ${progress}%`;
+            leaderboardList.appendChild(listItem);
+        });
+    }
 
     function placeCarsAtStart() {
         cars.forEach((car, index) => {
