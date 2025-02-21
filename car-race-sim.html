@@ -118,6 +118,7 @@
 <body>
     <h1>Car Race Simulator</h1>
     <div class="container">
+    <div>
         <div class="track-container" id="track">
             <div class="finish-line" id="finishLine"></div>
             <div class="car" id="car1" style="background-color: red;">
@@ -144,6 +145,7 @@
                 <div class="wheel rear-left"></div>
                 <div class="wheel rear-right"></div>
             </div>
+        </div>
         </div>
         <div class="leaderboard" id="leaderboard">
             <h2>Leaderboard</h2>
@@ -231,13 +233,23 @@
     }
 
     function checkWinner() {
-        const winningCar = cars.find(car => car.hasFinished);
-        if (winningCar) {
+        // Find all cars that have finished
+        const finishedCars = cars.filter(car => car.angle >= 360);
+
+        if (finishedCars.length > 0) {
             clearInterval(raceInterval);
             raceInterval = null;
-            winnerDisplay.textContent = `Winner: (${winningCar.color}) ${winningCar.id}!`;
             startButton.style.backgroundColor = "#2563eb";
             startButton.disabled = false;
+
+            if (finishedCars.length === 1) {
+                // Single winner
+                winnerDisplay.textContent = `Winner: (${finishedCars[0].color}) ${finishedCars[0].id}!`;
+            } else {
+                // Multiple winners - it's a tie
+                const tiedCars = finishedCars.map(car => `(${car.color}) ${car.id}`).join(" & ");
+                winnerDisplay.textContent = `It's a tie! Winners: ${tiedCars}!`;
+            }
         }
     }
 
