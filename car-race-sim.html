@@ -87,6 +87,7 @@
         color: red;
         position: absolute;
         top: 50%;
+        left: 50%;
         transform: translate(-50%, -50%);
         z-index: 2;
     }
@@ -98,11 +99,43 @@
     .container {
         display: flex;
         align-items: center;
+        flex-direction: row;
+        justify-content: center;
+        gap: 20px;
     }
+
+    #startRace {
+        display: block;
+        margin-top: 20px;
+        width:120px;
+    }
+
+    @media (max-width: 750px) {
+
+        body{
+            margin-top: 100px;
+        }
+
+        .countdown {
+            top: 48%;
+            left: 50%;
+        }
+
+        .container {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #startRace {
+            order: 0;
+            margin-bottom: 10px;
+        }
+    }
+
     .leaderboard {
-        margin-left: 20px;
-        font-size: 1.2rem;
+        margin-top: 20px;
     }
+
     .leaderboard h2 {
         margin-bottom: 10px;
     }
@@ -121,6 +154,7 @@
     <div>
         <div class="track-container" id="track">
             <div class="finish-line" id="finishLine"></div>
+            <div class="countdown" id="countdown"></div>
             <div class="car" id="car1" style="background-color: red;">
                 <div class="wheel front-left"></div>
                 <div class="wheel front-right"></div>
@@ -147,13 +181,12 @@
             </div>
         </div>
         </div>
+        <button id="startRace">Start Race</button>
         <div class="leaderboard" id="leaderboard">
             <h2>Leaderboard</h2>
             <ul id="leaderboardList"></ul>
         </div>
     </div>
-    <button id="startRace">Start Race</button>
-    <div class="countdown" id="countdown"></div>
     <div class="winner" id="winner"></div>
 
   <script>
