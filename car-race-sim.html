@@ -304,8 +304,6 @@
     function startRace() {
         if (raceInterval) return; // Prevent multiple race intervals
 
-        winnerDisplay.textContent = '';
-
         raceInterval = setInterval(() => {
             updateCarPositions();
             checkWinner();
@@ -317,6 +315,7 @@
         startButton.disabled = true;
         startButton.style.backgroundColor = "grey";
         startButton.textContent = 'Restart Race';
+        winnerDisplay.textContent = '';
         startCountdown();
     });
 
