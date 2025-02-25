@@ -561,13 +561,17 @@
             const post = button.closest('.post'); // Get the original post being shared
             sharedPost = post.cloneNode(true); // Clone the post to preserve data
 
-            // Remove the footer buttons (Like, Comment, Share)
+            // Remove the footer buttons (Like, Comment, Share) from the cloned original
             const postFooter = sharedPost.querySelector('.post-footer');
             if (postFooter) postFooter.remove();
 
-            // Remove the comment section
+            // Remove the comment section from the cloned original
             const commentSections = sharedPost.querySelectorAll('.comment-section');
             commentSections.forEach(commentSection => commentSection.remove());
+
+            // Remove delete buttons from the cloned original
+            const deleteButtons = sharedPost.querySelectorAll('.delete-post');
+            deleteButtons.forEach(deleteButtons => deleteButtons.remove());
 
             // Open the post modal
             postModal.style.display = 'flex';
