@@ -92,10 +92,22 @@
         z-index: 2;
     }
     .winner {
-        margin-top: 20px;
-        font-size: 1.2rem;
-        color: #16a34a;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 70%;
+        transform: translate(-50%, -50%);
+        font-size: 3rem;
+        font-weight: bold;
+        color: gold;
+        text-shadow: 3px 3px 10px black;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 20px;
+        border-radius: 10px;
+        z-index: 1000;
+        display: none;
     }
+
     .container {
         display: flex;
         align-items: center;
@@ -277,12 +289,20 @@
 
             if (finishedCars.length === 1) {
                 // Single winner
-                winnerDisplay.textContent = `Winner: (${finishedCars[0].color}) ${finishedCars[0].id}!`;
+                winnerDisplay.textContent = `🏆 Winner: (${finishedCars[0].color}) ${finishedCars[0].id}!`;
             } else {
                 // Multiple winners - it's a tie
                 const tiedCars = finishedCars.map(car => `(${car.color}) ${car.id}`).join(" & ");
-                winnerDisplay.textContent = `It's a tie! Winners: ${tiedCars}!`;
+                winnerDisplay.textContent = `🤝 Tie! Winners: ${tiedCars}!`;
             }
+
+            // Show winner label
+            winnerDisplay.style.display = "block";
+
+            // Hide winner label after 2 seconds
+            setTimeout(() => {
+                winnerDisplay.style.display = "none";
+            }, 2000);
         }
     }
 
@@ -315,6 +335,7 @@
         startButton.disabled = true;
         startButton.style.backgroundColor = "grey";
         startButton.textContent = 'Restart Race';
+        winnerDisplay.style.display = "None";
         winnerDisplay.textContent = '';
         startCountdown();
     });
