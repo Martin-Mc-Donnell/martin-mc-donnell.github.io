@@ -17,6 +17,7 @@
     }
     h1 {
         margin-bottom: 20px;
+        margin-top: 80px;
     }
     .track-container {
         position: relative;
@@ -27,6 +28,7 @@
         aspect-ratio: 1 / 1;
         border-radius: 50%; /* circle */
         overflow: hidden;
+        margin-top: 10px;
     }
     .finish-line {
         position: absolute;
@@ -97,7 +99,7 @@
         left: 50%;
         width: 70%;
         transform: translate(-50%, -50%);
-        font-size: 3rem;
+        font-size: 2rem;
         font-weight: bold;
         color: gold;
         text-shadow: 3px 3px 10px black;
@@ -120,6 +122,7 @@
         display: block;
         margin-top: 20px;
         width:120px;
+        margin-left: 0px;
     }
 
     @media (max-width: 750px) {
@@ -140,19 +143,22 @@
 
         #startRace {
             order: 0;
-            margin-bottom: 10px;
+            margin-bottom: 0px;
         }
     }
 
     .leaderboard {
-        margin-top: 20px;
+        margin-bottom: 20px;
+        margin-left: 20px;
     }
 
     .leaderboard h2 {
         margin-bottom: 10px;
+        margin-left: -10px;
     }
     .leaderboard ul {
         list-style-type: none;
+        margin-left: -10px;
         padding: 0;
     }
     .leaderboard li {
@@ -193,8 +199,8 @@
             </div>
         </div>
         </div>
-        <button id="startRace">Start Race</button>
         <div class="leaderboard" id="leaderboard">
+        <button id="startRace">Start Race</button>
             <h2>Leaderboard</h2>
             <ul id="leaderboardList"></ul>
         </div>
