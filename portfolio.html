@@ -13,17 +13,52 @@
       padding: 0;
       background-color: #f4f4f4;
       color: #333;
+      scroll-behavior: smooth;
     }
 
     header {
       text-align: center;
-      padding: 20px;
-      background-color: #007bff;
+      padding: 40px 20px;
+      background: linear-gradient(120deg, #007bff, #6610f2);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
       color: white;
+      position: relative;
+      z-index: 1000;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('images/profile_pic.png') no-repeat center center/cover;
+      opacity: 0.2;
+      z-index: -1;
     }
 
     header h1 {
       margin: 0;
+      font-size: 2.5rem;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    header button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: #007bff;
+      font-size: 1rem;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    header button:hover {
+      background-color: rgba(255, 255, 255, 1);
+      transform: scale(1.05);
     }
 
     .container {
@@ -45,6 +80,7 @@
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       text-align: center;
       transition: transform 0.3s, box-shadow 0.3s;
+      animation: fadeIn 0.5s ease-in-out;
     }
 
     .grid-item:hover {
@@ -53,9 +89,10 @@
     }
 
     .grid-item img {
-      width: 100%;
+      width: 400px;
       height: 200px;
       object-fit: cover;
+      transition: filter 0.3s;
     }
 
     .grid-item h3 {
@@ -82,30 +119,36 @@
       transition: background-color 0.3s;
     }
 
-    button {
-      margin: 5px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      background-color: rgba(240, 232, 232, 0.872);
-    }
-    button:hover {
-        opacity: 0.9;
-    }
-
     .grid-item a:hover {
-      background-color: #007bff;
+      background-color: #0056b3;
     }
 
     footer {
-        text-align: center;
-        font-size: 0.9rem;
-        color: #777;
-        margin-top: 20px;
-        border-top: 1px solid #ddd;
-        padding-top: 10px;
-        padding-bottom: 10px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: 20px;
+      border-top: 1px solid #ddd;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      background-color: #f4f4f4;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
