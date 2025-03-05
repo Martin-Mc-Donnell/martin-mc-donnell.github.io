@@ -13,6 +13,7 @@
             justify-content: flex-start;
             height: 100vh;
             margin: 0;
+            padding: 30px;
             background-color: #f0f8ff;
             overflow-y: auto;
         }
@@ -34,19 +35,53 @@
         }
 
         #cprButton {
+            position: relative;
             width: 200px;
             height: 200px;
-            border-radius: 50%;
-            background-color: red;
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
+            background-color: transparent;
             border: none;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
             transition: transform 0.1s;
-            position: relative;
             z-index: 2;
+            overflow: hidden;
+        }
+
+        #cprButton::before,
+        #cprButton::after {
+            content: '';
+            position: absolute;
+            top: 40px;
+            width: 100px;
+            height: 160px;
+            background-color: red;
+            border-radius: 50px 50px 0 0;
+            transform-origin: 50% 100%;
+            transition: transform 0.1s;
+            z-index: -1;
+        }
+
+        #cprButton.grey-heart::before,
+        #cprButton.grey-heart::after {
+            background-color: grey;
+        }
+
+        #cprButton::before {
+            left: 100px;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+
+        #cprButton::after {
+            left: 0px;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
+
+        #cprButton:hover {
+            transform: scale(1.05);
         }
 
         #cprButton:active {
@@ -55,6 +90,11 @@
         
         #cprButton:disabled:active {
             transform: none;
+        }
+
+        #cprButton span {
+            position: relative;
+            top: 5px;
         }
 
         #results {
@@ -107,7 +147,7 @@
         <p>The NHS suggests giving 100 - 120 compressions a minute.<br>Click the 
             button below to try matching that rate for 12 seconds (20-24 clicks)</p>
         <div class="button-container">
-            <button id="cprButton">Start</button>
+            <button id="cprButton"><span id="buttonText">Start</span></button>
         </div>
     </div>
 
@@ -130,6 +170,7 @@
 
     <script>
         const cprButton = document.getElementById('cprButton');
+        const buttonText = document.getElementById('buttonText');
         const resultsDiv = document.getElementById('results');
         const totalClicksSpan = document.getElementById('totalClicks');
         const clickDataTable = document.getElementById('clickData');
@@ -141,7 +182,7 @@
         cprButton.addEventListener('click', (event) => {
             if (!timerActive) {
                 startTimer();
-                cprButton.textContent = "Click!";
+                buttonText.textContent = "Click!";
             } else {
                 recordClick();
             }
@@ -188,13 +229,13 @@
         function endTimer() {
             timerActive = false;
             clearTimeout(timer);
-            cprButton.textContent = "Start";
-            cprButton.style.backgroundColor = "grey";
+            buttonText.textContent = "Start";
+            cprButton.classList.add("grey-heart");
             // Disable button temporarily after results
             cprButton.disabled = true;
             setTimeout(() => {
                 cprButton.disabled = false;
-                cprButton.style.backgroundColor = "red";
+                cprButton.classList.remove("grey-heart");
             }, 3000);
 
             // Calculate the intervals between clicks
