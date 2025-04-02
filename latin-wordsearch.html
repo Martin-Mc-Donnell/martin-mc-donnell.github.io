@@ -12,7 +12,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             background-color: #f3f4f6;
         }
 
@@ -130,7 +130,7 @@
             <input type="text" maxlength="1" id="char5" onkeydown="actOnInput(this, 'char5', 'char4', event)">
         </div>
         <div class="buttons-container">
-            <button onclick="submitGuess()">Submit</button>
+            <button id="submit-button" onclick="submitGuess()">Submit</button>
             <button onclick="newGame()">New Game</button>
         </div>
         <p class="message" id="message"></p>
@@ -144,6 +144,7 @@
         let correctWord = wordList[Math.floor(Math.random() * wordList.length)];
         const maxGuesses = 6;
         let currentRow = 0;
+        document.getElementById(`char1`).focus();
 
         // Create the game board
         function createBoard() {
@@ -190,28 +191,39 @@
                 }
                 event.preventDefault(); // Prevent double input
             } else {
-                // Prevent invalid input
-                event.preventDefault();
+                event.preventDefault(); // Prevent invalid input
             }
         }
 
+        // Handle Enter key to submit the guess
+        function handleEnterPress(event) {
+            if (event.key === "Enter") {
+                submitGuess();
+            }
+        }
+
+        // Attach the event listener for Enter key
+        document.addEventListener("keydown", handleEnterPress);
+
         function submitGuess() {
-            const message = document.getElementById("message");
-            const inputs = document.querySelectorAll(".input-container input");
-            const guess = Array.from(inputs).map(input => input.value.toLowerCase()).join("");
+            const guess = [
+                document.getElementById("char1").value,
+                document.getElementById("char2").value,
+                document.getElementById("char3").value,
+                document.getElementById("char4").value,
+                document.getElementById("char5").value
+            ].join("");
 
             if (guess.length !== 5) {
-                message.textContent = "Please enter all 5 letters!";
+                alert("Please enter all 5 letters!");
                 return;
             }
 
-            const rowStart = currentRow * 5;
-
+            let message = "";
             // Compare letters and color tiles
             for (let i = 0; i < 5; i++) {
-                const tile = document.getElementById(`tile-${rowStart + i}`);
+                const tile = document.getElementById(`tile-${currentRow * 5 + i}`);
                 tile.textContent = guess[i];
-
                 if (guess[i] === correctWord[i]) {
                     tile.classList.add("correct");
                 } else if (correctWord.includes(guess[i])) {
@@ -221,64 +233,58 @@
                 }
             }
 
-            currentRow++;
-            inputs.forEach(input => (input.value = ""));
-            inputs[0].focus();
-
             // Check win/lose conditions
             if (guess === correctWord) {
-                message.textContent = "Congratulations! You guessed the word!";
-            } else if (currentRow === maxGuesses) {
-                message.textContent = `Game Over! The correct word was "${correctWord}".`;
+                message = "Congratulations! You've guessed the word!";
+                currentRow = maxGuesses;
             } else {
-                message.textContent = "";
+                currentRow++;
+                if (currentRow >= maxGuesses) {
+                    message = `Game Over! The correct word was: ${correctWord}`;
+                }
             }
 
-            // Disable input boxes and enter button when the game is over
-            if (guess === correctWord || currentRow === maxGuesses) {
-                document.querySelectorAll(".input-container input").forEach(input => input.disabled = true);
-                document.querySelector("button[onclick='submitGuess()']").disabled = true;
-                document.addEventListener("keydown", function (event) {
-            if (event.key === "Enter") {
+            document.getElementById("message").textContent = message;
+            clearTextBoxes();
+            document.getElementById(`char1`).focus();
+            // Disable input on Game Over
+            if (currentRow >= maxGuesses || guess === correctWord) {
+                document.getElementById("char1").disabled = true;
+                document.getElementById("char2").disabled = true;
+                document.getElementById("char3").disabled = true;
+                document.getElementById("char4").disabled = true;
+                document.getElementById("char5").disabled = true;
+                document.getElementById("submit-button").disabled = true;
+                document.removeEventListener("keydown", handleEnterPress);
             }
-        });
-            }
+        }
+
+        function clearTextBoxes() {
+            document.getElementById("char1").value = "";
+            document.getElementById("char2").value = "";
+            document.getElementById("char3").value = "";
+            document.getElementById("char4").value = "";
+            document.getElementById("char5").value = "";
         }
 
         function newGame() {
             correctWord = wordList[Math.floor(Math.random() * wordList.length)];
             currentRow = 0;
-            document.querySelector(".message").textContent = "";
+            createBoard();
+            document.getElementById("message").textContent = "";
+            clearTextBoxes();
 
-            // Clear all tiles
-            document.querySelectorAll(".board .tile").forEach(tile => {
-                tile.textContent = "";
-                tile.classList.remove("correct", "present", "absent");
-            });
-
-            // Enable and clear input boxes
-            document.querySelectorAll(".input-container input").forEach(input => {
-                input.disabled = false;
-                input.value = "";
-            });
+            // Re-enable textboxes after game ends
+            document.getElementById("char1").disabled = false;
+            document.getElementById("char2").disabled = false;
+            document.getElementById("char3").disabled = false;
+            document.getElementById("char4").disabled = false;
+            document.getElementById("char5").disabled = false;
+            document.getElementById("submit-button").disabled = false;
+            document.addEventListener("keydown", handleEnterPress);
 
             document.getElementById("char1").focus();
-            document.addEventListener("keydown", function (event) {
-                if (event.key === "Enter") {
-                    submitGuess();
-                }
-            });
         }
-
-        document.getElementById("char1").focus();
-
-        // Enable pressing enter to guess
-        document.addEventListener("keydown", function (event) {
-            const submitButton = document.querySelector("button[onclick='submitGuess()']");
-            if (!submitButton.disabled) {
-                submitGuess();
-            }
-        });
     </script>
 </body>
 </html>
